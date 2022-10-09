@@ -53,7 +53,7 @@ int main(){
 					}
 				}while(strcmp(planetas[j].nome, p2) != 0); //até encontrar o planeta certo
         			
-				dist = sqrt(abs((x2 - x1)*(x2 - x1)) + abs((y2 - y1)*(y2 - y1)) + abs((z2 - z1)*(z2 - z1))); //calcular a distância entre os planetas
+				dist = sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1) + (z2 - z1)*(z2 - z1)); //calcular a distância entre os planetas
 				printf("%.2lf\n", dist); //imprimir a distância
 				break; //encerrar o switch case
         	
