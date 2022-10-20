@@ -8,7 +8,7 @@ int main(){
 	int N; //código
 	char pal[50]; //palavra lida a ser escrita
 	int i, s; //contadores
-	char palast[5][50]; //vetor para armazenar as últimas cinco strings
+	char palast[5][50] = {" "," "," "," "," "}; //vetor para armazenar as últimas cinco strings
 	
 	//abertura dos arquivos de entrada e saída
 	codigo = fopen("codigos.dat", "r");
@@ -16,8 +16,9 @@ int main(){
 	linha = fopen("linhas.dat", "w");
 	
 	//escreve o arquivo linhas.dat até que um dos arquivos de entrada chegue ao fim
-	while(fscanf(codigo, "%d", &N) != EOF && !feof(palavra))
+	while(!feof(codigo) && !feof(palavra))
 	{	
+		fscanf(codigo, "%d", &N);
 		if(N<0)
 		{	
 			for(i = N+5; i<5; i++)
