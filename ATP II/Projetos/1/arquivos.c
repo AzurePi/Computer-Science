@@ -18,7 +18,7 @@ int main(){
 	//escreve o arquivo linhas.dat até que um dos arquivos de entrada chegue ao fim
 	while(!feof(codigo) && !feof(palavra))
 	{	
-		fscanf(codigo, "%d ", &N);
+		fscanf(codigo, "%d", &N);
 		if(N<0)
 		{	
 			for(i = N+5; i<5; i++)
@@ -50,7 +50,7 @@ int main(){
 	//imprime os códigos que faltam em linhas.dat
 	while(!feof(codigo))
 	{	
-		fscanf(codigo, "%d ", &N);
+		fscanf(codigo, "%d", &N);
 		fprintf(linha, "%d ", N);	
 	}
 	
