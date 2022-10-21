@@ -18,7 +18,7 @@ int main(){
 	//escreve o arquivo linhas.dat até que um dos arquivos de entrada chegue ao fim
 	while(!feof(codigo) && !feof(palavra))
 	{	
-		fscanf(codigo, "%d", &N);
+		fscanf(codigo, "%d ", &N);
 		if(N<0)
 		{	
 			for(i = N+5; i<5; i++)
@@ -29,7 +29,7 @@ int main(){
 		{
 			for(i = 0; i<N; i++)
 			{
-				fscanf(palavra, " %s", pal); //lê a palavra em palavras.dat
+				fscanf(palavra, " %s ", pal); //lê a palavra em palavras.dat
 				fprintf(linha, "%s ", pal); //imprime a palavra em linhas.dat
 			
 				//armazena as última cinco palavras
@@ -48,15 +48,17 @@ int main(){
 	}
 	
 	//imprime os códigos que faltam em linhas.dat
-	while(fscanf(codigo, "%d", &N) != EOF)
+	while(!feof(codigo))
 	{	
+		fscanf(codigo, "%d ", &N);
 		fprintf(linha, "%d ", N);	
 	}
 	
 	//imprime as palavras que faltam em linhas de 5
 	i = 1;
-	while(fscanf(palavra, " %s", pal) != EOF)
+	while(!feof(palavra))
 	{	
+		fscanf(palavra, " %s ", pal);
 		fprintf(linha, "%s ", pal);
 		if(i % 5 == 0)
 			fprintf(linha, "\n");
