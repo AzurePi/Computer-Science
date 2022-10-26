@@ -1,14 +1,13 @@
 #include <stdio.h>
 #include <math.h>
-#include <stdlib.h>
 
-void O1(); //distância a partir da velocidade e do tempo
-void O2(); //velocidade a partir da distância e do tempo
-void O3(); //tempo a partir da distância e da velocidade
-void O4(); //distância a partir de velocidade inicial, aceleração e tempo
-void O5(); //velocidade final a partir de velocidade inicial, aceleração e tempo
-void O6(); //velocidade inicial a partir de distância, aceleração e tempo
-void O7(); //tempo a partir de distância, velocidade inicial e aceleração
+void O1(); // distância a partir da velocidade e do tempo
+void O2(); // velocidade a partir da distância e do tempo
+void O3(); // tempo a partir da distância e da velocidade
+void O4(); // distância a partir de velocidade inicial, aceleração e tempo
+void O5(); // velocidade final a partir de velocidade inicial, aceleração e tempo
+void O6(); // velocidade inicial a partir de distância, aceleração e tempo
+void O7(); // tempo a partir de distância, velocidade inicial e aceleração
 
 int main(){
 	int N, O;
@@ -62,13 +61,12 @@ void O3(){
 	printf("%.2lf\n", T);
 }
 
-////////////////////////////////////////////////
 //distância a partir de velocidade, aceleração e tempo
 void O4(){
-	double V, A, T, S;
+	double Vi, A, T, S;
 	
-	scanf("%lf %lf %lf", &V, &A, &T);
-	S = V*T + A*T*T;
+	scanf("%lf %lf %lf", &Vi, &A, &T);
+	S = (Vi*T) + ((A*T*T)/2);
 	printf("%.2lf\n", S);
 }
 
@@ -77,20 +75,17 @@ void O5(){
 	double Vi, A, T, Vf;
 	
 	scanf("%lf %lf %lf", &Vi, &A, &T);
-	Vf = Vi + A*T;
+	Vf = Vi + (A*T);
 	printf("%.2lf\n", Vf);
 }
 
-////////////////////////////////////////////////
 //velocidade inicial a partir de distância, aceleração e tempo
 void O6(){
-	double S, A, T, V;
+	double S, A, T, Vi;
 	
 	scanf("%lf %lf %lf", &S, &A, &T);
-	V = (S/T) - (A*T);
-	if(V < 0)
-		V *= -1;
-	printf("%.2lf\n", V);
+	Vi = (S - ((A*T*T)/2))/T;
+	printf("%.2lf\n", Vi);
 }
 
 //tempo a partir de distância, velocidade inicial e aceleração
@@ -98,17 +93,6 @@ void O7(){
 	double S, Vi, A, T;
 
 	scanf("%lf %lf %lf", &S, &Vi, &A);
-	T = (sqrt(Vi*Vi + 2*A*S) - Vi) / A;
+	T = (sqrt((Vi*Vi) + (2*A*S)) - Vi) / A;
 	printf("%.2lf\n", T);
 }
-
-
-
-
-
-
-
-
-
-
-
