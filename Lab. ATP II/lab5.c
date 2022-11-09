@@ -1,3 +1,10 @@
+/* Faça um programa que preencha um vetor com 10 números inteiros e um segundo vetor
+com 5 números inteiros, calcule e mostre dois vetores resultantes. O primeiro vetor 
+resultante será composto pela soma de cada número par do primeiro vetor com todos os
+números do segundo vetor. O segundo vetor resultante será composto pela quantidade de
+divisores que cada número ímpar do primeiro vetor tem no segundo vetor.
+*/
+
 #include <stdio.h>
 
 int main(){
