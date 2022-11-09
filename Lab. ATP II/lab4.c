@@ -1,3 +1,12 @@
+/* Uma empresa fez uma pesquisa de mercado para saber se as pessoas gostaram ou não de um novo produto lançado.
+Para isso, forneceu o sexo do entrevistado e sua resposta ("S" para sim e "N" para não). Sabe-se que foram
+etrevistadas 10 pessoas. Faça um programa que calcule e mostre:
+ - O número de pessoas que responderam sim
+ - O número e pessoas que responderam não
+ - O número de mulheres que responderam sim
+ - A porcentagem de homens que reponderam não dentre todos os homens analisados
+*/
+
 #include <stdio.h>
 
 int main() {
@@ -28,7 +37,7 @@ int main() {
     }
   printf("\n");
   printf("SIM: %d\n", S);
-  printf("N�O: %d\n", N);
+  printf("NÃO: %d\n", N);
   
   if(M != 0)
   	Mporcent = ((float)MN/M)*100;
@@ -40,7 +49,7 @@ int main() {
   else
   	Fporcent = 0;
   
-  printf("Homens que responderam n�o: %.2f%%\n", Mporcent);
+  printf("Homens que responderam não: %.2f%%\n", Mporcent);
   printf("Mulheres que responderam sim: %.2f%%\n", Fporcent);
   
     return 0;
