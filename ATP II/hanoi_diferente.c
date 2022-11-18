@@ -1,24 +1,22 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void hanoi(int **torre, int mov, int org, int io, int aux, int ia, int dest, int id){
 	if(mov != 0) //se há movimentos a fazer
 	{
-		if(torre[org][io] != 0 && torre[dest][id] = 0)
-		{
-			torre[aux][ia] = torre[org][ia];
-			torre[org][io] =  0;
-			mov--;
-			or = aux;
-			aux = 
-			hanoi(torre, mov, );
-		}
+		torre[aux][ia] = torre[org][ia]; //move da origem para o auxiliar
+		torre[org][io] =  0; //seta a origem como vazia
+		mov--;
+		org = aux; //o pino auxiliar é a nova origem
+		aux = dest; //o pino destino é o novo auxiliar
+		hanoi(torre, mov, org, io+1, aux, ia+1, dest, id+1);
 	}
 }
 
 int main(){
 	int N, K;
 	int **torre;
-	int i;
+	int i, j;
 	
 	scanf("%d %d", &N, &K);
 
@@ -28,11 +26,11 @@ int main(){
 		torre[i] = malloc(sizeof(int)*N);
 
 	//determina que os discos estão todos no primeiro pino
-	for(i = 0; i<N; j++)
+	for(j = 0; j<N; j++)
 	{
-		torre[0][i] = i+1;
-		torre[1][i] = 0;
-		torre[2][i] = 0;
+		torre[0][j] = j+1;
+		torre[1][j] = 0;
+		torre[2][j] = 0;
 	}
 
 	hanoi(torre, K, 0, 0, 1, 0, 2, 0); //executa k movimentos na torre
@@ -40,12 +38,13 @@ int main(){
 	//imprimindo a torre
 	for(i = 0; i<3; i++)
 	{
-		j = 0;
-		do{
-			printf("%d ", torre[i][j]);
-			j++;
-		}
-		while(torre[i][j]); //se a torre está vazia, imprime 0 apenas uma vez
+		for(j = 0; j<N; j++)
+    {
+        if(torre[i][j] != 0)
+          printf("%d ", torre[i][j]);
+    }
+    if(torre[i][j] == 0)
+        printf("0");
 		printf("\n");
 	}
 		
