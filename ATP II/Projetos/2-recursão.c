@@ -1,62 +1,114 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-void decompor(int K, int *conjunto, int M, int curr, int quant, int *maior){
-	//K È o n˙mero a ser decomposto
-	//"conjunto" È o vetor de tamanho M que contÈm os n˙mero que decompor„o
-	//curr È Ìndice de "conjunto" sendo utilizado agora
-	//quant È a quantidade de decomposiÁıes possÌveis
-	//"maior" armazena a maior combinaÁ„o dentro de "conjunto" que decopıe K
+int **comb; //endere√ßo da matriz de todas as combinacoes poss√≠veis de "conjunto"
+
+//determina recursivamente as combina√ß√µes com m elementos de "conjunto" de tamanho M, com m variando de 1 at√© M
+void combinar(int *conjunto, int M, int m, int linha);
+
+void decompor(int K, int M, int curr, int quant, int *maior);
+
+int main(){
+	int N, M;
+	int *conjunto; //endere√ßo do vetor dos n√∫meros que ser√£o usados na combina√ß√£o
+	int *inteiros; //endere√ßo do vetor dos n√∫meros que ser√£o decompostos 
+	int i, j;
 	
+	scanf("%d %d", &N, &M);
+	
+	//aloca√ß√£o din√¢mica dos vetores e matriz de acordo com a entrada
+	conjunto = malloc(M*sizeof(int));
+	inteiros = malloc(N*sizeof(int));
+	
+	//leitura dos valores usados na combina√ß√£o
+	for(i = 0; i<M; i++)
+		scanf("%d ", &conjunto[i]);
+	
+	//leitura dos valores a serem descompostos
+	for(i = 0; i<N; i++)
+		scanf("%d ", &inteiros[i]);
+	
+	
+	//aloca espa√ßo de mem√≥ria para a matriz "comb"
+	comb = malloc(M*sizeof(int));
+	for(i = 0; i<M; i++)
+		comb[i] = malloc(M*sizeof(int));
+	
+	//inicializa a matriz "comb" com 0
+	for(i = 0; i<M; i++)
+		for(j = 0; j<M; j++)
+			comb[i][j] = 0;
+		
+	combinar(conjunto, M, 1, 0); //determina todas as combina√ß√µes poss√≠veis para "conjunto"
+	
+	//verificando se "combinar" funciona
+	for(i = 0; i<M; i++){
+		for(j = 0; j<M; j++){
+			printf("%d ", comb[i][j]);
+		}
+		printf("\n");
+	}
+		
+	/*
+	int *maior;
+	//decomposi√ß√£o de cada valor de "inteiros" de acordo com "comb"
+	for(i = 0; i<N; i++)
+	{
+		decompor(inteiros[i], M, 0, maior);
+		printf("\n");
+	}
+	*/	
+
+	//libera√ß√£o da mem√≥ria alocada
+	free(conjunto);
+	free(inteiros);
+	
+	return 0;
+}
+
+//determina recursivamente as combina√ß√µes m a m dos M elementos de "conjunto", com m variando de 1 at√© M
+void combinar(int *conjunto, int M, int m, int linha){
+	int i, j, aux;
+	
+	if(m > M)
+	{
+		free(conjunto); //libera o espa√ßo previamente alocado para "conjunto"
+		return; //n√£o faz sentido tomar M elementos m a m, ent√£o sa√≠ da fun√ß√£o
+	}else
+	{	
+		for(j = 1; j<=m; j++){
+			//altera a posi√ß√£o dos n√∫meros em "conjunto"
+			for(i = 0; i<M-1; i++)
+			{	
+				aux = conjunto[i];
+				conjunto[i] = conjunto[i+1];
+				conjunto[i+1] = aux;	
+			}
+			//guarda a nova posi√ß√£o dos n√∫meros em "comb"
+			for(i = 0; i<M; i++)
+				comb[linha][i] = conjunto[i];
+			linha++;
+		}
+		
+		combinar(conjunto, M, m+1, linha);
+	}
+}
+
+void decompor(int K, int M, int quant, int *maior){
+	//K √© o n√∫mero a ser decomposto
+	//quant √© a quantidade de decomposi√ß√µes poss√≠veis
+	//"maior" armazena a maior combina√ß√£o dentro de "conjunto" que decop√µe K
+		
 	int i = 0;
 
 	
-		//impress„o da quantidade de decomposiÁıes
+		//impress√£o da quantidade de decomposi√ß√µes
 		printf("%d ", quant);
 	
-		//impress„o da maior combinaÁ„o que decompıe K
+		//impress√£o da maior combina√ß√£o que decomp√µe K
 		while(maior[i] != 0)
 		{
 			printf("%d ", maior[i]);
 			i++;
 		}		
-
-}
-
-
-
-int main(){
-	int N, M;
-	int *conjunto; //endereÁo do vetor dos n˙meros que ser„o usados na combinaÁ„o
-	int *inteiros; //endereÁo do vetor dos n˙meros que ser„o decompostos 
-	int i;
-	
-	scanf("%d %d", &N, &M);
-	
-	//alocaÁ„o din‚mica dos vetores de acordo com a entrada
-	conjunto = malloc(M*sizeof(int));
-	inteiros = malloc(N*sizeof(int));
-	
-	//leitura dos valores usados na combinaÁ„o
-	for(i = 0; i<M; i++)
-		scanf("%d", conjunto[i]);
-	
-	//leitura dos valores a serem descompostos
-	for(i = 0; i<N; i++)
-		scanf("%d", inteiros[i]);
-	
-	
-	//decomposiÁ„o de cada valor de "inteiros"
-	for(i = 0; i<N; i++)
-	{
-		int maior[M] = {0}; //vetor que armazenar· a maior combinaÁao possÌvel
-		decompor(inteiros[i], conjunto, M, 0, 0, maior);
-		printf("\n");
-	}
-		
-
-	//liberaÁ„o da memÛria alocada
-	free(conjunto);
-	free(inteiros);
-	
-	return 0;
 }
