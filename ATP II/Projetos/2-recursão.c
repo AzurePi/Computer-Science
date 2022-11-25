@@ -1,42 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int quant; //vari�vel global para controlar a quantidade de decomposi��es
+int quant; //variável global para controlar a quantidade de decomposições
 
 int size(int *vet, int i);
 //determina o tamanho de um vetor terminado em 0
 
 void pop(int *vet);
-//transforma o �ltimo n�mero de um vetor em seu novo final (ou seja, 0)
+//transforma o último número de um vetor em seu novo final (ou seja, 0)
 
 void zerar(int *vet, int i);
 //zera os valores armazenados num vetor
 
-void copy(int *target, int *origin);
+void intcpy(int *target, int *origin);
 //faz o que stcpy faria, agora com uma array de int
 
 
 void decompor(int K, int *num, int *comb, int m, int M, int *maior);
-//decomp�e um inteiro K usando os n�meros no vetor "num", com o endere�o de um vetor "comb" que armazenar� as combina��es
-//recebe tamb�m o �ndice m por onde come�ar a analisar "num" e o tamanho M de "num", e o endere�o do vetor "maior" que armazena a maior combina��o j� encontrada
+//decompõe um inteiro K usando os números no vetor "num", com o endereço de um vetor "comb" que armazenará as combinações
+//recebe também o índice m por onde começar a analisar "num" e o tamanho M de "num", e o endereço do vetor "maior" que armazena a maior combinação já encontrada
 
 
 int main(){
 	int N, M, i, j, k;
-	int *num; //endere�o do vetor dos n�meros que ser�o usados na combina��o
-	int *inteiros; //endere�o do vetor dos n�meros que ser�o decompostos
-	int *comb; //endere�p do vetor que armazenar� uma combina��o de "num"
-	int *maior; //endere�o do vetor que armazenar� a maior combina��o poss�vel que decomp�e K
+	int *num; //endereço do vetor dos números que serão usados na combinação
+	int *inteiros; //endereço do vetor dos números que serão decompostos
+	int *comb; //endereço do vetor que armazenará uma combinação de "num"
+	int *maior; //endereço do vetor que armazenará a maior combinaçao possível que decompõe K
 	
 	scanf("%d %d", &N, &M);
 	
-	//aloca��o din�mica dos vetores de acordo com a entrada
+	//alocação dinâmica dos vetores de acordo com a entrada
 	num = malloc((M+1)*sizeof(int));
 	inteiros = malloc(N*sizeof(int));
 	comb = malloc((M+1)*sizeof(int));
 	maior = malloc((M+1)*sizeof(int));
 	
-	//leitura dos n�meros usados na combina��o
+	//leitura dos números usados na combinação
 	for(i = 0; i<M; i++)
 		scanf("%d", &num[i]);
 	//com i = M
@@ -50,26 +50,24 @@ int main(){
 	zerar(comb, 0);
 	zerar(maior, 0);
 		
-	//decomposi��o de cada K em "inteiros"
+	//decomposição de cada K em "inteiros"
 	for(i = 0; i<N; i++)
 	{
-		quant = 0; //zera a quantidade de combina��es
+		quant = 0; //zera a quantidade de combinações
 		decompor(inteiros[i], num, comb, 0, M+1, maior);
 		
 		printf("%d ", quant);
-        if(quant) //se houver decomposições
-        {
-            k = size(maior, 0);
-            for(j = 0; j<k; j++)
-            {
-                printf("%d ", maior[j]);
-            }
-        }
+		if(quant) //se houver decomposições
+		{
+			k = size(maior, 0);
+			for(j = 0; j<k; j++)
+				printf("%d ", maior[j]);
+		}
 		printf("\n");
 	}
 	
 
-	//libera��o da mem�ria alocada
+	//liberação da memória alocada
 	free(num);
 	free(inteiros);
 	free(comb);
@@ -78,21 +76,21 @@ int main(){
 	return 0;
 }
 
-//determina o �mtimo �ndice de um vetor terminado em 0
+//determina o último índice de um vetor terminado em 0
 int size(int *vet, int i){
 	
 	if(vet[i] == 0) //se chegamos ao final do vetor
 		return i;
-	//do contr�rio
+	//do contrário
 	return size(vet, i+1);
 }
 
-//transforma o �ltimo n�mero de um vetor em seu novo final (ou seja, 0)
+//transforma o último número de um vetor em seu novo final (ou seja, 0)
 void pop(int *vet){
 	int i = size(vet, 0);
 	
-	if(vet[i] != 0) //se h� algo antes do final do vetor
-		vet[i-1] = 0; //esse algo � o novo final
+	if(vet[i] != 0) //se há algo antes do final do vetor
+		vet[i-1] = 0; //esse algo é o novo final
 	
 	return;
 }
@@ -100,16 +98,16 @@ void pop(int *vet){
 //zera os valores armazenados num vetor
 void zerar(int *vet, int i){
 	
-	if(vet[i] == 0) //se j� chegou ao final do vetor
+	if(vet[i] == 0) //se já chegou ao final do vetor
 		return;
-	//do contr�rio
+	//do contrário
 	vet[i] = 0;
 	zerar(vet, i+1);
 	return;
 }
 
 //faz o que stcpy faria, agora com uma array de int
-void copy(int *target, int *origin){
+void intcpy(int *target, int *origin){
 	int i = size(target, 0);
 	int j = size(origin, 0);
 	int k;
@@ -121,38 +119,33 @@ void copy(int *target, int *origin){
 }
 
 
-
-//decomp�e um inteiro K usando os n�meros no vetor "num", com o endere�o de um vetor "comb" que armazenar� as combina��es
-//recebe tamb�m o �ndice m por onde come�ar a analisar "num" e o tamanho M de "num", e o endere�o do vetor "maior" que armazena a maior combina��o j� encontrada
+//decompõe um inteiro K usando os números no vetor "num", com o endereço de um vetor "comb" que armazenará as combinações
+//recebe também o índice m por onde começar a analisar "num" e o tamanho M de "num", e o endereço do vetor "maior" que armazena a maior combinação já encontrada
 void decompor(int K, int *num, int *comb, int m, int M, int *maior){
 	int i = m;
-	int c = size(comb, 0) - 1, o = size(maior, 0) - 1; //-1 para desconsiderar a posi��o em que armazena-se o 0 e evitar problemas de acesso de mem�ria
+	int c = size(comb, 0) - 1, o = size(maior, 0) - 1; //-1 para desconsiderar a posição em que armazena-se o 0 e evitar problemas de acesso de memória
 	
-	//final da fun��o recursiva ----------------------------------------
+	//final da função recursiva ----------------------------------------
 	if(K == 0) //se estamos decompondo o zero
 	{
-		quant++; //a decomposi��o funcionou
+		quant++; //a decomposição funcionou
 		
-		if(c >= o && comb[c] > maior[o]) //se comb tiver >= n�mero de elementos de "maior", e o maior/�ltimo elemento de "comb" for maior que o de "maior"
+		if(c >= o && comb[c] > maior[o]) //se comb tiver >= número de elementos de "maior", e o maior/último elemento de "comb" for maior que o de "maior"
 			copy(maior, comb); //"comb" passa a ser "maior"
-	}else if(K <= 0) //se estamos decompondo um n�mero negativo
+	}else if(K <= 0) //se estamos decompondo um número negativo
+		return; //sai da função, pois a combinação testada não funcionou
+		
+	//meio da função recursiva ------------------------------------------
+	while(i != M) //enquanto não estivermos no fim da análise de "num"
 	{
-		return; //sai da fun��o, pois a combina��o testada n�o funcionou
-	}
+		if(num[i] > maior[o]) //se o número analisado agora for maior do que o maior/último número em "maior"
+			maior[o+1] = num[i]; //adiciona o número analisado ao final de "maior"
 		
-	//meio da fun��o recursiva ------------------------------------------
-	while(i != M) //enquanto n�o estivermos no fim da an�lise de "num"
-	{
-		if(num[i] > maior[o]) //se o n�mero analisado agora for maior do que o maior/�ltimo n�mero em "maior"
-		{
-			maior[o+1] = num[i]; //adiciona o n�mero analisado ao final de "maior"
-		}
+		comb[c+1] = num[i]; //armazena o número analisado ao final "comb"; é assim que "comb" é preenchida
 		
-		comb[c+1] = num[i]; //armazena o n�mero analisado ao final "comb"; � assim que "comb" � preenchida
-		
-		//para garantir que se verificam todas as combina��es
-		decompor(K - num[i], num, comb, m+1, M, maior); //decompomos o novo K, decrescido do n�mero analisado, e passamos a analisar "num" da posi��o m+1
-		pop(comb); //retiramos o �ltimo n�mero de comb
+		//para garantir que se verificam todas as combinações
+		decompor(K - num[i], num, comb, m+1, M, maior); //decompomos o novo K, decrescido do número analisado, e passamos a analisar "num" da posição m+1
+		pop(comb); //retiramos o último número de comb
 		
 		
 		i++;
