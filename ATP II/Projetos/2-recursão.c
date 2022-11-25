@@ -35,6 +35,7 @@ int main(){
 	inteiros = malloc(N*sizeof(int));
 	comb = malloc((M+1)*sizeof(int));
 	maior = malloc((M+1)*sizeof(int));
+		//M+1 para haver ume espaço a mais para marcar o final da array com um 0
 	
 	//leitura dos números usados na combinação
 	for(i = 0; i<M; i++)
@@ -47,13 +48,13 @@ int main(){
 	for(i = 0; i<N; i++)
 		scanf("%d", &inteiros[i]);
 		
-	zerar(comb, 0);
-	zerar(maior, 0);
 		
 	//decomposição de cada K em "inteiros"
 	for(i = 0; i<N; i++)
 	{
-		quant = 0; //zera a quantidade de combinações
+		quant = 0;
+		zerar(comb, 0);
+		zerar(maior, 0); 
 		decompor(inteiros[i], num, comb, 0, M+1, maior);
 		
 		printf("%d ", quant);
@@ -123,33 +124,34 @@ void intcpy(int *target, int *origin){
 //recebe também o índice m por onde começar a analisar "num" e o tamanho M de "num", e o endereço do vetor "maior" que armazena a maior combinação já encontrada
 void decompor(int K, int *num, int *comb, int m, int M, int *maior){
 	int i = m;
-	int c = size(comb, 0) - 1, o = size(maior, 0) - 1; //-1 para desconsiderar a posição em que armazena-se o 0 e evitar problemas de acesso de memória
+	int c = size(comb, 0), o = size(maior, 0);
+	int prev; //valor do último número de "num" analisado
 	
+
 	//final da função recursiva ----------------------------------------
 	if(K == 0) //se estamos decompondo o zero
 	{
 		quant++; //a decomposição funcionou
 		
-		if(c >= o && comb[c] > maior[o]) //se comb tiver >= número de elementos de "maior", e o maior/último elemento de "comb" for maior que o de "maior"
-			copy(maior, comb); //"comb" passa a ser "maior"
+		if(c > o || (c == o && comb[c] > maior[o])) //se "comb" tiver mais elementos que "maior", ou se tiverem o mesmo número de elementos e o maior/último elemento de "comb" for maior que o de "maior"
+			intcpy(maior, comb); //"comb" passa a ser "maior"
+	}	
 	}else if(K <= 0) //se estamos decompondo um número negativo
 		return; //sai da função, pois a combinação testada não funcionou
 		
+		
 	//meio da função recursiva ------------------------------------------
+		
 	while(i != M) //enquanto não estivermos no fim da análise de "num"
 	{
-		if(num[i] > maior[o]) //se o número analisado agora for maior do que o maior/último número em "maior"
-			maior[o+1] = num[i]; //adiciona o número analisado ao final de "maior"
+		comb[c] = num[i]; //armazena o número analisado ao final de "comb"; é assim que "comb" é preenchido
 		
-		comb[c+1] = num[i]; //armazena o número analisado ao final "comb"; é assim que "comb" é preenchida
-		
-		//para garantir que se verificam todas as combinações
+		//continuando a decomposição
 		decompor(K - num[i], num, comb, m+1, M, maior); //decompomos o novo K, decrescido do número analisado, e passamos a analisar "num" da posição m+1
-		pop(comb); //retiramos o último número de comb
-		
-		
+		pop(comb); //retiramos o último número de comb, para garantir que todas as possibilidades sejam verificadas
+
 		i++;
 	}
-	
+
 	return;
 }
