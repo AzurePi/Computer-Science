@@ -90,8 +90,7 @@ int size(int *vet, int i){
 void pop(int *vet){
 	int i = size(vet, 0);
 	
-	if(vet[i] != 0) //se há algo antes do final do vetor
-		vet[i-1] = 0; //esse algo é o novo final
+	vet[i-1] = 0; //esse algo é o novo final
 	
 	return;
 }
