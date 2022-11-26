@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 int quant; //variável global para controlar a quantidade de decomposições
+int *maior; //endereço do vetor que armazenará a maior combinaçao possível que decompõe K
 
 int size(int *vet, int i);
 //determina o tamanho de um vetor terminado em 0
@@ -16,9 +17,9 @@ void intcpy(int *target, int *origin);
 //faz o que stcpy faria, agora com uma array de int
 
 
-void decompor(int K, int *num, int *comb, int m, int M, int *maior);
+void decompor(int K, int *num, int *comb, int m, int M);
 //decompõe um inteiro K usando os números no vetor "num", com o endereço de um vetor "comb" que armazenará as combinações
-//recebe também o índice m por onde começar a analisar "num" e o tamanho M de "num", e o endereço do vetor "maior" que armazena a maior combinação já encontrada
+//recebe também o índice m por onde começar a analisar "num" e o tamanho M de "num"
 
 
 int main(){
@@ -26,7 +27,6 @@ int main(){
 	int *num; //endereço do vetor dos números que serão usados na combinação
 	int *inteiros; //endereço do vetor dos números que serão decompostos
 	int *comb; //endereço do vetor que armazenará uma combinação de "num"
-	int *maior; //endereço do vetor que armazenará a maior combinaçao possível que decompõe K
 	
 	scanf("%d %d", &N, &M);
 	
@@ -55,7 +55,7 @@ int main(){
 		quant = 0;
 		zerar(comb, 0);
 		zerar(maior, 0); 
-		decompor(inteiros[i], num, comb, 0, M+1, maior);
+		decompor(inteiros[i], num, comb, 0, M+1);
 		
 		printf("%d ", quant);
 		if(quant) //se houver decomposições
@@ -67,7 +67,6 @@ int main(){
 		printf("\n");
 	}
 	
-
 	//liberação da memória alocada
 	free(num);
 	free(inteiros);
@@ -90,8 +89,7 @@ int size(int *vet, int i){
 void pop(int *vet){
 	int i = size(vet, 0);
 	
-	if(vet[i] != 0) //se há algo antes do final do vetor
-		vet[i-1] = 0; //esse algo é o novo final
+	vet[i-1] = 0; //o penúltimo número passa a marcar o final
 	
 	return;
 }
@@ -109,24 +107,22 @@ void zerar(int *vet, int i){
 
 //faz o que stcpy faria, agora com uma array de int
 void intcpy(int *target, int *origin){
-	int i = size(target, 0);
-	int j = size(origin, 0);
-	int k;
+	int t = size(target, 0);
+	int o = size(origin, 0);
+	int i;
 	
-	for(k = 0; k<=i; k++)
-		target[i] = origin[j];
+	for(i = 0; i<=o; i++)
+		target[i] = origin[i];
 	
 	return;
 }
 
 
 //decompõe um inteiro K usando os números no vetor "num", com o endereço de um vetor "comb" que armazenará as combinações
-//recebe também o índice m por onde começar a analisar "num" e o tamanho M de "num", e o endereço do vetor "maior" que armazena a maior combinação já encontrada
-void decompor(int K, int *num, int *comb, int m, int M, int *maior){
+//recebe também o índice m por onde começar a analisar "num" e o tamanho M de "num"
+void decompor(int K, int *num, int *comb, int m, int M){
 	int i = m;
-	int c = size(comb, 0), o = size(maior, 0);
-	int prev; //valor do último número de "num" analisado
-	
+	int c = size(comb, 0), o = size(maior, 0);	
 
 	//final da função recursiva ----------------------------------------
 	if(K == 0) //se estamos decompondo o zero
@@ -135,19 +131,17 @@ void decompor(int K, int *num, int *comb, int m, int M, int *maior){
 		
 		if(c > o || (c == o && comb[c] > maior[o])) //se "comb" tiver mais elementos que "maior", ou se tiverem o mesmo número de elementos e o maior/último elemento de "comb" for maior que o de "maior"
 			intcpy(maior, comb); //"comb" passa a ser "maior"
-	}	
-	}else if(K <= 0) //se estamos decompondo um número negativo
+	}else if(K < 0) //se estamos decompondo um número negativo
 		return; //sai da função, pois a combinação testada não funcionou
 		
 		
 	//meio da função recursiva ------------------------------------------
-		
 	while(i != M) //enquanto não estivermos no fim da análise de "num"
 	{
 		comb[c] = num[i]; //armazena o número analisado ao final de "comb"; é assim que "comb" é preenchido
 		
 		//continuando a decomposição
-		decompor(K - num[i], num, comb, m+1, M, maior); //decompomos o novo K, decrescido do número analisado, e passamos a analisar "num" da posição m+1
+		decompor(K - num[i], num, comb, m+1, M); //decompomos K decrescido do número analisado, e passamos a analisar "num" a partir da posição m+1
 		pop(comb); //retiramos o último número de comb, para garantir que todas as possibilidades sejam verificadas
 
 		i++;
