@@ -36,35 +36,46 @@ int main(){
 }
 
 void inserir(){
-	Lista *new, *aux = h, *prev = NULL;
-	new = malloc(sizeof(Lista));
+	Lista *novo, *aux = h, *prev = NULL;
+	novo = malloc(sizeof(Lista));
 	
-	scanf(" %s", new->palavra);
+	scanf(" %s", novo->palavra);
 	
-	if(h == NULL)
+	if(h == NULL) //se a lista está vazia
 	{
-		h = new;
+		h = novo;
 		h->prox = NULL;
 		return;
 	}
 	
-	while(strcmp(aux->palavra, new->palavra) < 0 && aux->prox != NULL && strcmp((aux->prox)->palavra, new->palavra) > 0)
+	//anda até encontrar o ponto onde a palavra deve estar, ou até o fim da lista
+	while(strcmp(aux->palavra, novo->palavra) < 0 && aux->prox != NULL)
 	{
 		prev = aux;
 		aux = aux->prox;
 	}
 	
-	if(aux->prox == NULL)
+	//se chegou ao fim da lista
+	if(aux->prox == NULL) 
 	{
-		aux->prox = new;
-		new->prox = NULL;
+		novo->prox = NULL; //garante que o fim é o fim
+		aux->prox = novo; //insere no fim da lista
 		return;
 	}
 	
-	if(strcmp(aux->palavra, new->palavra) > 0 && strcmp((aux->prox)->palavra, new->palavra) < 0)
+	//se ainda está no começo da lista
+	if(aux == h)
 	{
-		prev->prox = new;
-		new->prox = aux;
+		novo->prox = h; //o novo tem como próximo o atual começo
+		h = novo; //o começo passa a ser o novo
+		return;
+	}
+	
+	//se encontrou o lugar certo
+	if(strcmp(aux->palavra, novo->palavra) > 0)
+	{
+		prev->prox = novo; //a anterior aponta para a nova
+		novo->prox = aux; //a nova aponta para a atual
 		return;
 	}
 	
@@ -72,7 +83,45 @@ void inserir(){
 }
 
 void remover(){
+	Lista *aux = h, *prev = NULL;
+	char pal[50];
+	
+	scanf(" %s", pal);
+	
+	if(h == NULL) //se a lista está vazia
+	{
+		printf("NULL\n");
+		return;
+	}
+	
+	//procura a palavra na lista
+	while(strcmp(aux->palavra, pal) != 0 && aux->prox != NULL)
+	{
+		prev = aux;
+		aux = aux->prox;
+	}
 
+	if(strcmp(aux->palavra, pal) == 0) //se achou a palavra
+	{
+		if(aux->prox != NULL) //se está não está no fim da lista
+			prev->prox = aux->prox; //o item anterior aponta para o próximo, pulando o item aux
+		else
+			h = NULL;
+	}
+
+	if(h != NULL)
+	{
+		aux = h; //volta ao começo
+		do
+		{
+			printf("%s ", aux->palavra);
+			aux = aux->prox;
+		}while(aux->prox != NULL);
+		printf("\n");
+	}else
+	{
+		printf("NULL\n");
+	}
 
 	return;
 }
