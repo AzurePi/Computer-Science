@@ -7,10 +7,9 @@ typedef struct lista{
 	struct lista *prox;
 }Lista;
 
-Lista *h = NULL;
+Lista *h = NULL; //variávle global do enderço do começo da lista
 
 void inserir();
-
 void remover();
 
 int main(){
@@ -35,20 +34,20 @@ int main(){
 	return 0;
 }
 
+//insere as palavras em ordem alfabética na llista
 void inserir(){
 	Lista *novo, *aux = h, *prev = NULL;
-	novo = malloc(sizeof(Lista));
 	
 	scanf(" %s", novo->palavra);
 	
-	if(h == NULL) //se a lista estÃ¡ vazia
+	if(h == NULL) //se a lista está vazia
 	{
 		h = novo;
 		h->prox = NULL;
 		return;
 	}
 	
-	//anda atÃ© encontrar o ponto onde a palavra deve estar, ou atÃ© o fim da lista
+	//anda até encontrar o ponto onde a palavra deve estar, ou até o fim da lista
 	while(strcmp(aux->palavra, novo->palavra) < 0 && aux->prox != NULL)
 	{
 		prev = aux;
@@ -58,16 +57,16 @@ void inserir(){
 	//se chegou ao fim da lista
 	if(aux->prox == NULL) 
 	{
-		novo->prox = NULL; //garante que o fim Ã© o fim
+		novo->prox = NULL; //garante que o fim é o fim
 		aux->prox = novo; //insere no fim da lista
 		return;
 	}
 	
-	//se ainda estÃ¡ no comeÃ§o da lista
+	//se ainda está no começo da lista
 	if(aux == h)
 	{
-		novo->prox = h; //o novo tem como prÃ³ximo o atual comeÃ§o
-		h = novo; //o comeÃ§o passa a ser o novo
+		novo->prox = h; //o novo tem como próximo o atual começo
+		h = novo; //o começo passa a ser o novo
 		return;
 	}
 	
@@ -88,7 +87,7 @@ void remover(){
 	
 	scanf(" %s", pal);
 	
-	if(h == NULL) //se a lista estÃ¡ vazia
+	if(h == NULL) //se a lista está vazia
 	{
 		printf("NULL\n");
 		return;
@@ -103,15 +102,15 @@ void remover(){
 
 	if(strcmp(aux->palavra, pal) == 0) //se achou a palavra
 	{
-		if(aux->prox != NULL) //se estÃ¡ nÃ£o estÃ¡ no fim da lista
-			prev->prox = aux->prox; //o item anterior aponta para o prÃ³ximo, pulando o item aux
+		if(aux->prox != NULL) //se está não está no fim da lista
+			prev->prox = aux->prox; //o item anterior aponta para o próximo, pulando o item aux
 		else
 			h = NULL;
 	}
 
 	if(h != NULL)
 	{
-		aux = h; //volta ao comeÃ§o
+		aux = h; //volta ao começo
 		do
 		{
 			printf("%s ", aux->palavra);
@@ -125,3 +124,4 @@ void remover(){
 
 	return;
 }
+
