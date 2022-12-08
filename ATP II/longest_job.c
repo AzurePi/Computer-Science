@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int momento = 0; //vari·vel para a linha do tempo
+int momento = 0; //vari√°vel para a linha do tempo
 
 typedef struct processo{
 	int instante;
@@ -9,7 +9,7 @@ typedef struct processo{
 	struct processo *prox;
 }P;
 
-P *h = NULL; //vari·vel global do endereÁo do comeÁo da lista
+P *h = NULL; //vari√°vel global do endere√ßo do come√ßo da lista
 
 void inserir();
 void processar();
@@ -33,9 +33,9 @@ void inserir(){
 	P *novo, *aux = h, *prev = NULL;
 	novo = malloc(sizeof(P));
 	
-	scanf("%d %d", novo->instante, novo->carga);
+	scanf("%d %d", &novo->instante, &novo->carga);
 	
-	if(h == NULL) //se a lista est· vazia
+	if(h == NULL) //se a lista est√° vazia
 	{
 		h = novo;
 		h->prox = NULL;
@@ -51,16 +51,16 @@ void inserir(){
 	//se chegou ao fim da lista
 	if(aux->prox == NULL) 
 	{
-		novo->prox = NULL; //garante que o fim È o fim
+		novo->prox = NULL; //garante que o fim √© o fim
 		aux->prox = novo; //insere no fim da lista
 		return;
 	}
 	
-	//se ainda est· no comeÁo da lista
+	//se ainda est√° no come√ßo da lista
 	if(aux == h)
 	{
-		novo->prox = h; //o novo tem como prÛximo o atual comeÁo
-		h = novo; //o comeÁo passa a ser o novo
+		novo->prox = h; //o novo tem como pr√≥ximo o atual come√ßo
+		h = novo; //o come√ßo passa a ser o novo
 		return;
 	}
 	
