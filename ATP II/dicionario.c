@@ -7,10 +7,10 @@ typedef struct lista{
 	struct lista *prox;
 }Lista;
 
-Lista *h = NULL; //variávle global do enderço do começo da lista
+Lista *h = NULL; //endereÃ§o do comeÃ§o da lista
 
-void inserir();
-void remover();
+void inserir(); //insere a palavra lida em ordem alfabÃ©tica
+void remover(); //remove a palavra lida
 
 int main(){
 	int N, M;
@@ -34,20 +34,22 @@ int main(){
 	return 0;
 }
 
-//insere as palavras em ordem alfabética na llista
+//insere a palavra lida em ordem alfabÃ©tica
 void inserir(){
 	Lista *novo, *aux = h, *prev = NULL;
 	
+	novo = malloc(sizeof(Lista));
+	
 	scanf(" %s", novo->palavra);
 	
-	if(h == NULL) //se a lista está vazia
+	if(h == NULL) //se a lista estÃ¡ vazia
 	{
 		h = novo;
 		h->prox = NULL;
 		return;
 	}
 	
-	//anda até encontrar o ponto onde a palavra deve estar, ou até o fim da lista
+	//anda atÃ© encontrar o ponto onde a palavra deve estar, ou atÃ© o fim da lista
 	while(strcmp(aux->palavra, novo->palavra) < 0 && aux->prox != NULL)
 	{
 		prev = aux;
@@ -57,16 +59,16 @@ void inserir(){
 	//se chegou ao fim da lista
 	if(aux->prox == NULL) 
 	{
-		novo->prox = NULL; //garante que o fim é o fim
+		novo->prox = NULL; //garante que o fim Ã© o fim
 		aux->prox = novo; //insere no fim da lista
 		return;
 	}
 	
-	//se ainda está no começo da lista
+	//se ainda estÃ¡ no comeÃ§o da lista
 	if(aux == h)
 	{
-		novo->prox = h; //o novo tem como próximo o atual começo
-		h = novo; //o começo passa a ser o novo
+		novo->prox = h; //o novo tem como prÃ³ximo o atual comeÃ§o
+		h = novo; //o comeÃ§o passa a ser o novo
 		return;
 	}
 	
@@ -81,13 +83,14 @@ void inserir(){
 	return;
 }
 
+//remove a palavra lida
 void remover(){
 	Lista *aux = h, *prev = NULL;
 	char pal[50];
 	
 	scanf(" %s", pal);
 	
-	if(h == NULL) //se a lista está vazia
+	if(h == NULL) //se a lista estÃ¡ vazia
 	{
 		printf("NULL\n");
 		return;
@@ -102,15 +105,15 @@ void remover(){
 
 	if(strcmp(aux->palavra, pal) == 0) //se achou a palavra
 	{
-		if(aux->prox != NULL) //se está não está no fim da lista
-			prev->prox = aux->prox; //o item anterior aponta para o próximo, pulando o item aux
+		if(aux->prox != NULL) //se estÃ¡ nÃ£o estÃ¡ no fim da lista
+			prev->prox = aux->prox; //o item anterior aponta para o prÃ³ximo, pulando o item aux
 		else
 			h = NULL;
 	}
 
 	if(h != NULL)
 	{
-		aux = h; //volta ao começo
+		aux = h; //volta ao comeÃ§o
 		do
 		{
 			printf("%s ", aux->palavra);
@@ -124,4 +127,3 @@ void remover(){
 
 	return;
 }
-
