@@ -12,7 +12,7 @@ typedef struct processo{
 P *h = NULL; //variável global do endereço do começo da lista
 
 void inserir();
-void processar();
+void processar(int n);
 
 int main(){
 	int N;
@@ -23,7 +23,7 @@ int main(){
 	for(i = 0; i<N; i++)
 		inserir();
 	
-	processar();
+	processar(N);
 	
 	return 0;
 }
@@ -31,9 +31,10 @@ int main(){
 //insere os processos a serem analisados em ordem crescente de carga
 void inserir(){
 	P *novo, *aux = h, *prev = NULL;
+	
 	novo = malloc(sizeof(P));
 	
-	scanf("%d %d", &novo->instante, &novo->carga);
+	scanf("%d %d", novo->instante, novo->carga);
 	
 	if(h == NULL) //se a lista está vazia
 	{
@@ -75,11 +76,31 @@ void inserir(){
 	return;
 }
 
-void processar(){
+void processar(int n){
 	P *cur, *aux = h, *prev = NULL;
+	int i = 0;
+	int t = 10001, c = 9;
 	
+	cur = malloc(sizeof(P));
 	
-	
+	while(i < n)
+	{
+		while(aux->prox != NULL)
+		{
+		
+				
+			prev = aux;
+			aux = aux->prox;
+		}
+		
+		
+		
+		
+		
+		
+		
+		i++; //uma das operações foi processada
+	}
 	
 	return;
 }
