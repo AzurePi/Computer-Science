@@ -6,8 +6,8 @@ typedef struct lista{
     struct lista *prox; //endereço do próximo elemento
 }Lista;
 
-Lista *l; //endereço inicial da lista circular (I = 1)
-Lista *remov; //endereço da última pessoa removida
+Lista *l = NULL; //endereço inicial da lista circular (I = 1)
+Lista *remov = NULL; //endereço da última pessoa removida
 
 int ler();
 void reinserir();
@@ -83,6 +83,7 @@ void josephus(int N){
 	//anda até encontrar a pessoa a ser eliminada
 	while(k > 0)
 	{
+		printf("%d ", k);
 		prev = aux;
 		aux = aux->prox;
 		
@@ -94,9 +95,13 @@ void josephus(int N){
 	if(o == 1)
 		reinserir();
 	
+	printf("%d -> ", (prev->prox)->I);
 	prev->prox = aux->prox; //prev->prox deixa de apontar para aux e passa a pontar para aux->prox
+	printf("%d\n", (prev->prox)->I);
 	l = aux->prox; //aux->prox é o novo "começo" da lista para a proxima iteração de josephus();
+	printf("%d\n", l->I);
 	remov = aux; //o último a ser removido foi o aux
+	printf("remov: %d", remov->I); ////////não chega aqui ><><><><><><>
 
 	if(N > 0)
 		josephus(N-1);
