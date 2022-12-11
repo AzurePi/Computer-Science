@@ -21,6 +21,8 @@ int main(){
 	for (i = 0; i<N; i++)
 		inserir();
 	
+	printf("fim da inserção\n");
+	
 	for(i = 0; i<M; i++)
 	{
 		scanf("%d", &op);
@@ -37,7 +39,6 @@ int main(){
 //insere a palavra lida em ordem alfabética
 void inserir(){
 	Lista *novo, *aux = h, *prev = NULL;
-	
 	novo = malloc(sizeof(Lista));
 	
 	scanf(" %s", novo->palavra);
@@ -52,9 +53,12 @@ void inserir(){
 	//anda até encontrar o ponto onde a palavra deve estar, ou até o fim da lista
 	while(strcmp(aux->palavra, novo->palavra) < 0 && aux->prox != NULL)
 	{
+		printf("%s -> ", aux->palavra);
 		prev = aux;
 		aux = aux->prox;
-	}
+	} ////////////////////algo de errado não está certo aqui
+	
+	printf("%s\n", aux->palavra);
 	
 	//se chegou ao fim da lista
 	if(aux->prox == NULL) 
