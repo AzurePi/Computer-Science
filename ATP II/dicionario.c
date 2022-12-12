@@ -21,8 +21,6 @@ int main(){
 	for (i = 0; i<N; i++)
 		inserir();
 	
-	printf("fim da inserção\n");
-	
 	for(i = 0; i<M; i++)
 	{
 		scanf("%d", &op);
@@ -51,39 +49,58 @@ void inserir(){
 	}
 	
 	//anda até encontrar o ponto onde a palavra deve estar, ou até o fim da lista
-	while(strcmp(aux->palavra, novo->palavra) < 0 && aux->prox != NULL)
+	while(strcmp(novo->palavra, aux->palavra) < 0 && aux->prox != NULL)
 	{
-		printf("%s -> ", aux->palavra);
 		prev = aux;
 		aux = aux->prox;
-	} ////////////////////algo de errado não está certo aqui
+	}
 	
-	printf("%s\n", aux->palavra);
+	//se a palavra já está na lista
+	if(strcmp(novo->palavra, aux->palavra) == 0) 
+		return;
 	
-	//se chegou ao fim da lista
-	if(aux->prox == NULL) 
+	//novo a esquerda de aux
+	if(strcmp(novo->palavra, aux->palavra) < 0) 
 	{
-		novo->prox = NULL; //garante que o fim é o fim
-		aux->prox = novo; //insere no fim da lista
+		if(aux == h) //se estamos no começo da lista
+		{
+			novo->prox = h;
+			h = novo;
+			return;
+		}
+		if(aux->prox == NULL) //se estamos no final da lista
+		{
+			prev->prox = novo;
+			novo->prox = aux;
+			return;
+		}
+		//se estamos no meio da lista
+		prev->prox = novo;
+		novo->prox = aux;
 		return;
 	}
 	
-	//se ainda está no começo da lista
-	if(aux == h)
+	//novo à direita de aux
+	if(strcmp(novo->palavra, aux->palavra) > 0) 
 	{
-		novo->prox = h; //o novo tem como próximo o atual começo
-		h = novo; //o começo passa a ser o novo
+		if(aux == h) //se estamos no começo da lista
+		{
+			novo->prox = h->prox;
+			h->prox = novo;
+			return;
+		}
+		if(aux->prox == NULL) //se estamos no final da lista
+		{
+			novo->prox = NULL;
+			aux->prox = novo;
+			return;
+		}
+		//se estamos no meio da lista
+		
+		prev->prox = novo;
+		novo->prox = aux;
 		return;
 	}
-	
-	//se encontrou o lugar certo
-	if(strcmp(aux->palavra, novo->palavra) > 0)
-	{
-		prev->prox = novo; //a anterior aponta para a nova
-		novo->prox = aux; //a nova aponta para a atual
-		return;
-	}
-	
 	return;
 }
 
@@ -92,13 +109,13 @@ void remover(){
 	Lista *aux = h, *prev = NULL;
 	char pal[50];
 	
-	scanf(" %s", pal);
-	
 	if(h == NULL) //se a lista está vazia
 	{
 		printf("NULL\n");
 		return;
 	}
+	//do contrário
+	scanf(" %s", pal);
 	
 	//procura a palavra na lista
 	while(strcmp(aux->palavra, pal) != 0 && aux->prox != NULL)
@@ -109,25 +126,32 @@ void remover(){
 
 	if(strcmp(aux->palavra, pal) == 0) //se achou a palavra
 	{
-		if(aux->prox != NULL) //se está não está no fim da lista
-			prev->prox = aux->prox; //o item anterior aponta para o próximo, pulando o item aux
-		else
-			h = NULL;
+		if(aux == h) //se estamos no começo da lista
+		{
+			if(aux->prox == NULL) //e no fim da lista
+				h = NULL; //a lista agora está vazia
+			else //mas há elementos depois
+				h = aux->prox;
+		}else //se não está no começo
+		{
+			if(aux->prox == NULL) //e está no final
+				prev->prox = NULL;
+			else //estamos no meio da lista
+				prev->prox = aux->prox;
+		}		
 	}
 
-	if(h != NULL)
+	if(h != NULL) //se a lista não está vazia
 	{
 		aux = h; //volta ao começo
-		do
+		do //imprime as palavras
 		{
 			printf("%s ", aux->palavra);
 			aux = aux->prox;
-		}while(aux->prox != NULL);
+		}while(aux != NULL);
 		printf("\n");
-	}else
-	{
-		printf("NULL\n");
-	}
+	}else //se h == NULL
+		printf("NULL\n");	
 
 	return;
 }
