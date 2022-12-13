@@ -43,65 +43,52 @@ void inserir(){
 	
 	if(h == NULL) //se a lista está vazia
 	{
-		h = novo;
-		h->prox = NULL;
+		novo->prox = NULL;
+		h = novo;	
 		return;
 	}
+	//lista não vazia
 	
-	//anda até encontrar o ponto onde a palavra deve estar, ou até o fim da lista
-	while(strcmp(novo->palavra, aux->palavra) < 0 && aux->prox != NULL)
+	
+	while(aux->prox != NULL && strcmp(aux->palavra, novo->palavra) < 0)
 	{
+		if(strcmp(novo->palavra, aux->palavra) == 0)
+			return;
 		prev = aux;
 		aux = aux->prox;
 	}
 	
-	//se a palavra já está na lista
-	if(strcmp(novo->palavra, aux->palavra) == 0) 
-		return;
-	
-	//novo a esquerda de aux
-	if(strcmp(novo->palavra, aux->palavra) < 0) 
+	//se novo está depois de aux
+	if(strcmp(novo->palavra, aux->palavra) > 0)
 	{
-		if(aux == h) //se estamos no começo da lista
+		if(aux->prox == NULL) //e estamos no final da lista
+		{
+			aux->prox = novo;
+			novo->prox = NULL;
+			return;
+		}
+		//mas não estamos no final da lista
+		
+		novo->prox = aux->prox;
+		aux->prox = novo;
+		return;
+	}
+	
+	//se novo está antes de aux
+	if(strcmp(novo->palavra, aux->palavra) < 0)
+	{
+		if(aux == h) //e estamos no começo da lista
 		{
 			novo->prox = h;
 			h = novo;
 			return;
 		}
-		if(aux->prox == NULL) //se estamos no final da lista
-		{
-			prev->prox = novo;
-			novo->prox = aux;
-			return;
-		}
-		//se estamos no meio da lista
-		prev->prox = novo;
-		novo->prox = aux;
-		return;
-	}
-	
-	//novo à direita de aux
-	if(strcmp(novo->palavra, aux->palavra) > 0) 
-	{
-		if(aux == h) //se estamos no começo da lista
-		{
-			novo->prox = h->prox;
-			h->prox = novo;
-			return;
-		}
-		if(aux->prox == NULL) //se estamos no final da lista
-		{
-			novo->prox = NULL;
-			aux->prox = novo;
-			return;
-		}
-		//se estamos no meio da lista
+		// mas não estamos no começo da lista
 		
 		prev->prox = novo;
 		novo->prox = aux;
 		return;
 	}
-	return;
 }
 
 //remove a palavra lida
