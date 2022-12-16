@@ -6,8 +6,8 @@ typedef struct lista{
     struct lista *prox; //endereço do próximo elemento
 }Lista;
 
-Lista *l = NULL; //endereço inicial da lista circular (I = 1)
-Lista *remov = NULL; //endereço da última pessoa removida
+Lista *l = NULL; //endereço do elemento "inicial" da lista
+Lista *remov; //id da última pessoa removida
 
 int ler();
 void reinserir();
@@ -17,8 +17,7 @@ int main(){
     int N = ler(); //realiza a leitura das entradas e preenche a lista, cujo endereço é global
  
 	josephus(N);
-	
-	printf("de volta à main\n");
+
 	printf("%d", l->I);
 
     return 0;
@@ -35,55 +34,60 @@ int ler(){
     {
     	new = malloc(sizeof(Lista)); //a cada iteração, new aponta para um endereço novo
         new->I = i;
-        //printf("%d %d\n", i, new->I);
+
         scanf("%d %d", &new->K, &new->O);
-        //printf("%d %d", new->K, new->O);
 
         if(i == 1) //começo da lista
-            l = new; //é o que acabou de ser lido
-        else if(i == N) //último elemento
+        {
+        	l = new; //é o que acabou de ser lido
+        	l->K--; //para contar o próprio primeiro elemento
+		}
+        if(i == N) //último elemento
             new->prox = l; //aponta para o primeiro
-        else //demais elementos
+        if(prev != NULL) //para os demais elementos
             prev->prox = new; //o elemento anterior passa a apontar para esse elemento
         
         prev = new;
-        
-        //printf("\n");
     }
-    
-    printf("lido\n");
 
     return N;
 }
 
 void reinserir(){
-	Lista *aux = l;
-	int num = remov->I;
+	Lista *aux = l, *prev = NULL;
 	
-	while(num > aux->I && aux->prox != l)
+	remov->O = 0;
+	
+	while(aux->I < remov->I && aux->prox != l)
+	{
+		prev = aux;
 		aux = aux->prox;
+	}
 	
-	remov->prox = aux->prox;
-	aux->prox = remov;
+	//se chegamos ao "fim" da lista
+	if(aux->prox == l)
+	{
+		aux->prox = remov;
+		remov->prox = l;
+		return;
+	}
 	
-	if(aux == l) //se remov foi inserido logo no "início" da lista
-		l = remov; //remov passa a ser o novo "início"
+	//se estamos em um ponto qualquer da lista
+	prev->prox = remov;
+	remov->prox = aux;
 	
 	return;
 }
 
 void josephus(int N){
 	Lista *aux = l, *prev = NULL;
-	int k, o;
+	int k = l->K, o = l->O;
 	int i;
-	
-	k = l->K - 1;
-	o = l->O;
 	
 	//anda até encontrar a pessoa a ser eliminada
 	while(k > 0)
 	{
-		printf("%d ", k);
+		printf("%d -> ", aux->I); //imprime o "caminho"
 		prev = aux;
 		aux = aux->prox;
 		
@@ -93,18 +97,20 @@ void josephus(int N){
 	printf("%d\n", aux->I); //imprime o I a ser removido
 		
 	if(o == 1)
+	{
+		printf("Reinserindo\n");
 		reinserir();
+	}
 	
-	printf("%d -> ", (prev->prox)->I);
-	prev->prox = aux->prox; //prev->prox deixa de apontar para aux e passa a pontar para aux->prox
-	printf("%d\n", (prev->prox)->I);
-	l = aux->prox; //aux->prox é o novo "começo" da lista para a proxima iteração de josephus();
-	printf("%d\n", l->I);
-	remov = aux; //o último a ser removido foi o aux
-	printf("remov: %d", remov->I); ////////não chega aqui ><><><><><><>
+	prev->prox = aux->prox; //pula aux na lista
+	
+	l = aux->prox; //a próxima iteração de josephus começa pelo próximo elemento da lista
+	remov = aux; //salva o elemento removido
 
-	if(N > 0)
-		josephus(N-1);
+	printf("\n");
+	
+	if(N > 1) //se ainda há mais de uma pessoa
+		josephus(N-1); //chama josephus para uma pessoa a menos
 
 	return;
 }
