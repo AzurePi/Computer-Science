@@ -53,24 +53,16 @@ int ler(){
 void reinserir(){
 	Lista *aux = l, *prev = NULL;
 	
+	if(remov == NULL)
+		return;
+	
 	remov->O = 0;
 	
-	if(aux->I < remov->I)
+	//enquanto remov->I for maior do que a posição atual, ou até que aux->prox seja o começo da lista
+	while(aux->I < remov->I || aux->prox != l)
 	{
-		while(aux->I < remov->I && aux->prox != l)
-		{
-			prev = aux;
-			aux = aux->prox;
-		}
-	}
-	
-	if(aux->I > remov->I)
-	{
-		while(aux->I > remov->I && aux->prox != l)
-		{
-			prev = aux;
-			aux = aux->prox;
-		}
+		prev = aux;
+		aux = aux->prox;
 	}
 	
 	//se chegamos ao "fim" da lista
@@ -78,6 +70,8 @@ void reinserir(){
 	{
 		aux->prox = remov;
 		remov->prox = l;
+		
+		remov = NULL;
 		return;
 	}
 	
@@ -85,33 +79,39 @@ void reinserir(){
 	prev->prox = remov;
 	remov->prox = aux;
 	
+	remov = NULL;
 	return;
 }
 
 void josephus(int N){
-	Lista *aux = NULL, *prev = NULL;
-	int k = l->K, o = l->O;
+	Lista *aux = NULL, *prev;
+	int k, o;
+	
+	//o = l->O  não funciona quando l->O é 1 por algum motivo; simplesmente fica o == 0
+	
+	k = l->K;
+	o = l->O;
 	
 	if(o == 1)
 		reinserir();
-	
-	//anda até encontrar a pessoa a ser eliminada
+
+	//anda até encontrar a pessoa a ser eliminada (isso funciona se todos os k são iguais, mas não se são diferentes)
 	while(k > 0)
 	{
-		if(aux != NULL)
-		{
+		if(aux == NULL)
+			aux = l;
+		else{
 			prev = aux;
 			aux = aux->prox;
-		}else //para "entrar" na lista
-			aux = l;
-		
+		}
+	
 		k--;
 	}
 	
 	prev->prox = aux->prox; //pula aux na lista
-	
-	l = aux->prox; //a próxima iteração de josephus vai começar pelo próximo elemento da lista
 	remov = aux; //salva o elemento removido
+	
+	l = aux->prox; //a próxima iteração de josephus começaria pelo próximo elemento da lista
 	
 	if(N > 1) //se ainda há mais de uma pessoa
 		josephus(N-1); //chama josephus para uma pessoa a menos
