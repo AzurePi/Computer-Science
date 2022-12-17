@@ -7,7 +7,7 @@ typedef struct lista{
 }Lista;
 
 Lista *l = NULL; //endereço do elemento "inicial" da lista
-Lista *remov; //id da última pessoa removida
+Lista *remov = NULL; //endereço da última pessoa removida
 
 int ler();
 void reinserir();
@@ -53,19 +53,22 @@ int ler(){
 void reinserir(){
 	Lista *aux = l, *prev = NULL;
 	
-	if(remov == NULL)
+	printf("\n\tReinserindo\n");
+	
+	if(remov == NULL) //se não há valor para reinserir
 		return;
 	
 	remov->O = 0;
 	
-	//enquanto remov->I for maior do que a posição atual, ou até que aux->prox seja o começo da lista
-	while(aux->I < remov->I || aux->prox != l)
+	//"anda" enquanto remov for maior do que a posição atual e maior do que a próxima posição, e ainda não tivermos dado uma volta completa
+	//ou enquanto remov for menor do que a posição atual e do que a próxima posição
+	while((remov->I > aux->I && remov->I > aux->prox->I && aux->prox != l) || (remov->I < aux->I && remov->I < aux->prox->I))
 	{
 		prev = aux;
 		aux = aux->prox;
 	}
 	
-	//se chegamos ao "fim" da lista
+	//se chegamos ao "fim" da lista (volta completa)
 	if(aux->prox == l)
 	{
 		aux->prox = remov;
@@ -75,36 +78,34 @@ void reinserir(){
 		return;
 	}
 	
-	//se estamos em um ponto qualquer da lista
+	//se estamos em um ponto qualquer da lista, em que remov é maior do que a posição autual mas menor do que a próxima
 	prev->prox = remov;
 	remov->prox = aux;
 	
-	remov = NULL;
+	remov = NULL; //descarta o valor reinserido
 	return;
 }
 
 void josephus(int N){
-	Lista *aux = NULL, *prev;
+	Lista *aux = l, *prev;
 	int k, o;
 	
-	//o = l->O  não funciona quando l->O é 1 por algum motivo; simplesmente fica o == 0
-	
-	k = l->K;
-	o = l->O;
+	k = l->K - 1; //salva o K da posição atual, e remove 1 para contar a própria posição
+	o = l->O; //salva o O da posição atual
 	
 	if(o == 1)
 		reinserir();
+	
+	/*
+	Por algum motivo, ele só entende que O é 1 nos casos em que os K são diferentes; do contrário, ele nunca entra em reinserir()
+	Deve ter alguma coisa a ver com o jeito que está andando na lista e computando os K?
+	*/
 
-	//anda até encontrar a pessoa a ser eliminada (isso funciona se todos os k são iguais, mas não se são diferentes)
+	//anda até encontrar a posição a ser eliminada (isso funciona se todos os k são iguais, mas não se são diferentes)
 	while(k > 0)
 	{
-		if(aux == NULL)
-			aux = l;
-		else{
-			prev = aux;
-			aux = aux->prox;
-		}
-	
+		prev = aux;
+		aux = aux->prox;
 		k--;
 	}
 	
