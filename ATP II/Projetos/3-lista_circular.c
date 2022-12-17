@@ -38,10 +38,7 @@ int ler(){
         scanf("%d %d", &new->K, &new->O);
 
         if(i == 1) //começo da lista
-        {
         	l = new; //é o que acabou de ser lido
-        	l->K--; //para contar o próprio primeiro elemento
-		}
         if(i == N) //último elemento
             new->prox = l; //aponta para o primeiro
         if(prev != NULL) //para os demais elementos
@@ -58,10 +55,22 @@ void reinserir(){
 	
 	remov->O = 0;
 	
-	while(aux->I < remov->I && aux->prox != l)
+	if(aux->I < remov->I)
 	{
-		prev = aux;
-		aux = aux->prox;
+		while(aux->I < remov->I && aux->prox != l)
+		{
+			prev = aux;
+			aux = aux->prox;
+		}
+	}
+	
+	if(aux->I > remov->I)
+	{
+		while(aux->I > remov->I && aux->prox != l)
+		{
+			prev = aux;
+			aux = aux->prox;
+		}
 	}
 	
 	//se chegamos ao "fim" da lista
@@ -80,34 +89,29 @@ void reinserir(){
 }
 
 void josephus(int N){
-	Lista *aux = l, *prev = NULL;
+	Lista *aux = NULL, *prev = NULL;
 	int k = l->K, o = l->O;
-	int i;
+	
+	if(o == 1)
+		reinserir();
 	
 	//anda até encontrar a pessoa a ser eliminada
 	while(k > 0)
 	{
-		printf("%d -> ", aux->I); //imprime o "caminho"
-		prev = aux;
-		aux = aux->prox;
+		if(aux != NULL)
+		{
+			prev = aux;
+			aux = aux->prox;
+		}else //para "entrar" na lista
+			aux = l;
 		
 		k--;
 	}
 	
-	printf("%d\n", aux->I); //imprime o I a ser removido
-		
-	if(o == 1)
-	{
-		printf("Reinserindo\n");
-		reinserir();
-	}
-	
 	prev->prox = aux->prox; //pula aux na lista
 	
-	l = aux->prox; //a próxima iteração de josephus começa pelo próximo elemento da lista
+	l = aux->prox; //a próxima iteração de josephus vai começar pelo próximo elemento da lista
 	remov = aux; //salva o elemento removido
-
-	printf("\n");
 	
 	if(N > 1) //se ainda há mais de uma pessoa
 		josephus(N-1); //chama josephus para uma pessoa a menos
