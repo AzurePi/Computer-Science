@@ -84,7 +84,7 @@ void reinserir() {
 	  agora; portanto, remov deve ser ou maior ou menor do que todos os valores
 	  ainda presentes na lista
 	*/
-	if(remov->I > aux->I) //se remov é maior do que a posição atual, então é maior do que todos
+	if(remov->I > aux->I) //se remov é maior do que a posição atual, então é maior do que todos e deve estar no final
 	{
 		remov->prox = aux->prox;
 		aux->prox = remov;
@@ -93,10 +93,12 @@ void reinserir() {
 		return;
 	}
 	
-	if(remov->I < aux->I) //se remov é menor do que a posição atual, então é menor do que todos
+	if(remov->I < aux->I) //se remov é menor do que a posição atual, então é menor do que todos e deve estar no começo
 	{
 		prev->prox = remov;
 		remov->prox = aux;
+		
+		l = remov; //remov é o novo menor número
 	
 		remov = NULL;
 		return;
@@ -122,14 +124,13 @@ void josephus(int N, int K, Lista *start) {
 		reinserir();
 		N++; //uma pessoa a mais na lista
 	}
-		
 	
 	if(aux == l) //se estamos removendo o menor número da lista
 		l = l->prox; //guardamos o próximo menor número
 		
 	prev->prox = aux->prox; //remove aux da lista
-	N--; //uma pessoa a menos na lista
 	remov = aux; //salva o elemento removido para eventual reinserção
+	N--; //uma pessoa a menos na lista
 
 	if(N > 1) //se ainda há mais de uma pessoa na lista
 		josephus(N, aux->K - 1, aux->prox);
