@@ -14,7 +14,6 @@ void reinserir(); //eventual reinserção do último elemento removido
 void josephus(int N, int K, Lista *start); //execução da lógica do problema
 
 int main() {
-	l = malloc(sizeof(Lista));
 	int N = ler();
 	
 	josephus(N, l->K - 1, l); //já considerando o primeiro movimento para se "entrar" na lista
