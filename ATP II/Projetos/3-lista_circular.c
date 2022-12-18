@@ -36,13 +36,22 @@ int ler() {
 		
 		if(i == 1) //se estamos no começo da lista
 			l = new; //esté é o endereço da menor posição
-		else if(i == N) //se estamos no final da lista
-			new->prox = l; //ele aponta para o primeiro elemento
-		else //para os demais elementos
+		else
+		{
 			prev->prox = new; //o elemento anterior passa a apontar para esse elemento
+			if(i == N) //se estamos no final da lista
+				new->prox = l; //ele aponta para o primeiro elemento
+		}
 		
 		prev = new;
 		free(new); //libera new para a próxima iteração
+	}
+	
+	Lista *aux = l;
+	for(i = 1; i < N+1; i++)
+	{
+		printf("%d ->", aux->I);
+		aux = aux->prox;
 	}
 	
 	return N;
