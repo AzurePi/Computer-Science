@@ -31,29 +31,29 @@ int ler() {
 	for(i = 1; i < N+1; i++) //preenchimento da lista circular
 	{
 		new = malloc(sizeof(Lista)); //a cada iteração, new aponta para um endereço novo
-		new->I = i;	
+		new->I = i;
+		
 		scanf("%d %d", &new->K, &new->O);
 		
 		if(i == 1) //se estamos no começo da lista
 			l = new; //esté é o endereço da menor posição
-		else
-		{
-			prev->prox = new; //o elemento anterior passa a apontar para esse elemento
-			if(i == N) //se estamos no final da lista
-				new->prox = l; //ele aponta para o primeiro elemento
-		}
-		
+		else 
+   		{
+      		prev->prox = new;
+      		if(i == N) //se estamos no final da lista
+      			new->prox = l; //ele aponta para o primeiro elemento
+    	}  	
+
 		prev = new;
-		free(new); //libera new para a próxima iteração
 	}
 	
 	Lista *aux = l;
-	for(i = 1; i < N+1; i++)
-	{
+	for(i = 1; i < N + 1; i++)
+	{ 
 		printf("%d ->", aux->I);
-		aux = aux->prox;
-	}
-	
+    	aux = aux->prox;
+  	}
+	printf("\n\n");
 	return N;
 }
 
