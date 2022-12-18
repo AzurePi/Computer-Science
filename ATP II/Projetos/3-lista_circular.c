@@ -15,7 +15,7 @@ void josephus(int N, int K, Lista *start); //execução da lógica do problema
 
 int main() {
 	int N = ler();
-
+	
 	josephus(N, l->K, l);
 	printf("%d", l->I);
 
@@ -28,7 +28,7 @@ int ler() {
 	Lista *new, *prev = NULL;
 	
 	scanf("%d", &N);
-	for(i = 1; i < N + 1; i++) //preenchimento da lista circular
+	for(i = 1; i < N+1; i++) //preenchimento da lista circular
 	{
 		new = malloc(sizeof(Lista)); //a cada iteração, new aponta para um endereço novo
 		new->I = i;
@@ -44,7 +44,11 @@ int ler() {
 
     	prev = new;
 	}
-
+	
+	Lista *aux = l;
+	for(i = 1; i < N + 1; i++) 
+		printf("%d ->", aux->I);
+	
 	return N;
 }
 
