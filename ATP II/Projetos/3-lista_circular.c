@@ -16,8 +16,8 @@ void josephus(int N, int K, Lista *start); //execução da lógica do problema
 int main() {
 	int N = ler();
 	
-	josephus(N, l->K, l);
-	printf("%d", l->I);
+	josephus(N, l->K - 1, l); //já considerando o primeiro movimento para se "entrar" na lista
+	printf("%d\n", l->I);
 
 	return 0;
 }
@@ -42,7 +42,7 @@ int ler() {
 			prev->prox = new; //o elemento anterior passa a apontar para esse elemento
 		
 		prev = new;
-		free(new);
+		free(new); //libera new para a próxima iteração
 	}
 	
 	return N;
@@ -128,7 +128,10 @@ void josephus(int N, int K, Lista *start) {
 	remov = aux; //salva o elemento removido para eventual reinserção
 
 	if(N > 1) //se ainda há mais de uma pessoa
-		josephus(N-1, aux->K, aux->prox); //chama josephus para uma pessoa a menos, com o K do elemento que acabou de ser eliminado, começando pelo próximo elemento
+		josephus(N-1, aux->K - 1, aux->prox);
+		/*executa para uma pessoa a menos, com o K do elemento que acabou de ser eliminado (já considerando o movimento preciso
+		  para passar para a próxima posição), começando pelo próximo elemento
+		*/
 		
 	return;
 }
