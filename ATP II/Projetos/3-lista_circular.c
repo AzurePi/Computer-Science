@@ -14,6 +14,7 @@ void reinserir(); //eventual reinserção do último elemento removido
 void josephus(int N, int K, Lista *start); //execução da lógica do problema
 
 int main() {
+	l = malloc(sizeof(Lista));
 	int N = ler();
 	
 	josephus(N, l->K - 1, l); //já considerando o primeiro movimento para se "entrar" na lista
@@ -106,7 +107,6 @@ void reinserir() {
 //execução da lógica do problema
 void josephus(int N, int K, Lista *start) {
 	Lista *aux = start, *prev = NULL;
-	int o;
 	
 	//anda até encontrar a posição a ser eliminada
 	while(K > 0)
@@ -115,10 +115,8 @@ void josephus(int N, int K, Lista *start) {
 		aux = aux->prox;
 		K--;
 	}
-	
-	o = aux->O; //salva a operação que a posição a ser eliminada requer
-	
-	if(o == 1)
+
+	if(aux->O == 1) //verifica a operação que a posição a ser eliminada requer
 		reinserir();
 	
 	if(aux == l) //se estamos removendo o menor número da lista
