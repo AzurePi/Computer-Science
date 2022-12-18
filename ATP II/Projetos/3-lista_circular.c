@@ -31,8 +31,7 @@ int ler() {
 	for(i = 1; i < N+1; i++) //preenchimento da lista circular
 	{
 		new = malloc(sizeof(Lista)); //a cada iteração, new aponta para um endereço novo
-		new->I = i;
-		
+		new->I = i;	
 		scanf("%d %d", &new->K, &new->O);
 		
 		if(i == 1) //se estamos no começo da lista
@@ -41,13 +40,10 @@ int ler() {
 			new->prox = l; //ele aponta para o primeiro elemento
 		else //para os demais elementos
 			prev->prox = new; //o elemento anterior passa a apontar para esse elemento
-
-    	prev = new;
+		
+		prev = new;
+		free(new);
 	}
-	
-	Lista *aux = l;
-	for(i = 1; i < N + 1; i++) 
-		printf("%d ->", aux->I);
 	
 	return N;
 }
@@ -104,8 +100,6 @@ void reinserir() {
 		return;
 	}
 	
-	//se remov é igual a algum valor que já está na lista
-	remov = NULL;
 	return;
 }
 
