@@ -19,35 +19,32 @@ int main(){
 	josephus(N, l->K);
 	printf("%d", l->I);
 
-    return 0;
+   	return 0;
 }
 
 int ler(){
-    int N, i;
-    Lista *new, *prev = malloc(sizeof(Lista));
+    	int N, i;
+    	Lista *new, *prev = malloc(sizeof(Lista));
   
-    scanf("%d", &N);
-    
-    //preenchimento da lista circular
-    for(i = 1; i<N+1; i++)
-    {
-    	new = malloc(sizeof(Lista)); //a cada iteração, new aponta para um endereço novo
-        new->I = i;
+    	scanf("%d", &N);
+	for(i = 1; i<N+1; i++) //preenchimento da lista circular
+	{
+		new = malloc(sizeof(Lista)); //a cada iteração, new aponta para um endereço novo
+		new->I = i;
 
-        scanf("%d %d", &new->K, &new->O);
+		scanf("%d %d", &new->K, &new->O);
 
-        if(i == 1) //começo da lista
-        	l = new; //é o que acabou de ser lido
-        else if(i == N) //último elemento
-        	new->prox = l; //aponta para o primeiro
-        else //para os demais elementos
-            prev->prox = new; //o elemento anterior passa a apontar para esse elemento
-        
-        prev = new;
-        free(new);
+		if(i == 1) //começo da lista
+			l = new; //é o que acabou de ser lido
+		else if(i == N) //último elemento
+			new->prox = l; //aponta para o primeiro
+		else //para os demais elementos
+		    prev->prox = new; //o elemento anterior passa a apontar para esse elemento
+
+		prev = new;
+		free(new);
 	}
-
-    return N;
+	return N;
 }
 
 void reinserir(){
@@ -60,7 +57,7 @@ void reinserir(){
 	remov->O = 0;
 	
 	/*condições de parada: 	aux->prox é l (já analisamos todas as posições)
-							remov é maior que o número atual e menor do que o próximo número (encontramos o lugar certo)
+				remov é maior que o número atual e menor do que o próximo número (encontramos o lugar certo)
 	*/
 	while(!(aux->prox == l || (remov->I > aux->I && remov->I < (aux->prox)->I)))
 	{
@@ -122,16 +119,14 @@ void josephus(int N, int K){
 		reinserir();
 	
 	prev->prox = aux->prox; //remove aux da lista
+	free(prev);
+	
 	remov = aux; //salva o elemento removido para eventual reinserção
 	
 	l = aux->prox; //a próxima iteração de josephus começaria pelo próximo elemento da lista
-	
-	free(prev);
-	
 	if(N > 1) //se ainda há mais de uma pessoa
 		josephus(N-1, aux->K); //chama josephus para uma pessoa a menos, com o K do elemento que acabou de ser eliminado
 
 	free(aux);
-
 	return;
 }
