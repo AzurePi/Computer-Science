@@ -23,10 +23,10 @@ int main(){
 }
 
 int ler(){
-    	int N, i;
-    	Lista *new, *prev = malloc(sizeof(Lista));
+    int N, i;
+    Lista *new, *prev = malloc(sizeof(Lista));
   
-    	scanf("%d", &N);
+   	scanf("%d", &N);
 	for(i = 1; i<N+1; i++) //preenchimento da lista circular
 	{
 		new = malloc(sizeof(Lista)); //a cada iteração, new aponta para um endereço novo
@@ -57,7 +57,7 @@ void reinserir(){
 	remov->O = 0;
 	
 	/*condições de parada: 	aux->prox é l (já analisamos todas as posições)
-				remov é maior que o número atual e menor do que o próximo número (encontramos o lugar certo)
+							remov é maior que o número atual e menor do que o próximo número (encontramos o lugar certo)
 	*/
 	while(!(aux->prox == l || (remov->I > aux->I && remov->I < (aux->prox)->I)))
 	{
