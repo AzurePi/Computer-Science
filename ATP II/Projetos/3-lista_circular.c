@@ -11,13 +11,12 @@ Lista *remov = NULL; //endereço da última pessoa removida
 
 int ler();
 void reinserir();
-void josephus();
+void josephus(int N, int K);
 
 int main(){
-    int N = ler(); //realiza a leitura das entradas e preenche a lista, cujo endereço é global
- 
-	josephus(N);
+	int N = ler(); //realiza a leitura das entradas e preenche a lista, cujo endereço é global
 
+	josephus(N, l->K);
 	printf("%d", l->I);
 
     return 0;
@@ -25,10 +24,10 @@ int main(){
 
 int ler(){
     int N, i;
-    Lista *new, *prev = NULL;
-
+    Lista *new, *prev = malloc(sizeof(Lista));
+  
     scanf("%d", &N);
-
+    
     //preenchimento da lista circular
     for(i = 1; i<N+1; i++)
     {
@@ -39,83 +38,100 @@ int ler(){
 
         if(i == 1) //começo da lista
         	l = new; //é o que acabou de ser lido
-        if(i == N) //último elemento
-            new->prox = l; //aponta para o primeiro
-        if(prev != NULL) //para os demais elementos
+        else if(i == N) //último elemento
+        	new->prox = l; //aponta para o primeiro
+        else //para os demais elementos
             prev->prox = new; //o elemento anterior passa a apontar para esse elemento
         
         prev = new;
-    }
+        free(new);
+	}
 
     return N;
 }
 
 void reinserir(){
 	Lista *aux = l, *prev = NULL;
-	
-	printf("\n\tReinserindo\n");
+	int i = 0;
 	
 	if(remov == NULL) //se não há valor para reinserir
 		return;
 	
 	remov->O = 0;
 	
-	//"anda" enquanto remov for maior do que a posição atual e maior do que a próxima posição, e ainda não tivermos dado uma volta completa
-	//ou enquanto remov for menor do que a posição atual e do que a próxima posição
-	while((remov->I > aux->I && remov->I > aux->prox->I && aux->prox != l) || (remov->I < aux->I && remov->I < aux->prox->I))
+	/*condições de parada: 	aux->prox é l (já analisamos todas as posições)
+							remov é maior que o número atual e menor do que o próximo número (encontramos o lugar certo)
+	*/
+	while(!(aux->prox == l || (remov->I > aux->I && remov->I < (aux->prox)->I)))
 	{
 		prev = aux;
 		aux = aux->prox;
+		i++;
 	}
 	
-	//se chegamos ao "fim" da lista (volta completa)
-	if(aux->prox == l)
+	if(remov->I > aux->I && remov->I < (aux->prox)->I) //se encontramos o lugar certo
 	{
+		remov->prox = aux->prox;
 		aux->prox = remov;
-		remov->prox = l;
 		
+		remov = NULL; //descarta o valor reinserido
+		return;
+	}
+	
+	/*se demos uma volta completa no vetor, estamos na posição imediatamente anterior a l
+	  e sabemos que remov não estava entre nenhum par de posições até agora;
+	  portanto, remov deve ser ou maior ou menor do que todos os valores ainda presentes na lista
+	*/
+	if(remov->I > aux->I) //se remov é maior do que a posição atual, então é maior do que todos
+	{
+		remov->prox = aux->prox;
+		aux->prox = remov;
+			
 		remov = NULL;
 		return;
 	}
 	
-	//se estamos em um ponto qualquer da lista, em que remov é maior do que a posição autual mas menor do que a próxima
-	prev->prox = remov;
-	remov->prox = aux;
+	if(remov->I < aux->I) //se remov é menor do que a posição atual, então é menor do que todos
+	{
+		prev->prox = remov;
+		remov->prox = aux;
 	
-	remov = NULL; //descarta o valor reinserido
+		remov = NULL;
+		return;
+	}
+
+	//se remov é igual a algum valor
 	return;
 }
 
-void josephus(int N){
-	Lista *aux = l, *prev;
-	int k, o;
+void josephus(int N, int K){
+	Lista *aux = l, *prev = NULL;
+	int i = K, o;
+
+	//anda até encontrar a posição a ser eliminada
+	while(i > 0)
+	{
+		prev = aux;
+		aux = aux->prox;
+		i--;
+	}
 	
-	k = l->K - 1; //salva o K da posição atual, e remove 1 para contar a própria posição
-	o = l->O; //salva o O da posição atual
+	o = aux->O;
 	
 	if(o == 1)
 		reinserir();
 	
-	/*
-	Por algum motivo, ele só entende que O é 1 nos casos em que os K são diferentes; do contrário, ele nunca entra em reinserir()
-	Deve ter alguma coisa a ver com o jeito que está andando na lista e computando os K?
-	*/
-
-	//anda até encontrar a posição a ser eliminada (isso funciona se todos os k são iguais, mas não se são diferentes)
-	while(k > 0)
-	{
-		prev = aux;
-		aux = aux->prox;
-		k--;
-	}
-	
-	prev->prox = aux->prox; //pula aux na lista
-	remov = aux; //salva o elemento removido
+	prev->prox = aux->prox; //remove aux da lista
+	remov = aux; //salva o elemento removido para eventual reinserção
 	
 	l = aux->prox; //a próxima iteração de josephus começaria pelo próximo elemento da lista
 	
+	free(prev);
+	
 	if(N > 1) //se ainda há mais de uma pessoa
-		josephus(N-1); //chama josephus para uma pessoa a menos
+		josephus(N-1, aux->K); //chama josephus para uma pessoa a menos, com o K do elemento que acabou de ser eliminado
+
+	free(aux);
 
 	return;
 }
