@@ -47,13 +47,6 @@ int ler() {
 		prev = new;
 	}
 	
-	Lista *aux = l;
-	for(i = 1; i < N + 1; i++)
-	{ 
-		printf("%d ->", aux->I);
-    	aux = aux->prox;
-  	}
-	printf("\n\n");
 	return N;
 }
 
@@ -125,16 +118,21 @@ void josephus(int N, int K, Lista *start) {
 	}
 
 	if(aux->O == 1) //verifica a operação que a posição a ser eliminada requer
+	{
 		reinserir();
+		N++; //uma pessoa a mais na lista
+	}
+		
 	
 	if(aux == l) //se estamos removendo o menor número da lista
-		l = aux->prox; //guardamos o próximo menor número
+		l = l->prox; //guardamos o próximo menor número
 		
 	prev->prox = aux->prox; //remove aux da lista
+	N--; //uma pessoa a menos na lista
 	remov = aux; //salva o elemento removido para eventual reinserção
 
-	if(N > 1) //se ainda há mais de uma pessoa
-		josephus(N-1, aux->K - 1, aux->prox);
+	if(N > 1) //se ainda há mais de uma pessoa na lista
+		josephus(N, aux->K - 1, aux->prox);
 	/*executa para uma pessoa a menos, com o K do elemento que acabou de ser eliminado (já considerando o movimento preciso
 	  para passar para a próxima posição), começando pelo próximo elemento
 	*/
