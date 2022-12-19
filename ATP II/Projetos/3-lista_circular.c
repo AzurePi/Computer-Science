@@ -39,29 +39,26 @@ int ler() {
 			l = new; //esté é o endereço da menor posição
 		else 
    		{
-      		prev->prox = new;
-      		if(i == N) //se estamos no final da lista
-      			new->prox = l; //ele aponta para o primeiro elemento
-    	}  	
-
+      			prev->prox = new;
+      			if(i == N) //se estamos no final da lista
+      				new->prox = l; //ele aponta para o primeiro elemento
+    		}  	
 		prev = new;
 	}
-	
 	return N;
 }
 
 //reinserção do último elemento removido
 void reinserir() {
-	Lista *aux = l, *prev = NULL;
+	Lista *aux = l;
 	int i = 0;
 	
 	if(remov == NULL) //se não há valor para reinserir
 		return;
 	
 	remov->O = 0;
-	
 	/*condições de parada: 	aux->prox é l (já analisamos todas as posições)
-							remov é maior que o número atual e menor do que o próximo número (encontramos o lugar certo)
+				remov é maior que o número atual e menor do que o próximo número (encontramos o lugar certo)
 	*/
 	while(aux->prox != l && (remov->I < aux->I || remov->I > (aux->prox)->I))
 	{
@@ -70,7 +67,8 @@ void reinserir() {
 		i++;
 	}
 	
-	if(remov->I > aux->I && remov->I < (aux->prox)->I) //se encontramos o lugar certo
+	//se encontramos o lugar certo
+	if(remov->I > aux->I && remov->I < (aux->prox)->I) 
 	{
 		remov->prox = aux->prox;
 		aux->prox = remov;
@@ -84,26 +82,16 @@ void reinserir() {
 	  agora; portanto, remov deve ser ou maior ou menor do que todos os valores
 	  ainda presentes na lista
 	*/
-	if(remov->I > aux->I) //se remov é maior do que a posição atual, então é maior do que todos e deve estar no final
-	{
-		remov->prox = aux->prox;
-		aux->prox = remov;
+	//se remov é maior do que a posição atual, então é maior do que todos e deve estar no final
+	//se remov é menor do que a posição atual, então é menor do que todos e deve estar no começo
+	//de qualquer forma, pela lista ser circular,
+	remov->prox = aux->prox;
+	aux->prox = remov;
 	
-		remov = NULL;
-		return;
-	}
-	
-	if(remov->I < aux->I) //se remov é menor do que a posição atual, então é menor do que todos e deve estar no começo
-	{
-		prev->prox = remov;
-		remov->prox = aux;
-		
+	if(remov->I < aux->I)
 		l = remov; //remov é o novo menor número
-	
-		remov = NULL;
-		return;
-	}
-	
+
+	remov = NULL;
 	return;
 }
 
@@ -118,8 +106,8 @@ void josephus(int N, int K, Lista *start) {
 		aux = aux->prox;
 		K--;
 	}
-
-	if(aux->O == 1) //verifica a operação que a posição a ser eliminada requer
+	//verifica a operação que a posição a ser eliminada requer
+	if(aux->O == 1) 
 	{
 		reinserir();
 		N++; //uma pessoa a mais na lista
@@ -136,7 +124,6 @@ void josephus(int N, int K, Lista *start) {
 		josephus(N, aux->K - 1, aux->prox);
 	/*executa para uma pessoa a menos, com o K do elemento que acabou de ser eliminado (já considerando o movimento preciso
 	  para passar para a próxima posição), começando pelo próximo elemento
-	*/
-		
+	*/	
 	return;
 }
