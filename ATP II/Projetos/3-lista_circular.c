@@ -62,7 +62,6 @@ void reinserir() {
 	*/
 	while(aux->prox != l && (remov->I < aux->I || remov->I > (aux->prox)->I))
 	{
-		prev = aux;
 		aux = aux->prox;
 		i++;
 	}
