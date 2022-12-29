@@ -6,6 +6,7 @@ typedef struct fila{
 	struct fila *prox;
 }Fila;
 
+Fila *insere(Fila *new, Fila *head);
 Fila *forma_fila(int N);
 void atender(int N, int M, Fila *head);
 
@@ -16,18 +17,19 @@ int main(){
 	scanf("%d %d", &N, &M);
 	head = forma_fila(N);
 	
-	atender(N, M, head);
-	/*
+	
 	Fila *aux = head;
 	int i;
+	printf("\n");
 	for(i = 0; i<N; i++)
 	{
-		printf("%d -> ", aux->I);
+		printf("%d %d %d\n", aux->I, aux->O, aux->C);
 		aux = aux->prox;
 	}
-	*/
 	
-
+	//atender(N, M, head);
+	
+	
 	return 0;
 }
 
@@ -40,65 +42,69 @@ Fila *insere(Fila *new, Fila *head){
 	{
 		new->prox = head;
 		head = new;
-		
 		return head;
 	}
 	
-	//enquanto o instante de chegada for maior do que o atual e não estivermos no final da fila
+	//enquanto o instante de chegada de aux for maior do que o de new e não estivermos no final da fila
 	while(new->O > aux->O && aux->prox != NULL)
 	{
 		prev = aux;
 		aux = aux->prox;
 	}
 	
-	//se os instantes coincidem
+	//se os instantes coincidem, organiza em relação ao id
 	if(new->O == aux->O)
-	{	//organiza em relação ao id
-		
-		//se o id novo já é menor do que o que o próximo
-		if(new->id < aux->id)
+	{	
+		//se o id de new já é menor do que o que o de aux
+		if(new->I < aux->I)
 		{
-			//se estamos no começo da fila
+			//e estamos no começo da fila
 			if(aux == head)
 			{
 				new->prox = head;
 				head = new;
-				
 				return head;
 			}
-			//se não estamos no começo da fila
+			
+			//e estamos no meio da fila
 			prev->prox = new;
 			new->prox = aux;
-			
 			return head;
 		}
-		//se o id novo não é menor
+		//se o id de new não é menor que o de aux
 		
 		//anda até encontrar o lugar certo ou até o final da fila
-		while(new->id > aux->id && aux->prox != NULL)
+		while(new->I > aux->I && aux->prox != NULL)
 		{
 			prev = aux;
-			aux = new;
+			aux = aux->prox;
 		}
 		
-		prev->prox = new;
-		new->prox = aux;
-	
-		return head;
-	}
-	
-	//do contrário, encontramos o local certo na fila para inserir	
-
-	//se chegamos ao final da fila
-	if(aux->prox == NULL) 
-	{
+		//se encontramos o lugar certo
+		if(new->I < aux->I)
+		{
+			//e é o começo da fila
+			if(aux == head)
+			{
+				new->prox = head;
+				head = new;
+				return head;
+			}
+			
+			//e estamos no meio da fila
+			prev->prox = new;
+			new->prox = aux;
+			return head;
+		}
+		
+		//se estamos no final da fila
 		aux->prox = new;
 		return head;
 	}
 	
+	//do contrário, encontramos o local certo na fila para inserir
 	prev->prox = new;
 	new->prox = aux;
-
 	return head;
 }
 
@@ -111,12 +117,12 @@ Fila *forma_fila(int N){
 	{
 		aux = malloc(sizeof(Fila)); //a cada iteração, cria um elemento novo
 		scanf("%d %d %d", &aux->I, &aux->O, &aux->C);
-		aux->prox = NULL; //por padrão, assumimos que é o final da fila
+		aux->prox = NULL; //por padrão, assumimos que ele é o final da fila
 		
-		if(head == NULL)
+		if(head == NULL) //se a fila está vazia
 			head = aux;	
 		else
-			head = insere(aux, head);
+			head = insere(aux, head); //insere por ordem de chegada
 	}
 	
 	return head; //retorna o endereço da cabeça da fila
@@ -149,7 +155,7 @@ void atender(int N, int M, Fila *head){
 		
 		}
 		
-		intante += menor_C; //saltamos no tempo até o próximo fim de atendimento
+		instante += menor_C; //saltamos no tempo até o próximo fim de atendimento
 	}
 
 	//imprime os instantes em que o atendimento acaba em cada um dos M centros
@@ -164,7 +170,3 @@ void atender(int N, int M, Fila *head){
 	
 	return;
 }
-
-
-
-
