@@ -1,24 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int passo = 625;
-int **labirinto, **marcas;
+int **labirinto;
+int sol = 0; //assume que não há solução
 
 void ler_labirinto(int N);
-void zera_marcas(int N);
-void caminhar(int N, int I, int C, int x, int y);
+void caminhar(int N, int C, int x, int y, int p);
 
 int main(){
 	int N, I, C;
-	int passos;
 	
 	scanf("%d %d %d", &N, &I, &C);
-
-	ler_labirinto(N);
-	zera_marcas(N);
 	
-	caminhar(N, I, C, 0, I);
-	printf("%d", passos);
+	ler_labirinto(N);
+	caminhar(N, C, 0, I, 0);
+	
+	if(sol == 0)
+		printf("-1\n");
 
 	return 0;
 }
@@ -40,45 +38,29 @@ void ler_labirinto(int N){
 	return;
 }
 
-void zera_marcas(int N){
-	int i, j;
+void caminhar(int N, int C, int x, int y, int p){
 
-	marcas = malloc(N * sizeof(int *));
-	
-	for(i = 0; i< N; i++)
-		marcas[i] = malloc(sizeof(int));
-		
-	for(i = 0; i<N; i++)
+	//se chegamos ao final
+	if(x == N-1 && y == C && labirinto[x][y] == 0)
 	{
-		for(j = 0; j<N; j++)
-			marcas[i][j] = 0;
+		printf("%d\n", p);
+		sol = 1; //indica que encontramos uma solução
+		return;
+	}
+	
+	//se não extrapolamos a borda
+	if(x < N && y < N && x >= 0 && y >= 0 && sol == 0)
+	{
+		//e o caminho está livre
+		if(labirinto[x][y] == 0)
+		{
+			labirinto[x][y] = 1;
+			
+			caminhar(N, C, x+1, y, p+1);
+			caminhar(N, C, x, y+1, p+1);
+			caminhar(N, C, x, y-1, p+1);
+		}
 	}
 
 	return;
 }
-
-/*
-	-Procura uma nova posição
-	-Marca essa posição como visitada
-		-Chama a função novamente
-	-Marca essa posição como não visitada
-	-Quando cehgar ao final, retorna
-*/
-void caminhar(int N, int I, int C, int x, int y){
-	
-	
-	
-	
-	
-	
-	
-	
-	return;
-}
-
-
-
-
-
-
-
