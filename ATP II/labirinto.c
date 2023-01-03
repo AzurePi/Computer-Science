@@ -50,6 +50,10 @@ int valido(int N, int x, int y){
 
 void caminhar(int N, int C, int x, int y, int p){
 
+	//encerra a chamada se extrapolamos a borda, se o caminho está bloqueado, ou se já chegamos ao final
+	if(!valido(N, x, y) || sol != 0)
+		return;
+
 	//se chegamos ao final
 	if(x == N-1 && y == C)
 	{
@@ -57,10 +61,6 @@ void caminhar(int N, int C, int x, int y, int p){
 		sol = 1; //indica que encontramos uma solução
 		return;
 	}
-	
-	//encerra a chamada se extrapolamos a borda, se o caminho está bloqueado, ou se já chegamos ao final
-	if(!valido(N, x, y) || sol != 0)
-		return;
 	
 	labirinto[x][y] = 1; //marca o caminho como já percorrido
 	
