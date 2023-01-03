@@ -38,11 +38,11 @@ void ler_labirinto(int N){
 	return;
 }
 
-//verifica se não extrapolamos a borda e se o caminho está livre
+//verifica se a posição atual é válida
 int valido(int N, int x, int y){
-	if(x >= 0 && y >= 0 && x < N && y < N)
+	if(x >= 0 && y >= 0 && x < N && y < N) //extrapolamos a borda?
 	{
-		if(labirinto[x][y] == 0)
+		if(labirinto[x][y] == 0) //o caminho está livre?
 			return 1;
 	}
 	return 0;
@@ -58,12 +58,12 @@ void caminhar(int N, int C, int x, int y, int p){
 		return;
 	}
 	
-	//se extrapolamos a borda, ou se o caminho está bloquado
-	if(!valido(N, x, y) && sol != 0)
+	//encerra a chamada se extrapolamos a borda, se o caminho está bloqueado, ou se já chegamos ao final
+	if(!valido(N, x, y) || sol != 0)
 		return;
 	
-	labirinto[x][y] = 1;
-		
+	labirinto[x][y] = 1; //marca o caminho como já percorrido
+	
 	caminhar(N, C, x+1, y, p+1);
 	caminhar(N, C, x, y+1, p+1);
 	caminhar(N, C, x, y-1, p+1);
