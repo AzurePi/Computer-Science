@@ -1,7 +1,9 @@
+//malloc() won't work in professor dearest's testing programm
+
 #include <stdio.h>
 #include <stdlib.h>
 
-int **labirinto;
+int labirinto[25][25];
 int sol = 0; //assume que não há solução
 
 void ler_labirinto(int N);
@@ -24,10 +26,6 @@ int main(){
 
 void ler_labirinto(int N){
 	int i, j;
-	
-	labirinto = malloc(N * sizeof(int *));
-	for(i = 0; i<N; i++)
-		labirinto[i] = malloc(sizeof(int));
 		
 	for(i = 0; i<N; i++)
 	{
