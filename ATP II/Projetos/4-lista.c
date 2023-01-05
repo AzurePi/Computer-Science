@@ -140,7 +140,7 @@ Fila *forma_fila(int N){
 
 void atender(int N, int M, Fila *head){
 	int *t = malloc(M * sizeof(int)); //array para guardar os instante de atendimento em cada um dos M centros
-	int i, j, min_t;
+	int i, j, min;
 	
 	//zera os instantes de cada centro
 	for(i = 0; i<M; i++)
@@ -150,12 +150,12 @@ void atender(int N, int M, Fila *head){
 	while(head != NULL)
 	{	
 		//encontra o centro de atendimento j com o menor t
-		min_t = 2000001;
+		min = 2000001;
 		for(i = 0; i<M; i++)
 		{
-			if(t[i] < min_t)
+			if(t[i] < min)
 			{
-				min_t = t[i];
+				min = t[i];
 				j = i;
 			}
 		}
