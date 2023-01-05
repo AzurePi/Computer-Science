@@ -118,11 +118,11 @@ Fila *insere(Fila *new, Fila *head){
 	return head;
 }
 
+//lê N linhas de entrada e forma uma fila
 Fila *forma_fila(int N){
 	Fila *head = NULL, *aux, *prev = NULL;
 	int i;
 	
-	//lê as entradas e forma uma fila
 	for(i = 0; i<N; i++)
 	{
 		aux = malloc(sizeof(Fila)); //a cada iteração, cria um elemento novo
@@ -161,12 +161,10 @@ void atender(int N, int M, Fila *head){
 		}
 		
 		//o centro j atende head
-		if(head->O == t[j])
-			t[j] += head->C;
-		else if(head->O > t[j])
+		if(head->O > t[j])
 			t[j] += (head->O - t[j]) + head->C;
-		else //se head->O < t[j]
-			t[j] += (t[j] - head->O) + head->C;
+		else //se head->O <= t[j]
+			t[j] += head->C;
 		
 		head = head->prox; //passa para o próximo da fila
 	}
