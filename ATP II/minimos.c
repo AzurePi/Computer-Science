@@ -1,21 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int **ler(int N){
-	int i, j, **mat;
-	
-	mat = malloc(sizeof(int *));
-	for(i = 0; i<N; i++)
-		mat[i] = malloc(sizeof(int));
+int matriz[1000][1000];
+
+void **ler(int N){
+	int i, j;
 	
 	for(i = 0; i<N; i++)
 		for(j = 0; j<N; j++)
-			scanf("%d", &mat[i][j]);
-	
-	return mat;
+			scanf("%d", &matriz[i][j]);	
 }
 
-void minimos(int **mat, int N, int M){
+void minimos(int N, int M){
 	int i, j, k;
 	int a, b, min;
 	
@@ -26,8 +22,8 @@ void minimos(int **mat, int N, int M){
 		min = (2*N*N);
 		for(j = a - 1; j<b; j++)
 			for(k = a - 1; k<b; k++)
-				if(mat[j][k] < min)
-					min = mat[j][k];
+				if(matriz[j][k] < min)
+					min = matriz[j][k];
 		
 		printf("%d\n", min);
 	}
@@ -35,11 +31,10 @@ void minimos(int **mat, int N, int M){
 
 int main(){
 	int N, M;
-	int **matriz;
 	scanf("%d %d", &N, &M);
 	
-	matriz = ler(N);
-	minimos(matriz, N, M);
+	ler(N);
+	minimos(N, M);
 	
 	return 0;
 }
