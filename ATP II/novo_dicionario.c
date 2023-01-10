@@ -7,9 +7,9 @@ typedef struct lista{
 	struct lista *prox;
 }Lista;
 
-Lista *h = NULL; //endereÁo do comeÁo da lista
+Lista *h = NULL; //endere√ßo do come√ßo da lista
 
-void inserir(); //insere a palavra lida em ordem alfabÈtica
+void inserir(); //insere a palavra lida em ordem alfab√©tica
 void remover(); //remove a palavra lida
 void imprimir(); //imprime a partir de uma palavra lida
 
@@ -37,20 +37,20 @@ int main(){
 	return 0;
 }
 
-//insere a palavra lida em ordem alfabÈtica
+//insere a palavra lida em ordem alfab√©tica
 void inserir(){
 	Lista *novo, *aux = h, *prev = NULL;
 	novo = malloc(sizeof(Lista));
 	
 	scanf(" %s", novo->palavra);
 	
-	if(h == NULL) //se a lista est· vazia
+	if(h == NULL) //se a lista est√° vazia
 	{
 		novo->prox = NULL;
 		h = novo;	
 		return;
 	}
-	//lista n„o vazia
+	//lista n√£o vazia
 	
 	
 	while(aux->prox != NULL && strcmp(aux->palavra, novo->palavra) < 0)
@@ -61,7 +61,7 @@ void inserir(){
 		aux = aux->prox;
 	}
 	
-	//se novo est· depois de aux
+	//se novo est√° depois de aux
 	if(strcmp(novo->palavra, aux->palavra) > 0)
 	{
 		if(aux->prox == NULL) //e estamos no final da lista
@@ -70,23 +70,23 @@ void inserir(){
 			novo->prox = NULL;
 			return;
 		}
-		//mas n„o estamos no final da lista
+		//mas n√£o estamos no final da lista
 		
 		novo->prox = aux->prox;
 		aux->prox = novo;
 		return;
 	}
 	
-	//se novo est· antes de aux
+	//se novo est√° antes de aux
 	if(strcmp(novo->palavra, aux->palavra) < 0)
 	{
-		if(aux == h) //e estamos no comeÁo da lista
+		if(aux == h) //e estamos no come√ßo da lista
 		{
 			novo->prox = h;
 			h = novo;
 			return;
 		}
-		// mas n„o estamos no comeÁo da lista
+		// mas n√£o estamos no come√ßo da lista
 		
 		prev->prox = novo;
 		novo->prox = aux;
@@ -99,12 +99,12 @@ void remover(){
 	Lista *aux = h, *prev = NULL;
 	char pal[50];
 	
-	if(h == NULL) //se a lista est· vazia
+	if(h == NULL) //se a lista est√° vazia
 	{
 		printf("NULL\n");
 		return;
 	}
-	//do contr·rio
+	//do contr√°rio
 	scanf(" %s", pal);
 	
 	//procura a palavra na lista
@@ -116,15 +116,15 @@ void remover(){
 
 	if(strcmp(aux->palavra, pal) == 0) //se achou a palavra
 	{
-		if(aux == h) //se estamos no comeÁo da lista
+		if(aux == h) //se estamos no come√ßo da lista
 		{
 			if(aux->prox == NULL) //e no fim da lista
-				h = NULL; //a lista agora est· vazia
-			else //mas h· elementos depois
+				h = NULL; //a lista agora est√° vazia
+			else //mas h√° elementos depois
 				h = aux->prox;
-		}else //se n„o est· no comeÁo
+		}else //se n√£o est√° no come√ßo
 		{
-			if(aux->prox == NULL) //e est· no final
+			if(aux->prox == NULL) //e est√° no final
 				prev->prox = NULL;
 			else //estamos no meio da lista
 				prev->prox = aux->prox;
@@ -133,16 +133,16 @@ void remover(){
 }
 
 void imprimir(){
-	Lista *aux, *prev;
+	Lista *aux = h, *prev;
 	char pal[50];
 	
-	//se a lista est· vazia
+	//se a lista est√° vazia
 	if(h == NULL)
 	{
 		printf("NULL\n");
 		return;
 	}
-	//a lista n„o est· vazia
+	//a lista n√£o est√° vazia
 	
 	scanf("%s", pal);
 
@@ -151,24 +151,20 @@ void imprimir(){
 		prev = aux;
 		aux = aux->prox;	
 	}
-	//sai do laÁo quando aux È a palavra seguinte (ou igual) a pal
-	//ou quando aux È a ˙ltima palavra da lista
+	//sai do la√ßo quando aux √© a palavra seguinte (ou igual) a pal
+	//ou quando aux √© a √∫ltima palavra da lista
 	
-	//se a palavra est· na lista
-	if(strcmp(aux->palavra, pal) == 0)
-		printf("%s", pal);
-	
-	//se a prÛxima palavra (possivelmente a ˙ltima da lista) È de fato
-	//posterior a pal
-	if(strcmp(aux->palavra, pal) > 0)
+	//se a pr√≥xima palavra (possivelmente a √∫ltima da lista) √©
+	//posterior (ou igual) a pal
+	if(strcmp(aux->palavra, pal) >= 0)
 	{
 		do //imprime as palavras
 		{
 			printf("%s ", aux->palavra);
 			aux = aux->prox;
 		}while(aux != NULL);
-	}else
-		printf("NULL");
+	}else //se a pr√≥xima palavra for anterior a pal,
+		printf("NULL"); //consli-se que a sub-lista est√° vazia
 
 	printf("\n");
 }
