@@ -52,7 +52,6 @@ void inserir(){
 	}
 	//lista não vazia
 	
-	
 	while(aux->prox != NULL && strcmp(aux->palavra, novo->palavra) < 0)
 	{
 		if(strcmp(novo->palavra, aux->palavra) == 0)
