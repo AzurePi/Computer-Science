@@ -7,22 +7,22 @@ int main(){
 	int i;
 	
 	scanf("%d %d", &N, &k);
-	float vet[N];
+	double vet[N];
 	
 	for(i = 0; i<N; i++)
-		scanf("%f", &vet[i]);
+		scanf("%lf", &vet[i]);
 	
 	ordenar(vet, N, k);
 	
 	for(i = 0; i<N; i++)
-		printf("%.3f ", vet[i]);
+		printf("%.3lf ", vet[i]);
 	
 	return 0;
 }
 
-void ordenar(float *vet, int N, int k){
+void ordenar(double *vet, int N, int k){
 	int i, j;
-	float x;
+	double x;
 	
 	for(i = 0; i<N; i++) //andando pelo vetor inteiro (a partir do segundo elemento)
 	{
