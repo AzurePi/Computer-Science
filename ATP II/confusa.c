@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void ordenar(float*, int, int); //ordenação através do algoritmo de inserção
+void ordenar(double*, int, int); //ordenação através do algoritmo de inserção
 
 int main(){
 	int N, k;
@@ -23,6 +23,27 @@ int main(){
 void ordenar(double *vet, int N, int k){
 	int i, j;
 	double x;
+	
+	if(k == 0)
+	{	//ordena todo o vetor de forma decrescente
+		
+		//para cada número do vetor, a partir da segunda posição
+		for(i = 1; i<N; i++)
+		{
+			x = vet[i]; //armazena o número a ser inserido
+			j = i-1; //a análise para inserção começará por seu antecessor
+			
+			//encontramos a posição, dentre as anteriores a x,
+			//em que x deveria estar
+			while(j >= 0 && vet[j] < x)
+			{
+				vet[j+1] = vet[j]; //move o próximo número para essa posição
+				j--; //analisa o índice anterior
+			}
+			vet[j+1] = x; //insere x na posição adequada
+		}
+		return;	
+	}
 	
 	for(i = 0; i<N; i++) //andando pelo vetor inteiro (a partir do segundo elemento)
 	{
