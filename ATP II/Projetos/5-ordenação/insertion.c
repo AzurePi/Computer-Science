@@ -15,16 +15,18 @@ void insertion(BigInt *vet);
 int main(){
 	BigInt vet[n];
 	time_t begin, end;
+	double t;
 	
-	ler(vet); //lÃª dados de um arquivo bigint.dat e armazena num vetor
+	ler(vet); //lê dados de bigint.dat e armazena num vetor
 	
-	begin = clock(); //marcamos o instante em que o sorting comeÃ§a
+	begin = clock(); //marca o instante em que o sorting começa
 	insertion(vet);
-	end = clock(); //marcamos o instante em que o sorting termina
+	end = clock(); //marca o instante em que o sorting termina
 	
-	imprimir(vet); //imprime o vetor jÃ¡ ordenado no arquivo quick.dat
+	t = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("%lf", t); //imprime na tela o tempo tomado pela ordenação
 	
-	printf("%lf" , end - begin); //imprime na tela o tempo tomado pela ordneaÃ§Ã£o
+	imprimir(vet); //imprime o vetor ordenado no arquivo quick.dat
 	
 	return 0;
 }
@@ -57,43 +59,43 @@ void insertion(BigInt *vet){
 	int i, j;
 	BigInt x;
 	
-	//comeÃ§ando a partir do segundo elemento do vetor, e passando por todos
+	//começando a partir do segundo elemento do vetor, e passando por todos
 	for(i = 1; i<n; i++)
 	{
-		//armazena o nÃºmero sendo inserido
+		//armazena o número sendo inserido
 		x.high = vet[i].high;
 		x.low = vet[i].low;
 		
-		//comeÃ§a a anÃ¡lise pela posiÃ§Ã£o imediatamente anterior
+		//começa a análise pela posição imediatamente anterior
 		j = i - 1;
 		
 		//tenta ordenar pelo componente high
 		if(x.high != vet[j].high)
 		{
-			//procura, nas posiÃ§Ãµes anteriores, onde inserir x
-			while(x.high < vet[j].high)
+			//procura, nas posições anteriores, onde inserir x
+			while(x.high < vet[j].high && j >= 0)
 			{
-				vet[i].high = vet[j].high;
-				vet[i].low = vet[j].low;
+				vet[j+1].high = vet[j].high;
+				vet[j+1].low = vet[j].low;
 				vet[j].high = x.high;
 				vet[j].low = x.low;
-				j--; //vai para a posiÃ§Ã£o anterior
+				j--; //vai para a posição anterior
 			}
 		}else //ordena por low
 		{
-			/* Casos em que "andamos" na ordenaÃ§Ã£o:
-				Se x.high e vet[j].high sÃ£o negativos, a lÃ³gica da comparaÃ§Ã£o se inverte para os componentes low
-				Se x.high Ã© negativo, e vet[j].high Ã© positivo, x Ã© menor que vet[j]
-				Se x.high Ã© positivo, e vet[j].high Ã© negativo, x Ã© maior que vet[j]
+			/*
+				Se x.high e vet[j].high são negativos, a comparação da ordenação se inverte para os componentes low
+				Se x.hig e vet[j].high são positivos, a comparação da ordenação ocorre normalmente
 			*/
-			while((x.high < 0 && vet[j].high < 0 && x.low > vet[j].low) || (x.high < 0 && vet[j].high > 0) || (x.high > 0 && vet[j].high < 0))
+			while(((x.high < 0 && vet[j].high < 0 && x.low > vet[j].low) || (x.high > 0 && vet[j].high > 0 && x.low < vet[j].low)) && j >= 0)
 			{
-				vet[i].high = vet[j].high;
-				vet[i].low = vet[j].low;
+				vet[j+1].high = vet[j].high;
+				vet[j+1].low = vet[j].low;
 				vet[j].high = x.high;
 				vet[j].low = x.low;
-				j--; //vai para a posiÃ§Ã£o anterior
+				j--; //vai para a posição anterior
 			}
 		}
 	}
 }
+
