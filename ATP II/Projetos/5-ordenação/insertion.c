@@ -18,9 +18,9 @@ int main(){
 	
 	ler(vet); //lê dados de um arquivo bigint.dat e armazena num vetor
 	
-	time(&begin); //marcamos o instante em que o sorting começa
+	begin = clock(); //marcamos o instante em que o sorting começa
 	insertion(vet);
-	time(&end); //marcamos o instante em que o sorting termina
+	end = clock(); //marcamos o instante em que o sorting termina
 	
 	imprimir(vet); //imprime o vetor já ordenado no arquivo quick.dat
 	
@@ -67,9 +67,10 @@ void insertion(BigInt *vet){
 		//começa a análise pela posição imediatamente anterior
 		j = i - 1;
 		
+		//tenta ordenar pelo componente high
 		if(x.high != vet[j].high)
 		{
-			//procura, nas posições anteriores, onde inserir com base em high
+			//procura, nas posições anteriores, onde inserir x
 			while(x.high < vet[j].high)
 			{
 				vet[i].high = vet[j].high;
@@ -78,33 +79,21 @@ void insertion(BigInt *vet){
 				vet[j].low = x.low;
 				j--; //vai para a posição anterior
 			}
-		}else //x.high == vet[j].high
+		}else //ordena por low
 		{
-			if(x.high < 0)
-				x.low = x.low * -1; //marcamos, na variável auxiliar, que x é negativo
-
-				//procura, nas posições anteriores, onde inserir com base em low
-				while(x.low < vet[j].low)
-				{
-					vet[i].high = vet[j].high;
-					vet[i].low = vet[j].low;
-					vet[j].high = x.high;
-					vet[j].low = x.low;
-					j--; //vai para a posição anterior
-				}
-			}else if (x.high > 0 && vet[j].high < 0) //se x é positivo, mas vet[j] é negativo
+			/* Casos em que "andamos" na ordenação:
+				Se x.high e vet[j].high são negativos, a lógica da comparação se inverte para os componentes low
+				Se x.high é negativo, e vet[j].high é positivo, x é menor que vet[j]
+				Se x.high é positivo, e vet[j].high é negativo, x é maior que vet[j]
+			*/
+			while((x.high < 0 && vet[j].high < 0 && x.low > vet[j].low) || (x.high < 0 && vet[j].high > 0) || (x.high > 0 && vet[j].high < 0))
 			{
-				//procura, nas posições anteriores, onde inserir com base em low
-				while(x.low < vet[j].low)
-				{
-					vet[i].high = vet[j].high;
-					vet[i].low = vet[j].low;
-					vet[j].high = x.high;
-					vet[j].low = x.low;
-					j--; //vai para a posição anterior
-				}
+				vet[i].high = vet[j].high;
+				vet[i].low = vet[j].low;
+				vet[j].high = x.high;
+				vet[j].low = x.low;
+				j--; //vai para a posição anterior
 			}
-			
 		}
 	}
 }
