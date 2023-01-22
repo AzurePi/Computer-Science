@@ -10,20 +10,23 @@ typedef struct biggo {
 
 void ler(BigInt *vet);
 void imprimir(BigInt *vet);
+void quicksort(int *vet, int in, int fin);
 
 int main(){
 	BigInt vet[n];
 	time_t begin, end;
+	double t;
 	
-	ler(vet); //lê dados de um arquivo bigint.dat e armazena num vetor
+	ler(vet); //lê dados de bigint.dat e armazena num vetor
 	
-	time(&begin); //marcamos o instante em que o sorting começa
-	// sorting
-	time(&end); //marcamos o instante em que o sorting termina
+	begin = clock(); //marca o instante em que o sorting começa
 	
-	imprimir(vet); //imprime o vetor já ordenado no arquivo quick.dat
+	end = clock(); //marca o instante em que o sorting termina
 	
-	printf("%lf" , end - begin); //imprime na tela o tempo tomado pela ordneação
+	t = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("%lf" , t); //imprime na tela o tempo tomado pela ordneação
+	
+	imprimir(vet); //imprime o vetor no arquivo quick.dat
 	
 	return 0;
 }
@@ -50,4 +53,75 @@ void imprimir(BigInt *vet){
 		fprintf(quick, "%d %d\n", vet[i].high, vet[i].low);
 	
 	fclose(quick);
+}
+
+//retorna o índice da mediana entre três valores nas posições in, mid e fin de um vetor v
+int mediana(int *v, int in, int mid, int fin){
+	
+	if(v[in] < v[mid])
+	{
+		if(v[mid] < v[fin])
+			return mid;
+		if(v[fin] < v[mid])
+			return fin;
+	}else if(v[mid] < v[in])
+	{
+		if(v[in] < v[fin])
+			return in;
+		if(v[fin] < v[in])
+			return fin;
+	}else //if(v[fin] < v[mid]
+	{
+		if(v[mid] < v[in])
+			return mid;
+		if(v[in] < v[mid])
+			return in;
+	}
+}
+
+void quicksort(int *vet, int in, int fin){
+	int pivot, j; //indices do pivot e do número sendo analisado
+	int i, aux;
+
+	//se o inicio ainda está antes do fim
+	if(in < fin)
+	{
+		//determina o índice do pivot pelo método da mediana de três
+		pivot = mediana(vet, in, (in+fin)/2, fin);
+		
+		//colocamos o pivot na última posição do vetor
+		aux = vet[fin];
+		vet[fin] = vet[pivot];
+		vet[pivot] = aux;
+		
+		//posição em que começaremos a ordenar os números
+		j = in; 
+		
+		for(i = j; i < fin; i++)
+		{
+			//se o número sendo analisado é menor do que o pivot
+			if(vet[i] < vet[fin])
+			{
+				//colocamos esse número na posição de ordenação
+				aux = vet[j];
+				vet[j] = vet[i];
+				vet[i] = aux;
+				
+				j++; //passamos para a próxima posição na ordenação
+			}
+		}
+	}
+
+	/*
+		Colocamos o pivot no "meio" do vetor de forma 
+		que	à sua esquerda estejam os valore menores, 
+		e à direita of valores maiores
+	*/
+	aux = vet[j];
+	vet[fin] = vet[pivot];
+	vet[pivot] = aux;
+
+	//utilizamos quicksort para cada "metade" do vetor
+	quicksort(vet, in, j-1);
+	quicksort(vet, j+1, fin);
 }
