@@ -10,6 +10,8 @@ typedef struct biggo {
 
 void ler(BigInt *vet);
 void imprimir(BigInt *vet);
+int maior_que(BigInt *vet, int i, int j);
+int mediana(BigInt *v, int in, int mid, int fin);
 void quicksort(BigInt *vet, int in, int fin);
 
 int main(){
@@ -55,33 +57,55 @@ void imprimir(BigInt *vet){
 	fclose(quick);
 }
 
-//retorna o índice da mediana entre três valores nas posições in, mid e fin de um vetor v
-int mediana(int *v, int in, int mid, int fin){
-	
-	if(v[in] < v[mid])
+//verifica se vet[i] é maior ou igual a vet[j]
+int maior_que(BigInt *vet, int i, int j){
+	if(vet[i].high != vet[j].high)
 	{
-		if(v[mid] < v[fin])
-			return mid;
-		if(v[fin] < v[mid])
-			return fin;
-	}else if(v[mid] < v[in])
+		if(vet[i].high >= vet[j].high)
+			return 1;
+		//do contrário
+		return 0;
+	}else //if vet[i].high == vet[j].high
 	{
-		if(v[in] < v[fin])
-			return in;
-		if(v[fin] < v[in])
-			return fin;
-	}else //if(v[fin] < v[mid]
-	{
-		if(v[mid] < v[in])
-			return mid;
-		if(v[in] < v[mid])
-			return in;
+		//se ambos são positivos, comparamos o componente low
+		if(vet[i].high >= 0 && vet[j].high >= 0)
+		{
+			if(vet[i].low >= vet[j].low)
+				return 1;
+			//do contrário
+			return 0;
+		}
+		//se ambos são negativos
+		//invertemos a lógica de ser maior ou menor para low
+		if(vet[i].low < vet[j].low)
+			return 1;
+		//do contrário
+		return 0;
 	}
+}
+
+//retorna o índice da mediana entre três valores nas posições in, mid e fin de um vetor v
+int mediana(BigInt *v, int in, int mid, int fin){
+	
+	if(maior_que(v, in, mid))
+	{
+		if(maior_que(v, mid, fin))
+			return mid;
+		if(maior_que(v, fin, in))
+			return in;
+	}else if(maior_que(v, mid, in))
+	{
+		if(maior_que(v, in, fin))
+			return in;
+		if(maior_que(v, fin, mid))
+			return mid;
+	}else
+		return fin;
 }
 
 void quicksort(BigInt *vet, int in, int fin){
 	int pivot, j; //indices do pivot e do número sendo analisado
-	int i
+	int i;
 	BigInt aux;
 
 	//se o inicio ainda está antes do fim
@@ -92,7 +116,7 @@ void quicksort(BigInt *vet, int in, int fin){
 		
 		//colocamos o pivot na última posição do vetor
 		aux.high = vet[fin].high;
-		aux.low = vet.[fin].low;
+		aux.low = vet[fin].low;
 		vet[fin].high = vet[pivot].high;
 		vet[fin].low = vet[pivot].low;
 		vet[pivot].high = aux.high;
@@ -104,7 +128,7 @@ void quicksort(BigInt *vet, int in, int fin){
 		for(i = j; i < fin; i++)
 		{
 			//se o número sendo analisado é menor do que o pivot
-			if(vet[i] < vet[fin])
+			if(!maior_que(vet, i, fin))
 			{
 				//colocamos esse número na posição de ordenação
 				aux.high = vet[j].high;
