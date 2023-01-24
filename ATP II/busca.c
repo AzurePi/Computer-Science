@@ -1,34 +1,21 @@
 #include <stdio.h>
 
-int flag;
+int busca_crescente(int *vet, int in, int fin, int x){
+	int mid = (in+fin)/2;
 
-void busca_crescente(int *vet, int in, int fin, int x){
-	int	mid = (in+fin)/2;
-	printf("%d ", mid);
-	
 	//se encontramos x no vetor
 	if(vet[in] == x)
-	{
-		flag += 1;
-		printf("%d ", in);
-		return;
-	}
+		return in;
+		
 	if(vet[mid] == x)
-	{
-		flag += 1;
-		printf("%d ", mid);
-		return;
-	}
+		return mid;
+
 	if(vet[fin] == x)
-	{
-		flag += 1;
-		printf("%d ", fin);
-		return;
-	}
+		return fin;
 	
 	//se chegamos ao fim do vetor, e não encontramos x
 	if(in == fin)
-		return;
+		return -1;
 	
 	//do contrário, ainda estamos procurando
 	
@@ -36,43 +23,30 @@ void busca_crescente(int *vet, int in, int fin, int x){
 	if(x < vet[mid])
 	{
 		//buscamos na metade anterior do vetor
-		busca_crescente(vet, in, mid, x);
-		return;
+		return busca_crescente(vet, in, mid, x);;
 	}
 	//se o número é maior do que aposição atual
 	
 	//buscamos na metade posteiror do vetor
-	busca_crescente(vet, mid, fin, x);
-	return;
+	return busca_crescente(vet, mid, fin, x);
 }
 
-void busca_decrescente(int *vet, int in, int fin, int x){
-	int	mid = (in+fin)/2;
-	printf("%d ", mid);
+int busca_decrescente(int *vet, int in, int fin, int x){
+	int mid = (in+fin)/2;
 	
 	//se encontramos x no vetor
 	if(vet[in] == x)
-	{
-		flag += 1;
-		printf("%d ", in);
-		return;
-	}
+		return in;
+		
 	if(vet[mid] == x)
-	{
-		flag += 1;
-		printf("%d ", mid);
-		return;
-	}
+		return mid;
+
 	if(vet[fin] == x)
-	{
-		flag += 1;
-		printf("%d ", fin);
-		return;
-	}
+		return fin;
 	
 	//se chegamos ao fim do vetor, e não encontramos x
 	if(in == fin)
-		return;
+		return -1;
 
 	//do contrário, ainda estamos procurando
 
@@ -80,19 +54,17 @@ void busca_decrescente(int *vet, int in, int fin, int x){
 	if(x < vet[mid])
 	{
 		//buscamos na metade posterior do vetor
-		busca_decrescente(vet, mid, fin, x);
-		return;
+		return busca_decrescente(vet, mid, fin, x);;
 	}
 	//se o número é maior do que a piosição atual
 	
 	//buscamos na metade anterior do vetor
-	busca_decrescente(vet, in, mid, x);
-	return;
+	return busca_decrescente(vet, in, mid, x);
 }
 
 int main(){
 	int N, M;
-	int i, x;
+	int i, x, pos;
 	
 	scanf("%d", &N);
 	int vet[N];
@@ -105,12 +77,10 @@ int main(){
 	for(i = 0; i<M; i++)
 	{
 		scanf("%d", &x);
-		flag = 0;
-		busca_crescente(vet, 0, N/2, x);
-		if(flag == 0)
-			busca_decrescente(vet, (N/2)+1, N-1, x);
-		if(flag == 0)
-			printf("-1 ");
+		pos = busca_crescente(vet, 0, N/2, x);
+		if(pos == -1)
+			pos = busca_decrescente(vet, (N/2)+1, N-1, x);
+		printf("%d ", pos);
 	}
 
 	return 0;
