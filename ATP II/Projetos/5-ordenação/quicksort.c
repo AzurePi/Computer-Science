@@ -104,7 +104,7 @@ int mediana_3(BigInt *v, int in, int mid, int fin){
 		return fin;
 }
 
-//em um vetor v de BigInt, coloca v[i] na posição j, e v[j] na posiç
+//em um vetor v de BigInt, coloca v[i] na posição j, e v[j] na posição i
 void troca(BigInt *v, int i, int j){
 	BigInt aux;
 	
@@ -117,7 +117,7 @@ void troca(BigInt *v, int i, int j){
 }
 
 void quicksort(BigInt *vet, int in, int fin){
-	int pivot, j; //indices do pivot e do número sendo analisado
+	int pivot, maior; //indices do pivot e do número sendo analisado
 	int i;
 
 	//se o inicio ainda está antes do fim
@@ -130,26 +130,27 @@ void quicksort(BigInt *vet, int in, int fin){
 		troca(vet, pivot, fin);
 		
 		//posição em que começaremos a ordenar os números
-		j = in; 
+		maior = in; 
 		
-		for(i = j; i < fin; i++)
+		for(i = maior; i < fin; i++)
 		{
 			//se o pivot é maior que esse número
 			if(maior_que(vet, fin, i))
 			{
 				//colocamos esse número na posição de ordenação
-				troca(vet, i, j);
-				j++; //passamos para a próxima posição na ordenação
+				troca(vet, i, maior);
+				maior++; //passamos para a próxima posição na ordenação
 			}
 		}
+		//saindo desse laço, "maior" guarda o endereço do primeiro número no vetor que é maior que o pivot
 	}
 
 	/*
-		Colocamos o pivot no "meio" do vetor de forma 
+		Colocamos o pivot no "meio" do vetor, de forma 
 		que à sua esquerda estejam os valores menores, 
 		e à direita of valores maiores
 	*/
-	troca(vet, fin, j);
+	troca(vet, fin, maior);
 
 	//utilizamos quicksort para cada "metade" do vetor
 	quicksort(vet, in, j-1);
