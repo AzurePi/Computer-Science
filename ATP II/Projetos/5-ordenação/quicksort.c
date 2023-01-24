@@ -120,7 +120,7 @@ void quicksort(BigInt *vet, int in, int fin){
 	int pivot, maior; //indices do pivot e do número sendo analisado
 	int i;
 
-	//se o inicio ainda está antes do fim
+	//se o início ainda está antes do fim
 	if(in < fin)
 	{
 		//determina o índice do pivot pelo método da mediana de três
