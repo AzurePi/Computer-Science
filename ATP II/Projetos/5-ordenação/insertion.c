@@ -10,6 +10,8 @@ typedef struct biggo {
 
 void ler(BigInt *vet);
 void imprimir(BigInt *vet);
+int maior_que(BigInt *vet, int i, int j);
+void troca(BigInt *v, int i, int j);
 void insertion(BigInt *vet);
 
 int main(){
@@ -17,14 +19,14 @@ int main(){
 	time_t begin, end;
 	double t;
 	
-	ler(vet); //lê dados de bigint.dat e armazena num vetor
+	ler(vet); //lÃª dados de bigint.dat e armazena num vetor
 	
-	begin = clock(); //marca o instante em que o sorting começa
+	begin = clock(); //marca o instante em que o sorting comeÃ§a
 	insertion(vet);
 	end = clock(); //marca o instante em que o sorting termina
 	
 	t = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("%lf", t); //imprime na tela o tempo tomado pela ordenação
+	printf("%lf", t); //imprime na tela o tempo tomado pela ordenaÃ§Ã£o
 	
 	imprimir(vet); //imprime o vetor ordenado no arquivo quick.dat
 	
@@ -55,47 +57,61 @@ void imprimir(BigInt *vet){
 	fclose(quick);
 }
 
-void insertion(BigInt *vet){
-	int i, j;
-	BigInt x;
-	
-	//começando a partir do segundo elemento do vetor, e passando por todos
-	for(i = 1; i<n; i++)
+//verifica se vet[i] Ã© maior ou igual a vet[j]
+int maior_que(BigInt *vet, int i, int j){
+	if(vet[i].high != vet[j].high)
 	{
-		//armazena o número sendo inserido
-		x.high = vet[i].high;
-		x.low = vet[i].low;
-		
-		//começa a análise pela posição imediatamente anterior
-		j = i - 1;
-		
-		//tenta ordenar pelo componente high
-		if(x.high != vet[j].high)
+		if(vet[i].high >= vet[j].high)
+			return 1;
+		//do contrÃ¡rio
+		return 0;
+	}else //if vet[i].high == vet[j].high
+	{
+		//se ambos sÃ£o positivos,
+		if(vet[i].high >= 0 && vet[j].high >= 0)
 		{
-			//procura, nas posições anteriores, onde inserir x
-			while(x.high < vet[j].high && j >= 0)
-			{
-				vet[j+1].high = vet[j].high;
-				vet[j+1].low = vet[j].low;
-				vet[j].high = x.high;
-				vet[j].low = x.low;
-				j--; //vai para a posição anterior
-			}
-		}else //ordena por low
-		{
-			/*
-				Se x.high e vet[j].high são negativos, a comparação da ordenação se inverte para os componentes low
-				Se x.hig e vet[j].high são positivos, a comparação da ordenação ocorre normalmente
-			*/
-			while(((x.high < 0 && vet[j].high < 0 && x.low > vet[j].low) || (x.high > 0 && vet[j].high > 0 && x.low < vet[j].low)) && j >= 0)
-			{
-				vet[j+1].high = vet[j].high;
-				vet[j+1].low = vet[j].low;
-				vet[j].high = x.high;
-				vet[j].low = x.low;
-				j--; //vai para a posição anterior
-			}
+			//comparamos o componente low
+			if(vet[i].low >= vet[j].low)
+				return 1;
+
+			return 0;
 		}
+		//se ambos sÃ£o negativos,
+		//invertemos a lÃ³gica de ser maior ou menor para low
+		if(vet[i].low <= vet[j].low)
+			return 1;
+
+		return 0;
 	}
 }
 
+//em um vetor v de BigInt, coloca v[i] na posiÃ§Ã£o j, e v[j] na posiÃ§Ã£o i
+void troca(BigInt *v, int i, int j){
+	BigInt aux;
+	
+	aux.high = v[j].high;
+	aux.low = v[j].low;
+	v[j].high = v[i].high;
+	v[j].low = v[i].low;
+	v[i].high = aux.high;
+	v[i].low = aux.low;
+}
+
+void insertion(BigInt *vet){
+	int i, j;
+	
+	//comeÃ§ando a partir do segundo elemento do vetor, e passando por todos
+	for(i = 1; i<n; i++)
+	{
+		//comeÃ§a a anÃ¡lise pela posiÃ§Ã£o imediatamente anterior
+		j = i - 1;
+		
+		//enquanto vet[j] Ã© maior do que o nÃºmero que estamos inserindo, e nÃ£o 
+		while(maior_que(vet, j, i) && j >= 0)
+		{
+			//colocamos o nÃºmero em j na posiÃ§Ã£o j+1
+			troca(vet, j, j+1);
+			j--; //vai para a posiÃ§Ã£o anterior
+		}
+	}
+}
