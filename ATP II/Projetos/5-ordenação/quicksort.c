@@ -11,7 +11,7 @@ typedef struct biggo {
 void ler(BigInt *vet);
 void imprimir(BigInt *vet);
 int maior_que(BigInt *vet, int i, int j);
-int mediana(BigInt *v, int in, int mid, int fin);
+int mediana_3(BigInt *v, int in, int mid, int fin);
 void quicksort(BigInt *vet, int in, int fin);
 
 int main(){
@@ -22,11 +22,11 @@ int main(){
 	ler(vet); //lê dados de bigint.dat e armazena num vetor
 	
 	begin = clock(); //marca o instante em que o sorting começa
-	quicksort(vet, 0, n);
+	quicksort(vet, 0, n-1);
 	end = clock(); //marca o instante em que o sorting termina
 	
-	t = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("%lf" , t); //imprime na tela o tempo tomado pela ordneação
+	t = (double)(end - begin) / CLOCKS_PER_SEC; //calcula o tempo transcorrido no sorting
+	printf("%lf" , t); //imprime na tela o tempo tomado pela ordenação
 	
 	imprimir(vet); //imprime o vetor no arquivo quick.dat
 	
@@ -57,35 +57,36 @@ void imprimir(BigInt *vet){
 	fclose(quick);
 }
 
-//verifica se vet[i] é maior ou igual a vet[j]
+//verifica se vet[i] é maior que vet[j]
 int maior_que(BigInt *vet, int i, int j){
 	if(vet[i].high != vet[j].high)
 	{
-		if(vet[i].high >= vet[j].high)
+		if(vet[i].high > vet[j].high)
 			return 1;
 		//do contrário
 		return 0;
 	}else //if vet[i].high == vet[j].high
 	{
-		//se ambos são positivos, comparamos o componente low
+		//se ambos são positivos,
 		if(vet[i].high >= 0 && vet[j].high >= 0)
 		{
-			if(vet[i].low >= vet[j].low)
+			//comparamos o componente low
+			if(vet[i].low > vet[j].low)
 				return 1;
-			//do contrário
+
 			return 0;
 		}
-		//se ambos são negativos
+		//se ambos são negativos,
 		//invertemos a lógica de ser maior ou menor para low
 		if(vet[i].low < vet[j].low)
 			return 1;
-		//do contrário
+
 		return 0;
 	}
 }
 
 //retorna o índice da mediana entre três valores nas posições in, mid e fin de um vetor v
-int mediana(BigInt *v, int in, int mid, int fin){
+int mediana_3(BigInt *v, int in, int mid, int fin){
 	
 	if(maior_que(v, in, mid))
 	{
@@ -103,41 +104,41 @@ int mediana(BigInt *v, int in, int mid, int fin){
 		return fin;
 }
 
+//em um vetor v de BigInt, coloca v[i] na posição j, e v[j] na posiç
+void troca(BigInt *v, int i, int j){
+	BigInt aux;
+	
+	aux.high = v[j].high;
+	aux.low = v[j].low;
+	v[j].high = v[i].high;
+	v[j].low = v[i].low;
+	v[i].high = aux.high;
+	v[i].low = aux.low;
+}
+
 void quicksort(BigInt *vet, int in, int fin){
 	int pivot, j; //indices do pivot e do número sendo analisado
 	int i;
-	BigInt aux;
 
 	//se o inicio ainda está antes do fim
 	if(in < fin)
 	{
 		//determina o índice do pivot pelo método da mediana de três
-		pivot = mediana(vet, in, (in+fin)/2, fin);
+		pivot = mediana_3(vet, in, (in+fin)/2, fin);
 		
 		//colocamos o pivot na última posição do vetor
-		aux.high = vet[fin].high;
-		aux.low = vet[fin].low;
-		vet[fin].high = vet[pivot].high;
-		vet[fin].low = vet[pivot].low;
-		vet[pivot].high = aux.high;
-		vet[pivot].low = aux.low;
+		troca(vet, pivot, fin);
 		
 		//posição em que começaremos a ordenar os números
 		j = in; 
 		
 		for(i = j; i < fin; i++)
 		{
-			//se o número sendo analisado é menor do que o pivot
-			if(!maior_que(vet, i, fin))
+			//se o pivot é maior que esse número
+			if(maior_que(vet, fin, i))
 			{
 				//colocamos esse número na posição de ordenação
-				aux.high = vet[j].high;
-				aux.low = vet[j].low;
-				vet[j].high = vet[i].high;
-				vet[j].low = vet[i].low;
-				vet[i].high = aux.high;
-				vet[i].low = aux.low;
-				
+				troca(vet, i, j);
 				j++; //passamos para a próxima posição na ordenação
 			}
 		}
@@ -145,15 +146,10 @@ void quicksort(BigInt *vet, int in, int fin){
 
 	/*
 		Colocamos o pivot no "meio" do vetor de forma 
-		que à sua esquerda estejam os valore menores, 
+		que à sua esquerda estejam os valores menores, 
 		e à direita of valores maiores
 	*/
-	aux.high = vet[j].high;
-	aux.low = vet[j].low;
-	vet[fin].high = vet[pivot].high;
-	vet[fin].low = vet[pivot].low;
-	vet[pivot].high = aux.high;
-	vet[pivot].low = aux.low;
+	troca(vet, fin, j);
 
 	//utilizamos quicksort para cada "metade" do vetor
 	quicksort(vet, in, j-1);
