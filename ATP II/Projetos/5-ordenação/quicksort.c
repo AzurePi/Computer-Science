@@ -58,12 +58,13 @@ void imprimir(BigInt *vet){
 }
 
 //verifica se vet[i] é maior que vet[j]
+//retorna 1 para ser maior, e 0 para ser menor ou igual
 int maior_que(BigInt *vet, int i, int j){
 	if(vet[i].high != vet[j].high)
 	{
 		if(vet[i].high > vet[j].high)
 			return 1;
-		//do contrário
+
 		return 0;
 	}else //if vet[i].high == vet[j].high
 	{
@@ -126,13 +127,14 @@ void quicksort(BigInt *vet, int in, int fin){
 		//determina o índice do pivot pelo método da mediana de três
 		pivot = mediana_3(vet, in, (in+fin)/2, fin);
 		
-		//colocamos o pivot na última posição do vetor
+		//colocamos o pivot na posição fin do vetor
 		troca(vet, pivot, fin);
 		
-		//posição em que começaremos a ordenar os números
+		//in é a posição "maior" em que começaremos a ordenar os números
 		maior = in; 
 		
-		for(i = maior; i < fin; i++)
+		//para cada elemento do vetor
+		for(i = in; i < fin; i++)
 		{
 			//se o pivot é maior que esse número
 			if(maior_que(vet, fin, i))
@@ -143,8 +145,7 @@ void quicksort(BigInt *vet, int in, int fin){
 			}
 		}
 		//saindo desse laço, "maior" guarda o endereço do primeiro número no vetor que é maior que o pivot
-	}
-
+		
 	/*
 		Colocamos o pivot no "meio" do vetor, de forma 
 		que à sua esquerda estejam os valores menores, 
@@ -153,6 +154,7 @@ void quicksort(BigInt *vet, int in, int fin){
 	troca(vet, fin, maior);
 
 	//utilizamos quicksort para cada "metade" do vetor
-	quicksort(vet, in, j-1);
-	quicksort(vet, j+1, fin);
+	quicksort(vet, in, maior-1);
+	quicksort(vet, maior+1, fin);
+	}
 }
