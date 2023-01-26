@@ -95,14 +95,22 @@ int mediana_3(BigInt *v, int in, int mid, int fin){
 			return mid;
 		if(maior_que(v, fin, in))
 			return in;
-	}else if(maior_que(v, mid, in))
+	}
+	if(maior_que(v, in, fin))
 	{
-		if(maior_que(v, in, fin))
-			return in;
 		if(maior_que(v, fin, mid))
+			return fin;
+		if(maior_que(v, mid, in))
+			return in;
+	}
+	if(maior_que(v, mid, fin))
+	{
+		if(maior_que(v, fin, in))
+			return fin;
+		if(maior_que(v, in, mid))
 			return mid;
-	}else
-		return fin;
+	}
+	return mid; //por default, se todos são iguais retorna a posição mid
 }
 
 //em um vetor v de BigInt, coloca v[i] na posição j, e v[j] na posição i
