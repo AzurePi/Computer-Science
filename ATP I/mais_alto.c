@@ -1,4 +1,3 @@
-// Shared via Compiler App https://g633x.app.goo.gl/TPlw
 #include <stdio.h>
 
 int main()
@@ -19,4 +18,3 @@ int main()
 
 	return 0;
 }
-
