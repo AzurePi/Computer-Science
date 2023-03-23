@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner();
+        Scanner sc = new Scanner(System.in);
         System.out.println("Dimensões da matriz 1: ");
 
         int i1 = sc.nextInt();
@@ -31,10 +31,15 @@ public class Main {
 
         if(j1 == i2){
             double[][] res = new double[i1][j2];
+            for(int i=0; i<i1; i++)
+                for(int j =0; j<j2; j++)
+                    for(int k=0; k<j1; k++)
+                        res[i][j] = m1[i][k] + m2[k][j];
+            
             for(int i=0; i<i1; i++){
-                for(int j =0; j<j2; j++){
-
-                }
+                   for(int j=0; j<j2; j++)
+                       System.out.print(res[i][j] + " ");
+                System.out.print("\n");
             }
         }
         else System.out.println("Essas matrizes não podme ser multiplicadas");
