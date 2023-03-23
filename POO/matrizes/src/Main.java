@@ -42,7 +42,7 @@ public class Main {
                 System.out.print("\n");
             }
         }
-        else System.out.println("Essas matrizes não podme ser multiplicadas");
+        else System.out.println("Essas matrizes não podem ser multiplicadas");
 
         sc.close();
     }
