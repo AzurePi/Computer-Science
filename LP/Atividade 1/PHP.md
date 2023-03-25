@@ -1,3 +1,3 @@
-- Linguagem server-side, mas com poucos aplicativos de servidor
-- Baixa qualidade de tratamento de erros (poucas ferramentas de depuração)
 - Linguagem baseada em C, com muitas similaridades sintáticas
+- Problemas de compatibilidade com versões anteriores
+- Performance inferior a outras linguagens, especialmente em projetos de grande escala
