@@ -6,5 +6,5 @@ function media($a, $b){
 $a = (float)readline('Digite um número: ');
 $b = (float)readline('Digite outro número: ');
 $media = media($a,$b);
-print "Média: $media\n";
+echo "Média: $media\n";
 ?>
