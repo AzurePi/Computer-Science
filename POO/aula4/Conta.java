@@ -15,6 +15,14 @@ public class Conta {
     cpf = arg;
   }
   
+  public void setNumero(long arg){
+    numero = arg;
+  }
+  
+  /*não faz sentido métodos set para saldo (que é manipulado através de outros métodos)
+  ou AGENCIA (que é constante para todos)
+  */
+  
   public String[] getNome(){
     return nome;
   }
