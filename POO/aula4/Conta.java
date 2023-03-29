@@ -1,13 +1,13 @@
 package aula4;
 
 public class Conta {
-  private String[] nome;
+  private String nome;
   private long cpf;
   private double saldo = 0;
   private int numero;
   private static final int AGENCIA = 1;
   
-  public void setNome(String[] arg){
+  public void setNome(String arg){
     nome = arg;
   }
   
@@ -15,7 +15,7 @@ public class Conta {
     cpf = arg;
   }
   
-  public void setNumero(long arg){
+  public void setNumero(int arg){
     numero = arg;
   }
   
@@ -23,7 +23,7 @@ public class Conta {
   ou AGENCIA (que é constante para todos)
   */
   
-  public String[] getNome(){
+  public String getNome(){
     return nome;
   }
   

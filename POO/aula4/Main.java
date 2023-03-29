@@ -6,9 +6,9 @@ public class Main {
         
         Conta julia = new Conta();
         julia.setNome("Júlia");
-        julia.setCPF(74710674620l);
+        julia.setCPF(74710674620L);
         julia.setNumero(++n);
         julia.depositar(1397000);
-        double saque = julia.sacar(10);
+        julia.sacar(10);
     }
 }
