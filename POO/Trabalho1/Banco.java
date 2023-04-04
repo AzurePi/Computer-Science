@@ -12,7 +12,7 @@ public class Banco {
     private String cnpj;
     private String endereco;
     private Conta contaLogada = new Conta();
-    private List<Agencia> agencias = new List<>;
+    private List<Agencia> agencias = null;
 
 
     //métodos------------------------------------------------------------------
@@ -45,7 +45,7 @@ public class Banco {
     }
 
     public Agencia buscarAgencia(int codigo){
-        Agencia agencia = new Agencia(); return agencia;
+        return null;
     }
 
     public void tranferencia(int numAgencia, int numConta){

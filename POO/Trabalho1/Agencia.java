@@ -1,9 +1,6 @@
 package Trabalho1;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  *
@@ -13,7 +10,14 @@ public class Agencia {
     private int codigo;
     private String nome;
     private String endereco;
-    private List<Conta> contas = new List<Conta>();
+    private final List<Conta> contas = null;
+
+    public Agencia(int cod, String nom, String end){
+        this.codigo = cod;
+        this.nome = nom;
+        this.endereco = end;
+    }
+
 
     //métodos------------------------------------------------------------------
     public void cadastrarConta(Conta conta){
@@ -22,5 +26,6 @@ public class Agencia {
 
     public Conta buscarConta(int numConta, String senha){
 
+        return null;
     }
 }
