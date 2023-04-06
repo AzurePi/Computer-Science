@@ -8,7 +8,6 @@ import java.util.Scanner;
  */
 public class Pessoa {
     private String nome;
-    private float peso;
     private Andar andar; //andar em que a pessoa está
     private Predio predio; //prédio em que a pessoa está
     
