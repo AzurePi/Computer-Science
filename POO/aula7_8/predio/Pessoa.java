@@ -1,4 +1,4 @@
-package aula7.predio;
+package aula7_8.predio;
 
 import java.util.Scanner;
 
