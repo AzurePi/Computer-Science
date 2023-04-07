@@ -14,6 +14,54 @@ public class Banco {
     private Conta contaLogada = new Conta();
     private List<Agencia> agencias = null;
 
+    //setters & getters--------------------------------------------------------
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public Conta getContaLogada() {
+        return contaLogada;
+    }
+
+    public void setContaLogada(Conta contaLogada) {
+        this.contaLogada = contaLogada;
+    }
+
+    public List<Agencia> getAgencias() {
+        return agencias;
+    }
+
+    public void setAgencias(List<Agencia> agencias) {
+        this.agencias = agencias;
+    }
 
     //métodos------------------------------------------------------------------
     public void logarCliente(int numAgencia, int numConta, String senha){
