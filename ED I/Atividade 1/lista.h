@@ -4,7 +4,6 @@
 #define TRUE 1  
 #define FALSE 0
 
-//------------------------------------------------------
 
 // Estruturas e tipos empregados
 //-------------------------------------------
@@ -47,12 +46,12 @@ void Imprimir(lista *L);
 int Tamanho(lista *L);
 
 // Implementadas por Lucas e Pedro:
+// -----------------------------------------
 boolean Inserir_ord_Nome(tipo_elem x, lista *L); //Insere ordenado por nome
-boolean Inserir_ord_ch(tipo_elem x, lista *L);   //Insere ordenado por chave
-boolean Buscar(tipo_chave x, lista *L, int *p);  //Busca sequencial por chave
-boolean Buscar_ord(tipo_chave x, lista *L, int *p); //Busca binaria por chave
 boolean Buscar_Nome(char *nome, lista *L, int *p);  //Busca sequencial por nome
 boolean Buscar_ord_Nome(char *nome, lista *L, int *p); //Busca ordenada por nome
+boolean Inserir_ord_ch(tipo_elem x, lista *L);   //Insere ordenado por chave
+boolean Buscar(tipo_chave x, lista *L, int *p);  //Busca sequencial por chave
+boolean Buscar_ord(tipo_chave x, lista *L, int *p); //Busca binária por chave
 //-------------------------------------------
-
 

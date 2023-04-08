@@ -1,15 +1,19 @@
+/*
+Lucas Furriel Rodrigues
+Pedro Benedicto de Melo Cardana
+*/
 #include "lista.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
 
+//main feita para testar a ordenação dos elementos da lista por chave
 int main(int argc, char *argv[]){
 	lista *l = malloc(sizeof(lista));
 	tipo_elem *x = malloc(sizeof(tipo_elem));
-	int op = 1;
-	char pal[30];
-	int i = 1;
+	int op = 1; //variável para controlar inserção de novos elementos
+	int i = 1; 
 	
 	setlocale(LC_ALL, "PORTUGUESE");
 	
@@ -20,8 +24,8 @@ int main(int argc, char *argv[]){
 		scanf(" %[^\n]s", x->info.nome);
 		/*printf("Digite a idade: ");
 		scanf("%d", &x->info.idade);
-		printf("Digite a mÃ©dia: ");
-		scanf("%f", &x->info.media_final);*/
+		printf("Digite a média: ");
+		scanf("%f", &x->info.media_final);*/ //
 		x->info.idade = i;
 		x->info.media_final = i;
 		i++;
