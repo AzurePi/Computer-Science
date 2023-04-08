@@ -2,7 +2,6 @@ package Trabalho1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +14,7 @@ public class DisplayBanco {
         String linha = null;
         String[] campos = null;
 
-        //leitura de banco.txt -------------------------------------------
+        //leitura de banco.txt ------------------------------------------------
         try {
             sc = new Scanner(new File(banco));
         } catch(FileNotFoundException ex) {
@@ -23,59 +22,52 @@ public class DisplayBanco {
         }
 
         linha = sc.nextLine();
+        campos = linha.split("#"); //divide a linha em campos separados por "#"
 
-        //divide a linha em campos separados por "#"
-        campos = linha.split("#");
+        meuBanco = new Banco(Integer.parseInt(campos[1]),
+                campos[0],
+                campos[2],
+                campos[3]);
 
-        meuBanco.setNome(campos[0]);
-        meuBanco.setNumero(Integer.parseInt(campos[1]));
-        meuBanco.setCnpj(campos[2]);
-        meuBanco.setEndereco(campos[3]);
         sc.close();
 
-        //leitura de agencias.txt e contas.txt ---------------------------
+        //leitura de agencias.txt ---------------------------------------------
         try {
             sc = new Scanner(new File(agencias));
         } catch(FileNotFoundException ex) {
             Logger.getLogger(DisplayBanco.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        Agencia agenciaAux = null;
-        int i = 0;
         while(sc.hasNextLine()) {
-            agenciaAux = meuBanco.getAgencias().get(i);
-
             linha = sc.nextLine();
+            campos = linha.split("#"); //divide a linha em campos separados por "#"
 
-            //divide a linha em campos separados por "#"
-            campos = linha.split("#");
-
-            agenciaAux.setNome(campos[0]);
-            agenciaAux.setCodigo(Integer.parseInt(campos[1]));
-            agenciaAux.setEndereco(campos[2]);
-
-            i++;
+            meuBanco.cadastrarAgencia(campos[0], Integer.parseInt(campos[1]), campos[2]);
         }
         sc.close();
 
-        //leitura de contas.txt ------------------------------------------
+        //leitura de contas.txt -----------------------------------------------
         try {
             sc = new Scanner(new File(contas));
         } catch(FileNotFoundException ex) {
             Logger.getLogger(DisplayBanco.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        Conta contaAux = null;
-        i = 0;
+        Conta contaAux;
         while(sc.hasNextLine()) {
             contaAux = new Conta();
 
             linha = sc.nextLine();
+            campos = linha.split("#"); //divide a linha em campos separados por "#"
 
-            //divide a linha em campos separados por "#"
-            campos = linha.split("#");
-
-            i++;
+            meuBanco.cadastrarConta(Integer.parseInt(campos[5]),
+                    Integer.parseInt(campos[6]),
+                    campos[0],
+                    Double.parseDouble(campos[4]),
+                    campos[2],
+                    campos[3],
+                    campos[1],
+                    campos[7]);
         }
         sc.close();
 
@@ -83,7 +75,21 @@ public class DisplayBanco {
 
     //métodos------------------------------------------------------------------
     public void login(){
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("-------LOGIN-------");
+        System.out.println("Agência: ");
+        int a = sc.nextInt();
+        System.out.println("Número da Conta: ");
+        int n = sc.nextInt();
+        System.out.println("Senha: ");
+        String senha = sc.nextLine();
+
+        meuBanco.logarCliente(a, n, senha);
+        if(meuBanco.getContaLogada() == null) {
+            System.out.println("Falha. Tente Novamente\n");
+            login();
+        }
     }
 
     private void telaUsuario(){
