@@ -8,40 +8,76 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DisplayBanco {
-    private Banco meuBanco = new Banco();
+    private Banco meuBanco;
 
     public DisplayBanco(String banco, String agencias, String contas){
-        List<File> arquivos = null;
-        arquivos.add(new File(banco));
-        arquivos.add(new File(agencias));
-        arquivos.add(new File(contas));
+        Scanner sc = null;
+        String linha = null;
+        String[] campos = null;
 
-        Scanner scanner = null;
-
-        //para cada arquivo
-        for(File arquivo : arquivos){
-            try {
-                scanner = new Scanner(arquivo);
-            } catch(FileNotFoundException ex) {
-                Logger.getLogger(DisplayBanco.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            //lê cada linha do arquivo
-            while(scanner.hasNextLine()){
-                String linha = scanner.nextLine();
-
-                //divide a linha em campos separados por "|"
-                String[] campos = linha.split("#");
-
-                //imprime o conteúdo de cada campo, usando "|" como separador
-                for (String campo: campos) {
-                    System.out.println(campo + " | ");
-                }
-                System.out.println(); //pula uma linha
-            }
+        //leitura de banco.txt -------------------------------------------
+        try {
+            sc = new Scanner(new File(banco));
+        } catch(FileNotFoundException ex) {
+            Logger.getLogger(DisplayBanco.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        Banco aux = new Banco();
+        linha = sc.nextLine();
+
+        //divide a linha em campos separados por "#"
+        campos = linha.split("#");
+
+        meuBanco.setNome(campos[0]);
+        meuBanco.setNumero(Integer.parseInt(campos[1]));
+        meuBanco.setCnpj(campos[2]);
+        meuBanco.setEndereco(campos[3]);
+        sc.close();
+
+        //leitura de agencias.txt e contas.txt ---------------------------
+        try {
+            sc = new Scanner(new File(agencias));
+        } catch(FileNotFoundException ex) {
+            Logger.getLogger(DisplayBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Agencia agenciaAux = null;
+        int i = 0;
+        while(sc.hasNextLine()) {
+            agenciaAux = meuBanco.getAgencias().get(i);
+
+            linha = sc.nextLine();
+
+            //divide a linha em campos separados por "#"
+            campos = linha.split("#");
+
+            agenciaAux.setNome(campos[0]);
+            agenciaAux.setCodigo(Integer.parseInt(campos[1]));
+            agenciaAux.setEndereco(campos[2]);
+
+            i++;
+        }
+        sc.close();
+
+        //leitura de contas.txt ------------------------------------------
+        try {
+            sc = new Scanner(new File(contas));
+        } catch(FileNotFoundException ex) {
+            Logger.getLogger(DisplayBanco.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Conta contaAux = null;
+        i = 0;
+        while(sc.hasNextLine()) {
+            contaAux = new Conta();
+
+            linha = sc.nextLine();
+
+            //divide a linha em campos separados por "#"
+            campos = linha.split("#");
+
+            i++;
+        }
+        sc.close();
 
     }
 
