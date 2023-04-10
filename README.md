@@ -1,2 +1,2 @@
-A lovely little folder full of exercises from Proggramming Class.
-Don't expect any translations.
+Storage of most files I'm making during my course, separeted by subject.
+Somewhat commented, mostly in portuguese.
