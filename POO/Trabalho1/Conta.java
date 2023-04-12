@@ -1,5 +1,8 @@
 package Trabalho1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Azure
  */
@@ -12,6 +15,7 @@ public class Conta {
     private String cpf;
     private String dataNascimento;
     private String senha;
+    private List<String> extrato = new ArrayList<>();
 
     public Conta(int numero,
                  int agencia,
@@ -92,8 +96,15 @@ public class Conta {
         return senha;
     }
 
+    public List<String> getExtrato() {
+        return extrato;
+    }
 
-    //métodos------------------------------------------------------------------
+    public void setExtrato(List<String> extrato) {
+        this.extrato = extrato;
+    }
+
+//métodos------------------------------------------------------------------
     /**
      * Deposita um valor na conta
      *
@@ -134,5 +145,26 @@ public class Conta {
             return true;
         }
         return false;
+    }
+
+    public void novaOperacao(String operacao, double valor){
+        String linha = operacao.toUpperCase() + ": ";
+        linha += valor;
+
+        extrato.add(linha);
+    }
+
+    public void novaOperacao(String operacao, double valor, String destino){
+        String linha = operacao.toUpperCase() + ": ";
+        linha += valor;
+
+        if(valor > 0) //se o valor vier como positivo, é porque entrou na conta vindo de alguém
+            linha += " de ";
+        if(valor < 0) //se o valor vier como negativo, é porque saiu da conta indo para alguém
+            linha += " para ";
+
+        linha += destino;
+
+        extrato.add(linha);
     }
 }

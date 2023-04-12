@@ -2,6 +2,7 @@ package Trabalho1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,7 +54,6 @@ public class DisplayBanco {
             Logger.getLogger(DisplayBanco.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        Conta contaAux;
         while (sc.hasNextLine()) {
 
             linha = sc.nextLine();
@@ -99,7 +99,9 @@ public class DisplayBanco {
     /**
      * Cria uma estrutura de controle para determinar a operação a ser realizada pelo usuário
      */
-    private void telaUsuario() {
+    public void telaUsuario() {
+        login();
+
         int op; //variável para controlar a operação
         Scanner sc = new Scanner(System.in);
 
@@ -110,7 +112,8 @@ public class DisplayBanco {
             System.out.println("3 - PIX");
             System.out.println("4 - Transferência");
             System.out.println("5 - Saldo");
-            System.out.println("6 - Alterar senha");
+            System.out.println("6 - Extrato");
+            System.out.println("7 - Alterar senha");
             System.out.println("\n0 - Sair\n");
 
             op = sc.nextInt();
@@ -121,7 +124,8 @@ public class DisplayBanco {
                 case 3 -> operacaoPix();
                 case 4 -> operacaoTransferencia();
                 case 5 -> operacaoSaldo();
-                case 6 -> alterarSenha();
+                case 6 -> operacaoExtrato();
+                case 7 -> alterarSenha();
             }
         } while (op != 0);
         operacaoSair();
@@ -150,12 +154,23 @@ public class DisplayBanco {
         funcionou = meuBanco.realizarSaque(Math.abs(sc.nextDouble()));
 
         if (!funcionou)
-            System.out.println("ERRO: Valor excede o saldo em conta");
+            System.out.println("ERRO: Valor excede o saldo em conta. Tente novamente.");
     }
 
     private void operacaoPix() {
         Scanner sc = new Scanner(System.in);
+        String cpf;
+        float valor;
 
+        System.out.println("------ PIX ------");
+        System.out.println("CPF: ");
+        cpf = sc.nextLine();
+        System.out.println("Valor: ");
+        valor = sc.nextFloat();
+
+        boolean b = meuBanco.pix(cpf, valor);
+        if(!b)
+            System.out.println("ERRO: Tente novamente.");
 
     }
 
@@ -177,7 +192,7 @@ public class DisplayBanco {
 
         boolean b = meuBanco.transferencia(agencia, conta, valor);
         if (!b)
-            System.out.println("Falha na transferência. Verifique os dados e tente novamente.");
+            System.out.println("ERRO: Verifique os dados e tente novamente.");
     }
 
     /**
@@ -185,6 +200,15 @@ public class DisplayBanco {
      */
     private void operacaoSaldo() {
         System.out.println("Saldo em conta: " + meuBanco.getContaLogada().getSaldo());
+    }
+
+    private void operacaoExtrato() {
+        List<String> extrato = meuBanco.extrato();
+
+        for (String linha : extrato)
+            System.out.println(linha);
+
+        System.out.println("Saldo: " + meuBanco.saldo());
     }
 
     private void alterarSenha(){

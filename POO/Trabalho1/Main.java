@@ -5,18 +5,17 @@ package Trabalho1;
  * @author Azure
  */
 public class Main {
-    private String arquivoBanco = "/files/banco.txt";
-    private String arquivoAgencias = "/files/agencias.txt";
-    private String arquivoContas = "/files/contas.txt";
+    private final String arquivoBanco = "/files/banco.txt";
+    private final String arquivoAgencias = "/files/agencias.txt";
+    private final String arquivoContas = "/files/contas.txt";
 
-    private DisplayBanco display = new DisplayBanco(arquivoBanco, arquivoAgencias, arquivoContas);
-    public static void main(String[] args){
+    private final DisplayBanco display = new DisplayBanco(arquivoBanco, arquivoAgencias, arquivoContas);
 
+    public void main(String[] args){
+        display.telaUsuario();
         
         
         
         
     }
-    
-    
 }

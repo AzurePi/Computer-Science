@@ -1,6 +1,7 @@
 package Trabalho1;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Azure
@@ -93,6 +94,7 @@ public class Banco {
             return false;
 
         contaLogada.sacar(valor);
+        contaLogada.novaOperacao("Saque", -valor);
         return true;
     }
 
@@ -103,6 +105,7 @@ public class Banco {
      */
     public void realizarDeposito(double valor) {
         contaLogada.depositar(valor);
+        contaLogada.novaOperacao("Depósito", valor);
     }
 
     /**
@@ -110,6 +113,10 @@ public class Banco {
      */
     public double saldo() {
         return contaLogada.getSaldo();
+    }
+
+    public List<String> extrato(){
+        return contaLogada.getExtrato();
     }
 
     /**
@@ -186,6 +193,8 @@ public class Banco {
 
         contaLogada.sacar(valor);
         auxConta.depositar(valor);
+        contaLogada.novaOperacao("Transferência", -valor, auxConta.getNome());
+        auxConta.novaOperacao("Trasferência", valor, contaLogada.getNome());
         return true;
     }
 
@@ -194,7 +203,7 @@ public class Banco {
 
         primeiroFor: for(Agencia agencia : agencias){
             for(Conta conta : agencia.getContas()) {
-                if (chaveCPF == conta.getCpf()) {
+                if (Objects.equals(chaveCPF, conta.getCpf())) {
                     auxConta = conta;
                     break primeiroFor;
                 }
@@ -209,6 +218,8 @@ public class Banco {
 
         contaLogada.sacar(valor);
         auxConta.depositar(valor);
+        contaLogada.novaOperacao("PIX", -valor, auxConta.getNome());
+        auxConta.novaOperacao("PIX", valor, contaLogada.getNome());
         return true;
     }
 
