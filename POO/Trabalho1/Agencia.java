@@ -77,4 +77,19 @@ public class Agencia {
 
         return null;
     }
+
+    /**
+     * Busca uma conta dentre as listadas na agência com base em seu número.
+     * @param numConta número (int) da conta sendo buscada
+     * @return Objeto Conta, se o número e senha informados estiverem corretos, ou null caso contrário
+     */
+    public Conta buscarConta(int numConta) {
+
+        for (Conta conta : contas) {
+            if (conta.getNumero() == numConta)
+                return conta;
+        }
+
+        return null;
+    }
 }

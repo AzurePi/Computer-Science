@@ -172,13 +172,44 @@ public class Banco {
         return null;
     }
 
-    public void tranferencia(int numAgencia, int numConta) {
+    public boolean transferencia(int numAgencia, int numConta, float valor) {
         Agencia auxAgencia = buscarAgencia(numAgencia);
+        if(auxAgencia == null)
+            return false;
+
         Conta auxConta = auxAgencia.buscarConta(numConta);
+        if(auxConta == null)
+            return false;
+
+        if(valor > contaLogada.getSaldo())
+            return false;
+
+        contaLogada.sacar(valor);
+        auxConta.depositar(valor);
+        return true;
     }
 
-    public void pix(String chaveCPF) {
+    public boolean pix(String chaveCPF, float valor) {
+        Conta auxConta = null;
 
+        primeiroFor: for(Agencia agencia : agencias){
+            for(Conta conta : agencia.getContas()) {
+                if (chaveCPF == conta.getCpf()) {
+                    auxConta = conta;
+                    break primeiroFor;
+                }
+            }
+        }
+
+        if (auxConta == null)
+            return false;
+
+        if(valor > contaLogada.getSaldo())
+            return false;
+
+        contaLogada.sacar(valor);
+        auxConta.depositar(valor);
+        return true;
     }
 
     /**

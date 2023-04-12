@@ -154,11 +154,30 @@ public class DisplayBanco {
     }
 
     private void operacaoPix() {
+        Scanner sc = new Scanner(System.in);
+
 
     }
 
+    /**
+     * Realiza uma transferência à partir da conta logada. Pede, no console, os dados da conta de destino e o valor a ser transferido
+     */
     private void operacaoTransferencia() {
+        Scanner sc = new Scanner(System.in);
+        int agencia, conta;
+        float valor;
 
+        System.out.println("------ TRASFERÊNCIA ------");
+        System.out.println("Agência à qual transferir: ");
+        agencia = sc.nextInt();
+        System.out.println("Conta à qual transferir: ");
+        conta = sc.nextInt();
+        System.out.println("Valor a transferir: ");
+        valor = sc.nextFloat();
+
+        boolean b = meuBanco.transferencia(agencia, conta, valor);
+        if (!b)
+            System.out.println("Falha na transferência. Verifique os dados e tente novamente.");
     }
 
     /**
