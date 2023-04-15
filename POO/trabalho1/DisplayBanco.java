@@ -116,7 +116,7 @@ public class DisplayBanco {
                 System.out.println("5 - Saldo");
                 System.out.println("6 - Extrato");
                 System.out.println("7 - Alterar senha");
-                System.out.println("\n0 - Sair\n");
+                System.out.println("\n0 - Sair");
 
                 op = sc.nextInt();
 

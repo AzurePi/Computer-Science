@@ -19,7 +19,5 @@ public class Main {
         final DisplayBanco display = new DisplayBanco(arquivoBanco, arquivoAgencias, arquivoContas);
 
         display.telaUsuario();
-
-
     }
 }
