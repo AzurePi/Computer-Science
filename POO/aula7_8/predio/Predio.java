@@ -43,6 +43,6 @@ public class Predio {
 
     /** Cria um elevador no prédio */
     public void criarElevador(){
-        elevadores.add(new Elevador(elevadores.size() + 1);
+        elevadores.add(new Elevador(elevadores.size() + 1));
     }
 }

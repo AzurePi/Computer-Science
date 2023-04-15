@@ -1,8 +1,8 @@
-package Trabalho1;
+package trabalho1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,8 +12,8 @@ public class DisplayBanco {
 
     public DisplayBanco(String banco, String agencias, String contas) {
         Scanner sc = null;
-        String linha = null;
-        String[] campos = null;
+        String linha;
+        String[] campos;
 
         //leitura de banco.txt ------------------------------------------------
         try {
@@ -132,7 +132,7 @@ public class DisplayBanco {
     }
 
     /**
-     * Realiza um depósito para a conta logada. Prde, no console, o valor a ser depositado
+     * Realiza um depósito para a <code>contaLogada</code>. Pede, no console, o valor a ser depositado
      */
     private void operacaoDeposito() {
         Scanner sc = new Scanner(System.in);
@@ -143,7 +143,7 @@ public class DisplayBanco {
     }
 
     /**
-     * Realiza um saque da conta logada. Pede, no console, pelo valor a ser sacado
+     * Realiza um saque da <code>contaLogada</code>. Pede, no console, o valor a ser sacado
      */
     private void operacaoSaque() {
         Scanner sc = new Scanner(System.in);
@@ -157,6 +157,9 @@ public class DisplayBanco {
             System.out.println("ERRO: Valor excede o saldo em conta. Tente novamente.");
     }
 
+    /**
+     * Realiza uma tranferência via pix a partir da <code>contaLogada</code>. Pede, no console, o CPF do destinatário
+     */
     private void operacaoPix() {
         Scanner sc = new Scanner(System.in);
         String cpf;
@@ -169,13 +172,12 @@ public class DisplayBanco {
         valor = sc.nextFloat();
 
         boolean b = meuBanco.pix(cpf, valor);
-        if(!b)
+        if (!b)
             System.out.println("ERRO: Tente novamente.");
-
     }
 
     /**
-     * Realiza uma transferência à partir da conta logada. Pede, no console, os dados da conta de destino e o valor a ser transferido
+     * Realiza uma transferência a partir da <code>contaLogada</code>. Pede, no console, os dados da <code>Conta</code> de destino e o valor a ser transferido
      */
     private void operacaoTransferencia() {
         Scanner sc = new Scanner(System.in);
@@ -196,14 +198,14 @@ public class DisplayBanco {
     }
 
     /**
-     * Imprime na tela o saldo em conta da conta logada de meuBanco
+     * Imprime na tela o saldo em conta da <code>contaLogada</code>
      */
     private void operacaoSaldo() {
         System.out.println("Saldo em conta: " + meuBanco.getContaLogada().getSaldo());
     }
 
     private void operacaoExtrato() {
-        List<String> extrato = meuBanco.extrato();
+        ArrayList<String> extrato = meuBanco.extrato();
 
         for (String linha : extrato)
             System.out.println(linha);
@@ -211,7 +213,10 @@ public class DisplayBanco {
         System.out.println("Saldo: " + meuBanco.saldo());
     }
 
-    private void alterarSenha(){
+    /**
+     * Dá ao usuário a oportunidade de alterar a senha de <code>contaLogada</code> mediante confirmação da senha atual
+     */
+    private void alterarSenha() {
         Scanner sc = new Scanner(System.in);
         String nova, atual;
         boolean funcionou;
@@ -223,7 +228,7 @@ public class DisplayBanco {
         atual = sc.nextLine();
 
         funcionou = meuBanco.getContaLogada().setSenha(atual, nova);
-        if(!funcionou)
+        if (!funcionou)
             System.out.println("Senha atual incorreta. Alteração cancelada");
     }
 

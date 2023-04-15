@@ -1,4 +1,4 @@
-package Trabalho1;
+package trabalho1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ public class Agencia {
     private int codigo;
     private String nome;
     private String endereco;
-    private final List<Conta> contas = new ArrayList<>();
+    private final ArrayList<Conta> contas = new ArrayList<>();
 
     public Agencia(String nome, int codigo, String endereco) {
         this.nome = nome;
@@ -44,7 +44,7 @@ public class Agencia {
         this.endereco = endereco;
     }
 
-    public List<Conta> getContas() {
+    public ArrayList<Conta> getContas() {
         return contas;
     }
 
@@ -52,21 +52,21 @@ public class Agencia {
     //métodos------------------------------------------------------------------
 
     /**
-     * Adiciona um objeto Conta à lista de contas da Agencia
+     * Adiciona um objeto <code>Conta</code> à lista de contas da <code>Agencia</code>
      *
-     * @param conta Objeto Conta com que será adicionado à agência
+     * @param conta <code>Conta</code> que será adicionado à <code>Agencia</code>
      */
     public void cadastrarConta(Conta conta) {
         contas.add(conta);
     }
 
     /**
-     * Busca uma conta dentre as listadas na agência com base em seu número. Só fornece acesso se a senha fornecida
-     * equivales à senha cadastrada na conta.
+     * Busca uma <code>Conta</code> dentre as listadas na agência com base em seu número. Só fornece acesso se a senha fornecida
+     * equivalente à senha cadastrada na conta.
      *
-     * @param numConta número (int) da conta sendo buscada
+     * @param numConta número da conta sendo buscada
      * @param senha    String com a senha da conta sendo buscada
-     * @return Objeto Conta, se o número e senha informados estiverem corretos, ou null caso contrário
+     * @return uma <code>Conta</code>, se o número e senha informados estiverem corretos, ou <code>null</code> caso contrário
      */
     public Conta buscarConta(int numConta, String senha) {
 
@@ -79,9 +79,10 @@ public class Agencia {
     }
 
     /**
-     * Busca uma conta dentre as listadas na agência com base em seu número.
+     * Busca uma <code>Conta</code> dentre as listadas na agência com base em seu número.
+     *
      * @param numConta número (int) da conta sendo buscada
-     * @return Objeto Conta, se o número e senha informados estiverem corretos, ou null caso contrário
+     * @return uma <code>Conta</code>, se o número corresponder a uma <code>Conta</code> existente, ou <code>null</code> caso contrário
      */
     public Conta buscarConta(int numConta) {
 

@@ -1,6 +1,6 @@
-package Trabalho1;
+package trabalho1;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -12,7 +12,7 @@ public class Banco {
     private String cnpj;
     private String endereco;
     private Conta contaLogada;
-    private List<Agencia> agencias = null;
+    private ArrayList<Agencia> agencias = new ArrayList<>();
 
     public Banco(int numero, String nome, String cnpj, String endereco) {
         this.numero = numero;
@@ -62,16 +62,24 @@ public class Banco {
         this.contaLogada = contaLogada;
     }
 
-    public List<Agencia> getAgencias() {
+    public ArrayList<Agencia> getAgencias() {
         return agencias;
     }
 
-    public void setAgencias(List<Agencia> agencias) {
+    public void setAgencias(ArrayList<Agencia> agencias) {
         this.agencias = agencias;
     }
 
 
     //métodos------------------------------------------------------------------
+
+    /**
+     * Atualiza <code>contaLogada</code> para se referir a uma conta específica. <code>contalogada</code> aponta para null se os parâmetros não corresponderem a uma conta
+     *
+     * @param numAgencia número da <code>Agencia</code> do cliente
+     * @param numConta   número da <code>Conta</code> do cliente
+     * @param senha      senha do cliente
+     */
     public void logarCliente(int numAgencia, int numConta, String senha) {
         Agencia auxAgencia = buscarAgencia(numAgencia);
 
@@ -84,10 +92,10 @@ public class Banco {
     }
 
     /**
-     * Realiza um saque para a conta logada
+     * Realiza um saque para <code>contaLogada</code>
      *
-     * @param valor Valor a ser sacado
-     * @return true, se o saque for possível, falso caso contrário
+     * @param valor valor a ser sacado
+     * @return <code>true</code>, se o saque for possível, <code>falso</code> caso contrário
      */
     public boolean realizarSaque(double valor) {
         if (valor > contaLogada.getSaldo())
@@ -99,9 +107,9 @@ public class Banco {
     }
 
     /**
-     * Realiza um depósito na conta logada
+     * Realiza um depósito em <code>contaLogada</code>
      *
-     * @param valor Valor a ser depositado
+     * @param valor valor a ser depositado
      */
     public void realizarDeposito(double valor) {
         contaLogada.depositar(valor);
@@ -109,47 +117,47 @@ public class Banco {
     }
 
     /**
-     * @return valor do saldo da conta logada
+     * @return valor do saldo em <code>contaLogada</code>
      */
     public double saldo() {
         return contaLogada.getSaldo();
     }
 
-    public List<String> extrato(){
+    public ArrayList<String> extrato() {
         return contaLogada.getExtrato();
     }
 
     /**
-     * Cadastra uma agência no banco a partir de informações da agência
-     * * @param nome Nome da nova agência
+     * Cadastra uma <code>Agencia</code> no banco a partir dos parâmetros
      *
-     * @param codigo   Código da nova agência
-     * @param endereco endereço da nova agência
+     * @param nome     nome da nova <code>Agencia</code>
+     * @param codigo   nódigo da nova <code>Agencia</code>
+     * @param endereco endereço da nova <code>Agencia</code>
      */
     public void cadastrarAgencia(String nome, int codigo, String endereco) {
         agencias.add(new Agencia(nome, codigo, endereco));
     }
 
     /**
-     * Cadastra uma agência no banco a partir de uma agência pré-existente
+     * Cadastra uma <code>Agencia</code> no <code>Banco</code> a partir de uma <code>Agencia</code> pré-existente
      *
-     * @param agencia Objeto Agencia sendo cadastrado
+     * @param agencia <code>Agencia</code> sendo cadastrada
      */
     public void cadastrarAgencia(Agencia agencia) {
         agencias.add(agencia);
     }
 
     /**
-     * Cadastra uma nova conta no banco
+     * Cadastra uma nova <code>Conta</code> no <code>Banco</code> com base nos parâmetros
      *
-     * @param numAgencia     Número da agência
-     * @param numero         Número da conta
-     * @param nome           Nome do dono da conta
-     * @param saldo          Saldo na conta
-     * @param endereco       Endereço do dono da conta
-     * @param cpf            CPF do dono da conta
-     * @param dataNascimento Data de nascimento do dono da conta
-     * @param senha          Senha da conta
+     * @param numAgencia     Número da <code>Agencia</code>
+     * @param numero         Número da <code>Conta</code>
+     * @param nome           Nome do dono da <code>Conta</code>
+     * @param saldo          Saldo na <code>Conta</code>
+     * @param endereco       Endereço do dono da <code>Conta</code>
+     * @param cpf            CPF do dono da <code>Conta</code>
+     * @param dataNascimento Data de nascimento do dono da <code>Conta</code>
+     * @param senha          Senha da <code>Conta</code>
      */
     public void cadastrarConta(int numAgencia,
                                int numero,
@@ -165,10 +173,10 @@ public class Banco {
     }
 
     /**
-     * Busca, dentre as agências do banco, aquela que possui o código informado
+     * Busca, na lista <code>Agencias</code> do <code>Banco</code>, aquela que possui o código informado
      *
-     * @param codigo Numero da agência sendo procurada
-     * @return Um objeto Agencia com o código informado, ou null caso não exista
+     * @param codigo número da <code>Agencia</code> sendo procurada
+     * @return objeto <code>Agencia</code> com o código informado, ou <code>null</code> caso não exista
      */
     public Agencia buscarAgencia(int codigo) {
 
@@ -179,30 +187,46 @@ public class Banco {
         return null;
     }
 
+    /**
+     * Tranfere dinheiro de <code>contaLogada</code> para uma conta especificada nos parâmetros.
+     *
+     * @param numAgencia número da <code>Agencia</code> da <code>Conta</code> para a qual a tranferência é feita
+     * @param numConta   número da <code>Conta</code> para a qual a transferência é feita
+     * @param valor      valor de dinheiro sendo transferido
+     * @return <code>true</code>, se a operação ocorre, <code>false</code> se há erro nas informações fornecidas
+     */
     public boolean transferencia(int numAgencia, int numConta, float valor) {
         Agencia auxAgencia = buscarAgencia(numAgencia);
-        if(auxAgencia == null)
+        if (auxAgencia == null)
             return false;
 
         Conta auxConta = auxAgencia.buscarConta(numConta);
-        if(auxConta == null)
+        if (auxConta == null)
             return false;
 
-        if(valor > contaLogada.getSaldo())
+        if (valor > contaLogada.getSaldo())
             return false;
 
         contaLogada.sacar(valor);
         auxConta.depositar(valor);
         contaLogada.novaOperacao("Transferência", -valor, auxConta.getNome());
-        auxConta.novaOperacao("Trasferência", valor, contaLogada.getNome());
+        auxConta.novaOperacao("Transferência", valor, contaLogada.getNome());
         return true;
     }
 
+    /**
+     * Tranfere dinheiro de <code>contaLogada</code> para uma conta especificada nos parâmetros.
+     *
+     * @param chaveCPF CPF da <code>Conta</code> para a qual a tranferência é feita
+     * @param valor    valor de dinheiro sendo transferido
+     * @return <code>true</code>, se a operação ocorre, <code>false</code> se há erro nas informações fornecidas
+     */
     public boolean pix(String chaveCPF, float valor) {
         Conta auxConta = null;
 
-        primeiroFor: for(Agencia agencia : agencias){
-            for(Conta conta : agencia.getContas()) {
+        primeiroFor:
+        for (Agencia agencia : agencias) {
+            for (Conta conta : agencia.getContas()) {
                 if (Objects.equals(chaveCPF, conta.getCpf())) {
                     auxConta = conta;
                     break primeiroFor;
@@ -213,7 +237,7 @@ public class Banco {
         if (auxConta == null)
             return false;
 
-        if(valor > contaLogada.getSaldo())
+        if (valor > contaLogada.getSaldo())
             return false;
 
         contaLogada.sacar(valor);

@@ -1,7 +1,6 @@
-package Trabalho1;
+package trabalho1;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Azure
@@ -15,7 +14,7 @@ public class Conta {
     private String cpf;
     private String dataNascimento;
     private String senha;
-    private List<String> extrato = new ArrayList<>();
+    private ArrayList<String> extrato = new ArrayList<>(); //extrato simples, que lista operações e valores
 
     public Conta(int numero,
                  int agencia,
@@ -96,19 +95,20 @@ public class Conta {
         return senha;
     }
 
-    public List<String> getExtrato() {
+    public ArrayList<String> getExtrato() {
         return extrato;
     }
 
-    public void setExtrato(List<String> extrato) {
+    public void setExtrato(ArrayList<String> extrato) {
         this.extrato = extrato;
     }
 
 //métodos------------------------------------------------------------------
+
     /**
      * Deposita um valor na conta
      *
-     * @param valor Valor sendo depositado na conta
+     * @param valor valor sendo depositado na conta
      */
     public void depositar(double valor) {
         saldo += valor;
@@ -117,7 +117,7 @@ public class Conta {
     /**
      * Saca um valor da conta
      *
-     * @param valor Valor sendo sacado da conta
+     * @param valor valor sendo sacado da conta
      */
     public void sacar(double valor) {
         saldo -= valor;
@@ -126,8 +126,8 @@ public class Conta {
     /**
      * Valida uma senha fornecida
      *
-     * @param senhaComparar Senha fornecida
-     * @return true, se a senha corresponder à senha cadastrada, false caso contrário
+     * @param senhaComparar senha fornecida
+     * @return <code>true</code>, se a senha corresponder à senha cadastrada, <code>false</code> caso contrário
      */
     public boolean validarSenha(String senhaComparar) {
         return senhaComparar.equals(senha);
@@ -136,31 +136,44 @@ public class Conta {
     /**
      * Troca a senha associada à conta, mediante fornecimento da senha atual
      *
-     * @param senhaAtual Senha em uso atualmente
-     * @param senhaNova  Nova senha
+     * @param senhaAtual senha em uso atualmente
+     * @param senhaNova  nova senha
      */
     public boolean setSenha(String senhaAtual, String senhaNova) {
-        if (validarSenha(senhaAtual)){
+        if (validarSenha(senhaAtual)) {
             senha = senhaNova;
             return true;
         }
         return false;
     }
 
-    public void novaOperacao(String operacao, double valor){
+    /**
+     * Cria uma entrada na lista <code>extrato</code>, especificando a operação e o valor movimentado
+     *
+     * @param operacao String com o nome da operação sendo feita
+     * @param valor    valor movimentado. Positivo para entradas de dinheiro, negativo para saídas
+     */
+    public void novaOperacao(String operacao, double valor) {
         String linha = operacao.toUpperCase() + ": ";
         linha += valor;
 
         extrato.add(linha);
     }
 
-    public void novaOperacao(String operacao, double valor, String destino){
+    /**
+     * Cria uma entrada na lista <code>extrato</code>, especificando a operação, o valor movimentado, e o destino desse valor
+     *
+     * @param operacao String com o nome da operação sendo feita
+     * @param valor    valor movimentado. Positivo para entradas de dinheiro, negativo para saídas
+     * @param destino  String com o nome da pessoa para onde o valor movimentado foi, ou de onde o valor movimentado veio
+     */
+    public void novaOperacao(String operacao, double valor, String destino) {
         String linha = operacao.toUpperCase() + ": ";
         linha += valor;
 
-        if(valor > 0) //se o valor vier como positivo, é porque entrou na conta vindo de alguém
+        if (valor > 0) //se o valor vier como positivo, é porque entrou na conta vindo de alguém
             linha += " de ";
-        if(valor < 0) //se o valor vier como negativo, é porque saiu da conta indo para alguém
+        if (valor < 0) //se o valor vier como negativo, é porque saiu da conta indo para alguém
             linha += " para ";
 
         linha += destino;
