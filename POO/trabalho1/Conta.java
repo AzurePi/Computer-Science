@@ -32,6 +32,7 @@ public class Conta {
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.senha = senha;
+        extrato.add("Saldo inicial: " + saldo);
     }
 
     //setters & getters--------------------------------------------------------

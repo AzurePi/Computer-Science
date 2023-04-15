@@ -7,29 +7,19 @@ import java.util.Objects;
  * @author Azure
  */
 public class Banco {
-    private int numero;
     private String nome;
     private String cnpj;
     private String endereco;
     private Conta contaLogada;
     private ArrayList<Agencia> agencias = new ArrayList<>();
 
-    public Banco(int numero, String nome, String cnpj, String endereco) {
-        this.numero = numero;
+    public Banco(String nome, String cnpj, String endereco) {
         this.nome = nome;
         this.cnpj = cnpj;
         this.endereco = endereco;
     }
 
     //setters & getters--------------------------------------------------------
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
     public String getNome() {
         return nome;
     }

@@ -15,7 +15,7 @@ public class DisplayBanco {
         String linha;
         String[] campos;
 
-        //leitura de banco.txt ------------------------------------------------
+        //leitura de banco.txt -------------------------------------------
         try {
             sc = new Scanner(new File(banco));
         } catch (FileNotFoundException ex) {
@@ -25,14 +25,11 @@ public class DisplayBanco {
         linha = sc.nextLine();
         campos = linha.split("#"); //divide a linha em campos separados por "#"
 
-        meuBanco = new Banco(Integer.parseInt(campos[1]),
-                campos[0],
-                campos[2],
-                campos[3]);
+        meuBanco = new Banco(campos[0], campos[1], campos[2]);
 
         sc.close();
 
-        //leitura de agencias.txt ---------------------------------------------
+        //leitura de agencias.txt -----------------------------------------
         try {
             sc = new Scanner(new File(agencias));
         } catch (FileNotFoundException ex) {
@@ -47,7 +44,7 @@ public class DisplayBanco {
         }
         sc.close();
 
-        //leitura de contas.txt -----------------------------------------------
+        //leitura de contas.txt ------------------------------------------
         try {
             sc = new Scanner(new File(contas));
         } catch (FileNotFoundException ex) {
@@ -90,9 +87,10 @@ public class DisplayBanco {
             String senha = sc.nextLine();
             meuBanco.logarCliente(a, n, senha);
 
-            if (meuBanco.getContaLogada() == null)
+            if (meuBanco.getContaLogada() == null) //se o processo de login falhou
                 System.out.println("Falha. Tente Novamente\n");
 
+            System.out.println(); //pula uma linha
         } while (meuBanco.getContaLogada() == null);
     }
 
@@ -100,35 +98,46 @@ public class DisplayBanco {
      * Cria uma estrutura de controle para determinar a operação a ser realizada pelo usuário
      */
     public void telaUsuario() {
-        login();
-
         int op; //variável para controlar a operação
+        int continuar = 1; //variavel para controlar a continuidade do programa
         Scanner sc = new Scanner(System.in);
 
         do {
-            System.out.println("-------- OPERAÇÕES --------");
-            System.out.println("1 - Depósito");
-            System.out.println("2 - Saque");
-            System.out.println("3 - PIX");
-            System.out.println("4 - Transferência");
-            System.out.println("5 - Saldo");
-            System.out.println("6 - Extrato");
-            System.out.println("7 - Alterar senha");
-            System.out.println("\n0 - Sair\n");
+            login();
+            operacaoSaldo();
 
-            op = sc.nextInt();
+            do {
+                System.out.println(); //pula uma linha
+                System.out.println("-------- OPERAÇÕES --------");
+                System.out.println("1 - Depósito");
+                System.out.println("2 - Saque");
+                System.out.println("3 - PIX");
+                System.out.println("4 - Transferência");
+                System.out.println("5 - Saldo");
+                System.out.println("6 - Extrato");
+                System.out.println("7 - Alterar senha");
+                System.out.println("\n0 - Sair\n");
 
-            switch (op) {
-                case 1 -> operacaoDeposito();
-                case 2 -> operacaoSaque();
-                case 3 -> operacaoPix();
-                case 4 -> operacaoTransferencia();
-                case 5 -> operacaoSaldo();
-                case 6 -> operacaoExtrato();
-                case 7 -> alterarSenha();
-            }
-        } while (op != 0);
-        operacaoSair();
+                op = sc.nextInt();
+
+                switch (op) {
+                    case 1 -> operacaoDeposito();
+                    case 2 -> operacaoSaque();
+                    case 3 -> operacaoPix();
+                    case 4 -> operacaoTransferencia();
+                    case 5 -> operacaoSaldo();
+                    case 6 -> operacaoExtrato();
+                    case 7 -> alterarSenha();
+                }
+            } while (op != 0);
+            operacaoSair();
+
+            System.out.println(); //pula uma linha
+            System.out.println("0 - Encerrar o programa");
+            System.out.println("1 - Login");
+            continuar = sc.nextInt();
+            System.out.println(); //pula uma linha
+        } while (continuar != 0);
     }
 
     /**
@@ -154,7 +163,9 @@ public class DisplayBanco {
         funcionou = meuBanco.realizarSaque(Math.abs(sc.nextDouble()));
 
         if (!funcionou)
-            System.out.println("ERRO: Valor excede o saldo em conta. Tente novamente.");
+            System.out.println("ERRO: Valor excede o saldo em conta. Tente novamente");
+        else
+            System.out.println("Saque realizado com sucesso");
     }
 
     /**
@@ -173,7 +184,9 @@ public class DisplayBanco {
 
         boolean b = meuBanco.pix(cpf, valor);
         if (!b)
-            System.out.println("ERRO: Tente novamente.");
+            System.out.println("ERRO: Tente novamente");
+        else
+            System.out.println("PIX realizado com sucesso");
     }
 
     /**
@@ -194,7 +207,9 @@ public class DisplayBanco {
 
         boolean b = meuBanco.transferencia(agencia, conta, valor);
         if (!b)
-            System.out.println("ERRO: Verifique os dados e tente novamente.");
+            System.out.println("ERRO: Verifique os dados e tente novamente");
+        else
+            System.out.println("Transferência realizada com sucesso");
     }
 
     /**
@@ -230,6 +245,8 @@ public class DisplayBanco {
         funcionou = meuBanco.getContaLogada().setSenha(atual, nova);
         if (!funcionou)
             System.out.println("Senha atual incorreta. Alteração cancelada");
+        else
+            System.out.println("Alteração feita com sucesso");
     }
 
     /**
