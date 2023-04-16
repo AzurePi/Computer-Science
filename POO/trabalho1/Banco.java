@@ -19,6 +19,7 @@ public class Banco {
         this.endereco = endereco;
     }
 
+
     //setters & getters--------------------------------------------------------
     public String getNome() {
         return nome;
@@ -62,9 +63,8 @@ public class Banco {
 
 
     //métodos------------------------------------------------------------------
-
     /**
-     * Atualiza <code>contaLogada</code> para se referir a uma conta específica. <code>contalogada</code> aponta para null se os parâmetros não corresponderem a uma conta
+     * Atualiza <code>contaLogada</code> para se referir a uma conta específica. <code>contaLogada</code> aponta para null se os parâmetros não corresponderem a uma conta
      *
      * @param numAgencia número da <code>Agencia</code> do cliente
      * @param numConta   número da <code>Conta</code> do cliente
@@ -76,9 +76,9 @@ public class Banco {
         if (auxAgencia != null) {
             contaLogada = auxAgencia.buscarConta(numConta, senha);
             if (contaLogada == null)
-                System.out.println("Conta não encontrada ou senha incorreta");
+                System.out.println("Conta não encontrada ou senha incorreta. Tente Novamente\n");
         } else
-            System.out.println("Agência não encontrada");
+            System.out.println("Agência não encontrada. Tente Novamente\n");
     }
 
     /**
@@ -178,9 +178,9 @@ public class Banco {
     }
 
     /**
-     * Tranfere dinheiro de <code>contaLogada</code> para uma conta especificada nos parâmetros.
+     * Transfere dinheiro de <code>contaLogada</code> para uma conta especificada nos parâmetros.
      *
-     * @param numAgencia número da <code>Agencia</code> da <code>Conta</code> para a qual a tranferência é feita
+     * @param numAgencia número da <code>Agencia</code> da <code>Conta</code> para a qual a transferência é feita
      * @param numConta   número da <code>Conta</code> para a qual a transferência é feita
      * @param valor      valor de dinheiro sendo transferido
      * @return <code>true</code>, se a operação ocorre, <code>false</code> se há erro nas informações fornecidas
@@ -205,7 +205,7 @@ public class Banco {
     }
 
     /**
-     * Tranfere dinheiro de <code>contaLogada</code> para uma conta especificada nos parâmetros.
+     * Transfere dinheiro de <code>contaLogada</code> para uma conta especificada nos parâmetros.
      *
      * @param chaveCPF CPF da <code>Conta</code> para a qual a tranferência é feita
      * @param valor    valor de dinheiro sendo transferido

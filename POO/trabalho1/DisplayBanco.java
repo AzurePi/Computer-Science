@@ -7,6 +7,9 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * @author Azure
+ */
 public class DisplayBanco {
     private Banco meuBanco;
 
@@ -68,8 +71,8 @@ public class DisplayBanco {
         sc.close();
     }
 
-    //métodos------------------------------------------------------------------
 
+    //métodos------------------------------------------------------------------
     /**
      * Cria uma estrutura no console para fazer o login de uma conta
      */
@@ -87,9 +90,6 @@ public class DisplayBanco {
             String senha = sc.nextLine();
             meuBanco.logarCliente(a, n, senha);
 
-            if (meuBanco.getContaLogada() == null) //se o processo de login falhou
-                System.out.println("Falha. Tente Novamente\n");
-
             System.out.println(); //pula uma linha
         } while (meuBanco.getContaLogada() == null);
     }
@@ -99,7 +99,7 @@ public class DisplayBanco {
      */
     public void telaUsuario() {
         int op; //variável para controlar a operação
-        int continuar = 1; //variavel para controlar a continuidade do programa
+        int continuar = 1; //variável para controlar a continuidade do programa
         Scanner sc = new Scanner(System.in);
 
         do {
@@ -169,7 +169,7 @@ public class DisplayBanco {
     }
 
     /**
-     * Realiza uma tranferência via pix a partir da <code>contaLogada</code>. Pede, no console, o CPF do destinatário
+     * Realiza uma transferência via pix a partir da <code>contaLogada</code>. Pede, no console, o CPF do destinatário
      */
     private void operacaoPix() {
         Scanner sc = new Scanner(System.in);
@@ -197,7 +197,7 @@ public class DisplayBanco {
         int agencia, conta;
         float valor;
 
-        System.out.println("------ TRASFERÊNCIA ------");
+        System.out.println("------ TRANSFERÊNCIA ------");
         System.out.println("Agência à qual transferir: ");
         agencia = sc.nextInt();
         System.out.println("Conta à qual transferir: ");

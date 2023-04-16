@@ -35,6 +35,7 @@ public class Conta {
         extrato.add("Saldo inicial: " + saldo);
     }
 
+
     //setters & getters--------------------------------------------------------
     public int getNumero() {
         return numero;
@@ -104,8 +105,8 @@ public class Conta {
         this.extrato = extrato;
     }
 
-//métodos------------------------------------------------------------------
 
+    //métodos------------------------------------------------------------------
     /**
      * Deposita um valor na conta
      *

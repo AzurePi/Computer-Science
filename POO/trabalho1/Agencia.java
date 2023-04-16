@@ -1,7 +1,6 @@
 package trabalho1;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Azure
@@ -50,7 +49,6 @@ public class Agencia {
 
 
     //métodos------------------------------------------------------------------
-
     /**
      * Adiciona um objeto <code>Conta</code> à lista de contas da <code>Agencia</code>
      *
