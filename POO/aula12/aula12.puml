@@ -1,0 +1,28 @@
+@startuml
+
+package aula12  #DDD{
+
+    class aula12.Animal {
+        - String nome
+        - int numeroPatas
+        ~ void emitirSom()
+    }
+
+    class aula12.Vaca {
+        + void emitirSom()
+    }
+
+    class aula12.Gato {
+        + void emitirSom()
+    }
+
+    class aula12.Ovelha {
+        + void emitirSom()
+    }
+
+    aula12.Animal <|-- aula12.Vaca
+    aula12.Animal <|-- aula12.Gato
+    aula12.Animal <|-- aula12.Ovelha
+}
+
+@enduml
