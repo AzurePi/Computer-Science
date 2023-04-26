@@ -25,7 +25,6 @@ public class Animal {
         this.numeroPatas = numeroPatas;
     }
 
-    void emitirSom() {
-        System.out.println("AAAAAAAAAAA");
+    public void emitirSom() {
     }
 }

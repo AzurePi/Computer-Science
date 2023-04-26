@@ -1,0 +1,36 @@
+@startuml
+
+package aula13 #DDD {
+
+    class aula13.Leite {
+    - int valeDias
+    + double custoBeneficio()
+    + int compareTo(Object)
+    }
+
+    class aula13.Biscoito {
+    - int cancerigenos
+    + double custoBeneficio()
+    + int compareTo(Produto)
+    }
+
+    class aula13.Shampoo {
+    - int irritabilidade
+    + double custoBeneficio()
+    + int compareTo(Object)
+    }
+
+    abstract class aula13.Produto {
+    - String nome
+    - double preco
+    + int compareTo(Object)
+    + {abstract}double custoBeneficio()
+    }
+
+    aula13.Produto <|-- aula13.Leite
+    aula13.Produto <|-- aula13.Biscoito
+    aula13.Produto <|-- aula13.Shampoo
+    aula13.Comparable <|.. aula13.Produto
+}
+
+@enduml
