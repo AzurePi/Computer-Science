@@ -1,6 +1,9 @@
 package trabalho2;
 
+import trabalho2.exceptions.UnavailableItemException;
+import trabalho2.exceptions.UncheckedItemException;
+
 public interface Emprestavel {
-    public Item emprestimo(Item emprestado);
-    public void devolucao(Item emprestado);
+    public void emprestimo() throws UnavailableItemException;
+    public void devolucao() throws UncheckedItemException;
 }

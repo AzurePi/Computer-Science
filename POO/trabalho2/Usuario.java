@@ -8,6 +8,4 @@ public abstract class Usuario {
     private ArrayList<Emprestimo> emprestados = new ArrayList<>();
 
     public abstract float multa();
-
-
 }

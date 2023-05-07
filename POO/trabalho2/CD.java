@@ -1,16 +1,16 @@
 package trabalho2;
 
-public class CD  extends Item{
+public class CD extends Item {
     private int volume;
     private String gravadora;
 
     @Override
-    public Item emprestimo(Item emprestado) {
-        return null;
+    public void emprestimo() {
+
     }
 
     @Override
-    public void devolucao(Item emprestado) {
+    public void devolucao() {
 
     }
 }

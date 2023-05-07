@@ -5,12 +5,12 @@ public class Revista extends Item{
 
 
     @Override
-    public Item emprestimo(Item emprestado) {
-        return null;
+    public void emprestimo() {
+
     }
 
     @Override
-    public void devolucao(Item emprestado) {
+    public void devolucao() {
 
     }
 }

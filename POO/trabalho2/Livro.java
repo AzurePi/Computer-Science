@@ -4,12 +4,12 @@ public class Livro extends Item{
     private String editora, ISBN;
 
     @Override
-    public Item emprestimo(Item emprestado) {
-        return emprestado;
+    public void emprestimo() {
+
     }
 
     @Override
-    public void devolucao(Item emprestado) {
+    public void devolucao() {
 
     }
 }
