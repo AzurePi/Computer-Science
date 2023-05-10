@@ -1,8 +1,9 @@
 package aula16;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class User {
+public class User implements Serializable {
     String nome, login;
     int senha;
 
@@ -46,4 +47,19 @@ public class User {
     public void setSenha(int senha) {
         this.senha = senha;
     }
+
+    public int cryptoSenha(){
+        int crypto = senha;
+        for(char c : nome.toCharArray())
+            senha *= c;
+        return crypto;
+    }
+
+    public int decrypyoSenha(int crypto){
+        int senha = crypto;
+        for(char c : nome.toCharArray())
+            senha /= c;
+        return senha;
+    }
+
 }
