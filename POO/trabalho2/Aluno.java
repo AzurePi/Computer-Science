@@ -1,6 +1,6 @@
 package trabalho2;
 
-public class Aluno extends Usuario{
+public class Aluno extends Usuario {
     private String curso, periodo;
 
 

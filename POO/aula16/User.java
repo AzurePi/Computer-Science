@@ -55,7 +55,7 @@ public class User implements Serializable {
         return crypto;
     }
 
-    public int decrypyoSenha(int crypto){
+    public int decryptoSenha(int crypto){
         int senha = crypto;
         for(char c : nome.toCharArray())
             senha /= c;

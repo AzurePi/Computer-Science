@@ -11,7 +11,12 @@ public class Main {
         List<User> users = new ArrayList<>();
         User logado = null;
 
-        lerArquivoObj(users); //lê informações de usuários já armazenadas
+        try {
+            FileInputStream fileInput = new FileInputStream("users.dat");
+            FileOutputStream fileOutput = new FileOutputStream("users.dat");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         int op;
         Scanner sc = new Scanner(System.in);
@@ -25,7 +30,7 @@ public class Main {
             switch (op) {
                 case 1:
                     cadastro(users);
-                    imprimirArquivoObj(users);
+                    //imprimirArquivoObj(users);
                     imprimirArquivoTxt(users);
                     break;
                 case 2:
@@ -44,10 +49,10 @@ public class Main {
 
                     switch (op2) {
                         case 1:
-                            logado = loginObj(login, senha);
+                            //logado = loginObj(login, senha);
                             break;
                         case 2:
-                            logado = loginTxt(login, senha);
+                            //logado = loginTxt(login, senha);
                             break;
                         default:
                             break;
@@ -59,36 +64,30 @@ public class Main {
         } while (op < 0);
     }
 
-    public static void lerArquivoObj(List<User> users) {
+    public static void lerArquivoObj(List<User> users, FileInputStream file) {
         ObjectInputStream in = null;
 
         try {
-            in = new ObjectInputStream(new FileInputStream("users.dat"));
+            in = new ObjectInputStream(file);
 
             users.add((User) in.readObject());
 
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (in != null)
-                in.close();
         }
     }
 
-    public static void imprimirArquivoObj(List<User> users) {
+    public static void imprimirArquivoObj(List<User> users, FileOutputStream file) {
         ObjectOutputStream out = null;
 
         try {
-            out = new ObjectOutputStream(new FileOutputStream("users.dat"));
+            out = new ObjectOutputStream(file);
 
             for (User user : users)
                 out.writeObject(user);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (out != null)
-                out.close();
         }
     }
 
@@ -103,9 +102,6 @@ public class Main {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (out != null)
-                out.close();
         }
     }
 

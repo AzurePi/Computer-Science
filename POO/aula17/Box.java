@@ -14,6 +14,12 @@ public class Box<T extends Number> {
         maxSize = size;
     }
 
+    public Box(List<T> numero, int maxSize) {
+        conteudo = numero;
+        size = conteudo.size();
+        this.maxSize = maxSize;
+    }
+
     public int getSize() {
         return size;
     }
@@ -30,10 +36,21 @@ public class Box<T extends Number> {
         if (!cheia()) {
             conteudo.add(numero);
             size = conteudo.size();
-        } else System.out.println("A caixa já está cheia!");
+        } else System.out.println("A caixa está cheia!");
+    }
+
+    public void tiraDaCaixa(T numero) {
+        if(!vazia()){
+            conteudo.remove(numero);
+            size = conteudo.size();
+        } else System.out.println("A caixa está vazia!");
     }
 
     public boolean cheia() {
         return size == maxSize;
+    }
+
+    public boolean vazia(){
+        return size == 0;
     }
 }
