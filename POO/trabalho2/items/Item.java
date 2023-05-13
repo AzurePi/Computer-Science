@@ -1,0 +1,92 @@
+package trabalho2.items;
+
+import trabalho2.exceptions.UnavailableItemException;
+import trabalho2.exceptions.UncheckedItemException;
+
+import java.util.Scanner;
+
+public abstract class Item implements Emprestavel {
+    private String titulo, autor;
+    private int anoPublicacao, disponivel, emprestada;
+
+    public Item(String titulo, String autor, int anoPublicacao, int disponivel, int emprestada) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.anoPublicacao = anoPublicacao;
+        this.disponivel = disponivel;
+        this.emprestada = emprestada;
+    }
+
+    public Item() {
+        System.out.println("Cadastrando novo item ---------------");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Título: ");
+        titulo = sc.nextLine();
+        System.out.print("Autor: ");
+        autor = sc.nextLine();
+        System.out.print("Ano de publicação: ");
+        anoPublicacao = sc.nextInt();
+        System.out.print("Quantidade disponível: ");
+        disponivel = sc.nextInt();
+        System.out.print("Quantidade emprestada: ");
+        disponivel = sc.nextInt();
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public int getAnoPublicacao() {
+        return anoPublicacao;
+    }
+
+    public void setAnoPublicacao(int anoPublicacao) {
+        this.anoPublicacao = anoPublicacao;
+    }
+
+    public int getDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(int disponivel) {
+        this.disponivel = disponivel;
+    }
+
+    public int getEmprestada() {
+        return emprestada;
+    }
+
+    public void setEmprestada(int emprestada) {
+        this.emprestada = emprestada;
+    }
+
+    @Override
+    public void emprestimo() throws UnavailableItemException {
+        if (getDisponivel() == 0)
+            throw new UnavailableItemException("Item sem estoque");
+
+        setDisponivel(getDisponivel() - 1);
+        setEmprestada(getEmprestada() + 1);
+    }
+
+    @Override
+    public void devolucao() throws UncheckedItemException {
+        if (getEmprestada() == 0)
+            throw new UncheckedItemException("Esse item não está emprestado");
+
+        setDisponivel(getDisponivel() + 1);
+        setEmprestada(getEmprestada() - 1);
+    }
+}

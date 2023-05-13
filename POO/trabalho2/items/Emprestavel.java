@@ -1,10 +1,10 @@
-package trabalho2;
+package trabalho2.items;
 
 import trabalho2.exceptions.UnavailableItemException;
 import trabalho2.exceptions.UncheckedItemException;
 
 public interface Emprestavel {
-    public void emprestimo() throws UnavailableItemException;
+    void emprestimo() throws UnavailableItemException;
 
-    public void devolucao() throws UncheckedItemException;
+    void devolucao() throws UncheckedItemException;
 }
