@@ -1,6 +1,6 @@
 package trabalho2;
 
-public class Professor extends Usuario{
+public class Professor extends Usuario {
     private String departamento, titulacao;
 
     @Override

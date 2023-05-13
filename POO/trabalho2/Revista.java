@@ -1,6 +1,6 @@
 package trabalho2;
 
-public class Revista extends Item{
+public class Revista extends Item {
     private int volume, numero;
 
 
