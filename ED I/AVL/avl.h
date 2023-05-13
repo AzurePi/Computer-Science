@@ -1,25 +1,33 @@
 //TAD: árvore binária de busca balanceada (AVL)
 
 // Estruturas e tipos empregados -------------------------
-typedef int tipo_chave; //tipo chave dos nós
-
-typedef struct {
-	tipo_chave chave;
-	//... eventuais outros dados
-} tipo_dado;
-
-
-typedef struct node{
-	tipo_dado dado;
-	int fb; //fator de balanceamento do nó
-	node *esq, *dir;
-} no;
+typedef struct no{
+	int valor;
+	int altura; //fator de balanceamento do nó
+	struct no *esq, *dir;
+} No;
 // -------------------------------------------------------
 
 // Operações ---------------------------------------------
-void inserir(no *raiz, no x);
-void remover(no *raiz, no x);
-int calcularFator(no *raiz);
-void rebalancear(no *raiz);
+No* novoNo(int x);
+
+int alturaNo(No *raiz);
+int maior(int altA, int altB); //para determinar a maior altura
+int calcularFator(No *raiz); //calcula o fator de balanceamento
+
+No* rotacaoEsquerda(No *raiz);
+No* rotacaoDireita(No *raiz);
+No* rotacaoDuplaEsquerda(No *raiz);
+No* rotacaoDuplaDireita(No *raiz);
+
+No* inserir(No *raiz, int x);
+No* remover(No *raiz, int x);
+
+void substituiMenorDireita(No *raiz, No *dir); //auxilia na remoção
 // -------------------------------------------------------
 
+// Impressões --------------------------------------------
+void imprimirPreOrdem(No *raiz);
+void imprimirImOrdem(No *raiz);
+void imprimirPosOrdem(No *raiz);
+// -------------------------------------------------------
