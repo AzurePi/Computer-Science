@@ -1,24 +1,24 @@
 ////Pedro Benedicto de Melo Cardana
 
-// ImplementaÁ„o: ·rvore bin·ria de busca balanceada (AVL)
+// Implementa√ß√£o: √°rvore bin√°ria de busca balanceada (AVL)
 #include "avl.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-// OperaÁıes ---------------------------------------------
+// Opera√ß√µes ---------------------------------------------
 
-// Aloca um No com valor x na memÛria e retorna seu endereÁo
+// Aloca um No com valor x na mem√≥ria e retorna seu endere√ßo
 No *novoNo(int x) {
   No *novo = malloc(sizeof(No));
   novo->valor = x;
-  novo->altura = 1; // todo nÛ È inserido como folha, e toda folha tem altura 1
+  novo->altura = 1; // todo n√≥ √© inserido como folha, e toda folha tem altura 1
   novo->esq = NULL;
   novo->dir = NULL;
   return novo;
 }
 
-// Retorna a altura do No no endereÁo raiz
-// Retorna 0 se raiz È NULL
+// Retorna a altura do No no endere√ßo raiz
+// Retorna 0 se raiz √© NULL
 int alturaNo(No *raiz) {
   if (raiz == NULL)
     return 0;
@@ -32,20 +32,20 @@ int maior(int a, int b) {
   return b;
 }
 
-// Retorna o fator de balanceamento do No no endereÁo raiz
-// Retorna 0 se raiz È NULL
+// Retorna o fator de balanceamento do No no endere√ßo raiz
+// Retorna 0 se raiz √© NULL
 int calcularFator(No *raiz) {
   if (raiz == NULL)
     return 0;
   return alturaNo(raiz->esq) - alturaNo(raiz->dir);
 }
 
-// OperaÁ„o de rotaÁ„o ‡ esquerda a partir do No em r
+// Opera√ß√£o de rota√ß√£o √† esquerda a partir do No em r
 No *rotacaoEsquerda(No *r) {
   No *auxEsq = r->esq;
   No *aux = auxEsq->esq;
 
-  // rotaÁ„o
+  // rota√ß√£o
   auxEsq->esq = r;
   r->dir = aux;
 
@@ -56,12 +56,12 @@ No *rotacaoEsquerda(No *r) {
   return auxEsq; // retorna a nova raiz
 }
 
-// OperaÁ„o de rotaÁ„o ‡ esquerda a partir do No em r
+// Opera√ß√£o de rota√ß√£o √† esquerda a partir do No em r
 No *rotacaoDireita(No *r) {
   No *auxEsq = r->esq;
   No *aux = auxEsq->dir;
 
-  // rotaÁ„o
+  // rota√ß√£o
   auxEsq->dir = r;
   r->esq = aux;
 
@@ -72,15 +72,15 @@ No *rotacaoDireita(No *r) {
   return auxEsq; // retorna a nova raiz
 }
 
-// ComposiÁ„o de uma rotaÁ„o ‡ direita centrada no filho ‡ direita, com de uma ‡
+// Composi√ß√£o de uma rota√ß√£o √† direita centrada no filho √† direita, com de uma √†
 // esquerda centrada em r
 No *rotacaoDuplaEsquerda(No *r) {
   r->dir = rotacaoDireita(r->dir);
   return rotacaoEsquerda(r);
 }
 
-// ComposiÁ„o de uma rotaÁ„o ‡ esquerda centrada no filho ‡ esquerda com de uma
-// ‡ direita dentrada em r
+// Composi√ß√£o de uma rota√ß√£o √† esquerda centrada no filho √† esquerda com de uma
+// √† direita dentrada em r
 No *rotacaoDuplaDireita(No *r) {
   r->esq = rotacaoEsquerda(r->esq);
   return rotacaoDireita(r);
@@ -92,48 +92,48 @@ No *balancear(No *raiz) {
   int fatorEsq = calcularFator(raiz->esq);
   int fatorDir = calcularFator(raiz->dir);
 
-  // rotaÁ„o ‡ esquerda
+  // rota√ß√£o √† esquerda
   if (fator < -1 && fatorDir <= 0)
     raiz = rotacaoEsquerda(raiz);
-  // rotaÁ„o ‡ direita
+  // rota√ß√£o √† direita
   else if (fator > 1 && fatorEsq >= 0)
     raiz = rotacaoDireita(raiz);
-  // rotaÁ„o dupla esquerda-direita
+  // rota√ß√£o dupla esquerda-direita
   else if (fator > 1 && fatorEsq < 0)
     raiz = rotacaoDuplaDireita(raiz);
-  // rotaÁ„o dupla direita-esquerda
+  // rota√ß√£o dupla direita-esquerda
   else if (fator < -1 && fatorDir > 0)
     raiz = rotacaoDuplaEsquerda(raiz);
 
   return raiz;
 }
 
-// Insere um No com valor x na ·rvore, a partir do endereÁo raiz
+// Insere um No com valor x na √°rvore, a partir do endere√ßo raiz
 No *inserir(No *raiz, int x) {
-  // se achamos um espaÁo vazio, inserimos
+  // se achamos um espa√ßo vazio, inserimos
   if (raiz == NULL)
     return novoNo(x);
 
-  // se È menor, vamos para a esquerda
+  // se √© menor, vamos para a esquerda
   if (x < raiz->valor)
     raiz->esq = inserir(raiz->esq, x);
-  // se È maior, vamos para a direita
+  // se √© maior, vamos para a direita
   else if (x > raiz->valor)
     raiz->dir = inserir(raiz->dir, x);
-  // se j· existe
+  // se j√° existe
   else
     return raiz;
 
-  // atualiza a altura do nÛ
+  // atualiza a altura do n√≥
   raiz->altura = maior(alturaNo(raiz->esq), alturaNo(raiz->dir)) + 1;
 
-  return balancear(raiz); // rebalanceaia a ·rvore e retorna
+  return balancear(raiz); // rebalanceaia a √°rvore e retorna
 }
 
-// Busca o No de valor x e o remove da ·rvore
-// O valor de retorno existe para permitir a recurs„o
+// Busca o No de valor x e o remove da √°rvore
+// O valor de retorno existe para permitir a recurs√£o
 No *remover(No *raiz, int x) {
-  // se chegamos ao fim da ·rvore
+  // se chegamos ao fim da √°rvore
   if (raiz == NULL)
     return NULL;
 
@@ -142,41 +142,40 @@ No *remover(No *raiz, int x) {
   else if (x > raiz->valor)
     raiz->dir = remover(raiz->dir, x);
   else {
-
-    // se h· uma ou nenhuma sub·rvore
+    // se h√° uma ou nenhuma sub√°rvore
     if (raiz->esq == NULL || raiz->dir == NULL) {
-      // se h· sub·rvore ‡ esquerda, salva-a, do contr·rio, salva a ‡ direita
+      // se h√° sub√°rvore √† esquerda, salva-a, do contr√°rio, salva a √† direita
       No *aux = raiz->esq ? raiz->esq : raiz->dir;
 
-      // se n„o h· sub·rvores
+      // se n√£o h√° sub√°rvores
       if (aux == NULL) {
         aux = raiz;
         raiz = NULL;
 
-        // se h· sub·rvores
+      // se h√° uma √∫nica
       } else
         raiz = aux;
 
       free(aux);
 
-      // se h· duas sub·rvores
+    // se h√° duas sub√°rvores
     } else
-      substituiMenorDireita(raiz, raiz->dir);
+      substituiMenorDireita(raiz, raiz->dir); //j√° realiza a dele√ß√£o
   }
 
-  // atualiza a altura do nÛ
+  // atualiza a altura do n√≥
   raiz->altura = maior(alturaNo(raiz->esq), alturaNo(raiz->dir)) + 1;
 
-  return balancear(raiz); // rebalanceaia a ·rvore e retorna
+  return balancear(raiz); // rebalanceaia a √°rvore e retorna
 }
 
 void substituiMenorDireita(No *raiz, No *dir) {
-  // se n„o h· elemento ‡ esquerda (elemento menor)
+  // se n√£o h√° elemento √† esquerda (elemento menor)
   if (dir->esq == NULL) {
     No *aux;
-    raiz->valor = dir->valor; // substituiÁ„o
+    raiz->valor = dir->valor; // substitui√ß√£o
 
-    // removemos quem estava ‡ direita
+    // removemos quem estava √† direita
     aux = dir;
     dir = dir->dir;
     free(aux);
@@ -184,9 +183,9 @@ void substituiMenorDireita(No *raiz, No *dir) {
     substituiMenorDireita(raiz, dir->esq);
 }
 
-// Impressıes --------------------------------------------
+// Impress√µes --------------------------------------------
 
-// Imprime a ·rvore em prÈ-ordem
+// Imprime a √°rvore em pr√©-ordem
 void imprimirPreOrdem(No *raiz) {
   if (raiz != NULL) {
     printf("%d ", raiz->valor);
@@ -195,7 +194,7 @@ void imprimirPreOrdem(No *raiz) {
   }
 }
 
-// Imprime a ·rvore em in-ordem
+// Imprime a √°rvore em in-ordem
 void imprimirInOrdem(No *raiz) {
   if (raiz != NULL) {
     imprimirInOrdem(raiz->esq);
@@ -204,7 +203,7 @@ void imprimirInOrdem(No *raiz) {
   }
 }
 
-// Imprime a ·rvore em pÛs-ordem
+// Imprime a √°rvore em p√≥s-ordem
 void imprimirPosOrdem(No *raiz) {
   if (raiz != NULL) {
     imprimirPosOrdem(raiz->esq);
