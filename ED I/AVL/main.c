@@ -1,21 +1,22 @@
 #include <stdio.h>
 #include "avl.h"
 
-int main(){
-	No *raiz = NULL;
+int main()
+{
+  No *raiz = NULL;
   int i;
 
   raiz = inserir(raiz, 5);
   raiz = inserir(raiz, 2);
   raiz = inserir(raiz, 10);
 
-  printf("Pré-ordem: ");
+  printf("PrÃ©-ordem: ");
   imprimirPreOrdem(raiz);
   printf("\n");
   printf("In-ordem: ");
   imprimirInOrdem(raiz);
   printf("\n");
-  printf("Pós-ordem: ");
+  printf("PÃ³s-ordem: ");
   imprimirPosOrdem(raiz);
   printf("\n");
 
@@ -25,12 +26,12 @@ int main(){
 
   printf("\n");
 
-  for(i = 0; i < 15; i+=2){
+  for (i = 0; i < 15; i += 2)
+  {
     raiz = inserir(raiz, i);
     imprimirPreOrdem(raiz);
     printf("\n");
   }
 
-	return 0;
+  return 0;
 }
-
