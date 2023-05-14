@@ -1,24 +1,24 @@
 ////Pedro Benedicto de Melo Cardana
 
-// Implementação: árvore binária de busca balanceada (AVL)
+// Implementa��o: árvore bin�ria de busca balanceada (AVL)
 #include "avl.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-// Operações ---------------------------------------------
+// Opera��es ---------------------------------------------
 
-// Aloca um No com valor x na memória e retorna seu endereço
+// Aloca um No com valor x na mem�ria e retorna seu endere�o
 No *novoNo(int x) {
   No *novo = malloc(sizeof(No));
   novo->valor = x;
-  novo->altura = 1; // todo nó é inserido como folha, e toda folha tem altura 1
+  novo->altura = 1; // todo n� � inserido como folha, e toda folha tem altura 1
   novo->esq = NULL;
   novo->dir = NULL;
   return novo;
 }
 
-// Retorna a altura do No no endereço raiz
-// Retorna 0 se raiz é NULL
+// Retorna a altura do No no endere�o raiz
+// Retorna 0 se raiz � NULL
 int alturaNo(No *raiz) {
   if (raiz == NULL)
     return 0;
@@ -42,18 +42,20 @@ int calcularFator(No *raiz) {
 
 // Operação de rotação à esquerda a partir do No em r
 No *rotacaoEsquerda(No *r) {
-  No *auxEsq = r->esq;
-  No *aux = auxEsq->esq;
+  No *auxDir = r->dir;
+  No *aux = auxDir->esq;
 
   // rotação
-  auxEsq->esq = r;
+  auxDir->esq = r;
   r->dir = aux;
 
   // recalculamos a altura de quem foi movimentado
-  r->altura = maior(alturaNo(r->esq), alturaNo(r->dir)) + 1;
-  auxEsq->altura = maior(alturaNo(auxEsq->esq), alturaNo(auxEsq->dir)) + 1;
+  if(r != NULL)
+    r->altura = maior(alturaNo(r->esq), alturaNo(r->dir)) + 1;
+  if(auxDir != NULL)
+    auxDir->altura = maior(alturaNo(auxDir->esq), alturaNo(auxDir->dir)) + 1;
 
-  return auxEsq; // retorna a nova raiz
+  return auxDir; // retorna a nova raiz
 }
 
 // Operação de rotação à esquerda a partir do No em r
@@ -66,8 +68,10 @@ No *rotacaoDireita(No *r) {
   r->esq = aux;
 
   // recalculamos a altura de quem foi movimentado
-  r->altura = maior(alturaNo(r->esq), alturaNo(r->dir)) + 1;
-  auxEsq->altura = maior(alturaNo(auxEsq->esq), alturaNo(auxEsq->dir)) + 1;
+  if(r != NULL)
+    r->altura = maior(alturaNo(r->esq), alturaNo(r->dir)) + 1;
+  if(auxEsq != NULL)
+    auxEsq->altura = maior(alturaNo(auxEsq->esq), alturaNo(auxEsq->dir)) + 1;
 
   return auxEsq; // retorna a nova raiz
 }
@@ -108,19 +112,19 @@ No *balancear(No *raiz) {
   return raiz;
 }
 
-// Insere um No com valor x na árvore, a partir do endereço raiz
+// Insere um No com valor x na �rvore, a partir do endere�o raiz
 No *inserir(No *raiz, int x) {
-  // se achamos um espaço vazio, inserimos
+  // se achamos um espa�o vazio, inserimos
   if (raiz == NULL)
     return novoNo(x);
 
-  // se é menor, vamos para a esquerda
+  // se � menor, vamos para a esquerda
   if (x < raiz->valor)
     raiz->esq = inserir(raiz->esq, x);
-  // se é maior, vamos para a direita
+  // se � maior, vamos para a direita
   else if (x > raiz->valor)
     raiz->dir = inserir(raiz->dir, x);
-  // se já existe
+  // se � igual
   else
     return raiz;
 
@@ -131,7 +135,6 @@ No *inserir(No *raiz, int x) {
 }
 
 // Busca o No de valor x e o remove da árvore
-// O valor de retorno existe para permitir a recursão
 No *remover(No *raiz, int x) {
   // se chegamos ao fim da árvore
   if (raiz == NULL)
@@ -159,8 +162,12 @@ No *remover(No *raiz, int x) {
       free(aux);
 
     // se há duas subárvores
-    } else
-      substituiMenorDireita(raiz, raiz->dir); //já realiza a deleção
+    } else{
+      //subtitu�mos pelo menor valor � direita
+      No *aux = menorNo(raiz->dir);
+      raiz->valor = aux->valor;
+      raiz->dir = remover(raiz->dir, aux->valor);
+	}
   }
 
   // atualiza a altura do nó
@@ -169,19 +176,15 @@ No *remover(No *raiz, int x) {
   return balancear(raiz); // rebalanceaia a árvore e retorna
 }
 
-void substituiMenorDireita(No *raiz, No *dir) {
-  // se não há elemento à esquerda (elemento menor)
-  if (dir->esq == NULL) {
-    No *aux;
-    raiz->valor = dir->valor; // substituição
-
-    // removemos quem estava à direita
-    aux = dir;
-    dir = dir->dir;
-    free(aux);
-  } else // continuamos procurando o menor
-    substituiMenorDireita(raiz, dir->esq);
+No* menorNo(No *raiz){
+	No *aux = raiz;
+	
+	while(aux && aux->esq != NULL)
+		aux = aux->esq;
+	
+	return aux;
 }
+
 
 // Impressões --------------------------------------------
 

@@ -23,7 +23,7 @@ No* rotacaoDuplaDireita(No *raiz);
 No* inserir(No *raiz, int x);
 No* remover(No *raiz, int x);
 
-void substituiMenorDireita(No *raiz, No *dir); //auxilia na remoção
+No* menorNo(No *raiz); //auxilia na remoção
 // -------------------------------------------------------
 
 // Impressões --------------------------------------------
