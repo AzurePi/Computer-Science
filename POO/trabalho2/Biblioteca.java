@@ -1,8 +1,6 @@
 package trabalho2;
 
-import trabalho2.exceptions.ItemNotFoundException;
-import trabalho2.exceptions.UnavailableItemException;
-import trabalho2.exceptions.UserNotFoundException;
+import trabalho2.exceptions.*;
 import trabalho2.items.CD;
 import trabalho2.items.Item;
 import trabalho2.items.Livro;
@@ -13,28 +11,55 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Biblioteca {
-    ArrayList<? extends Item> inventario = new ArrayList<>();
-    ArrayList<? extends Usuario> usuarios = new ArrayList<>();
+    ArrayList<Item> inventario = new ArrayList<>();
+    ArrayList<Usuario> usuarios = new ArrayList<>();
+
+    public void cadastroItem() {
+        Scanner sc = new Scanner(System.in);
+        short op;
+
+        System.out.println("Cadastro de item -----------------------");
+        System.out.println("1 - CD\t2 - Livro\t3 - Revista");
+
+        try {
+            op = sc.nextShort();
+            switch (op) {
+                case 1:
+                    inventario.add(new CD());
+                    break;
+                case 2:
+                    inventario.add(new Livro());
+                    break;
+                case 3:
+                    inventario.add(new Revista());
+                    break;
+                default:
+                    throw new InvalidItemException("Tipo de item não reconhecido");
+            }
+        } catch (InvalidItemException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+    }
 
     public void consultaItem() {
-        System.out.println("Consulta de item -----------------------");
-
         Scanner sc = new Scanner(System.in);
-        System.out.println("Nome do item: ");
+
+        System.out.println("Consulta de item -----------------------");
+        System.out.print("Nome do item: ");
         String nome = sc.nextLine();
         System.out.println(); //pula uma linha
 
         try {
             Item aux = busca(nome); //pode causar ItemNotFoundException
 
-            //informações genéricas
+            //imprime informações genéricas
             System.out.println("Título: " + aux.getTitulo());
             System.out.println("Autor: " + aux.getAutor());
             System.out.println("Ano de Publicação: " + aux.getAnoPublicacao());
             System.out.println("Quantidade disponível: " + aux.getDisponivel());
             System.out.println("Quantidade emprestada: " + aux.getEmprestada());
 
-            //informações específicas
+            //imprime informações específicas
             if (aux instanceof CD) {
                 System.out.println("Volume: " + ((CD) aux).getVolume());
                 System.out.println("Gravadora: " + ((CD) aux).getGravadora());
@@ -48,14 +73,12 @@ public class Biblioteca {
         } catch (ItemNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
         }
-
-
     }
 
     public void emprestarItem() {
-        System.out.println("Empréstimo de item ------------------");
-
         Scanner sc = new Scanner(System.in);
+
+        System.out.println("Empréstimo de item ---------------------");
         System.out.print("Nome do item: ");
         String nome = sc.nextLine();
         System.out.print("Matrícula de a quem se empresta: ");
@@ -66,19 +89,56 @@ public class Biblioteca {
             Item auxI = busca(nome); //pode gerar ItemNotFountException
             Usuario auxU = login(matricula); //pode gerar UserNotFoundException
 
-            // tentar criar um Emprestimo do item requisitado para o usuário especificado
-            try {
-                if (auxI instanceof CD)
-                    auxU.getEmprestados().add(new Emprestimo<>((CD) auxI));
-                else if (auxI instanceof Livro)
-                    auxU.getEmprestados().add(new Emprestimo<>((Livro) auxI));
-                else if (auxI instanceof Revista)
-                    auxU.getEmprestados().add(new Emprestimo<>((Revista) auxI));
-            } catch (UnavailableItemException e) {
-                System.out.println("ERRO: " + e.getMessage());
-            }
+            // tenta criar um Emprestimo do item requisitado para o usuário especificado
+            // pode gerar UnavailableItemException
+            if (auxI instanceof CD)
+                auxU.getEmprestados().add(new Emprestimo<>((CD) auxI));
+            else if (auxI instanceof Livro)
+                auxU.getEmprestados().add(new Emprestimo<>((Livro) auxI));
+            else if (auxI instanceof Revista)
+                auxU.getEmprestados().add(new Emprestimo<>((Revista) auxI));
 
-        } catch (ItemNotFoundException | UserNotFoundException e) {
+        } catch (ItemNotFoundException | UserNotFoundException | UnavailableItemException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+    }
+
+    public void devolverItem() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Devolução de item ----------------------");
+        System.out.print("Nome do item: ");
+        String nome = sc.nextLine();
+        System.out.print("Matrícula de quem emprestou: ");
+        int matricula = sc.nextInt();
+        System.out.println(); //pula uma linha
+
+        try {
+            Item auxI = busca(nome); //pode gerar ItemNotFountException
+            Usuario auxU = login(matricula); //pode gerar UserNotFoundException
+
+            //procuramos pelo item na lista de empréstimos do usuário
+            ArrayList<Emprestimo<? extends Item>> emps = auxU.getEmprestados();
+            String busca = auxI.getTitulo();
+            double multa = 0;
+            short flag = 0;
+            for (Emprestimo<? extends Item> emp : emps) {
+                String titulo = emp.getEmprestado().getTitulo();
+                if (titulo.equals(busca)) {
+                    emp.devolver(); //pode gerar UncheckedItemException
+                    multa = emp.calcularMulta(auxU);
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag == 0)
+                throw new UncheckedItemException("Esse item não foi emprestado por esse usuário");
+
+            System.out.println(busca + " devolvido com sucesso");
+            if (multa != 0)
+                System.out.printf("Multa de R$%.2f%n\n", multa);
+
+        } catch (UserNotFoundException | ItemNotFoundException | UncheckedItemException e) {
             System.out.println("ERRO: " + e.getMessage());
         }
     }

@@ -18,8 +18,8 @@ public abstract class Item implements Emprestavel {
     }
 
     public Item() {
-        System.out.println("Cadastrando novo item ---------------");
         Scanner sc = new Scanner(System.in);
+
         System.out.print("Título: ");
         titulo = sc.nextLine();
         System.out.print("Autor: ");

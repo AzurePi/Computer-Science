@@ -5,10 +5,10 @@ import trabalho2.items.Item;
 
 import java.util.ArrayList;
 
-public class AssesorTecnico extends Usuario {
+public class AssessorTecnico extends Usuario {
     private String secao;
 
-    public AssesorTecnico(String nome, int matricula, ArrayList<Emprestimo<? extends Item>> emprestados, String secao) {
+    public AssessorTecnico(String nome, int matricula, ArrayList<Emprestimo<? extends Item>> emprestados, String secao) {
         super(nome, matricula, emprestados);
         this.secao = secao;
     }

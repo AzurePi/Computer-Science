@@ -1,6 +1,7 @@
 package trabalho2;
 
 import trabalho2.exceptions.UnavailableItemException;
+import trabalho2.exceptions.UncheckedItemException;
 import trabalho2.items.Item;
 import trabalho2.usuarios.Usuario;
 
@@ -36,6 +37,11 @@ public class Emprestimo<T extends Item> {
 
     public void setDataDevolucao(LocalDate dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
+    }
+
+    public void devolver() throws UncheckedItemException {
+        emprestado.devolucao(); //pode resultar em UncheckeditemException
+        dataDevolucao = LocalDate.now();
     }
 
     public double calcularMulta(Usuario user) {
