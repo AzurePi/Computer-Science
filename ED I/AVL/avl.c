@@ -50,9 +50,9 @@ No *rotacaoEsquerda(No *r) {
   r->dir = aux;
 
   // recalculamos a altura de quem foi movimentado
-  if(r != NULL)
+  if (r != NULL)
     r->altura = maior(alturaNo(r->esq), alturaNo(r->dir)) + 1;
-  if(auxDir != NULL)
+  if (auxDir != NULL)
     auxDir->altura = maior(alturaNo(auxDir->esq), alturaNo(auxDir->dir)) + 1;
 
   return auxDir; // retorna a nova raiz
@@ -68,9 +68,9 @@ No *rotacaoDireita(No *r) {
   r->esq = aux;
 
   // recalculamos a altura de quem foi movimentado
-  if(r != NULL)
+  if (r != NULL)
     r->altura = maior(alturaNo(r->esq), alturaNo(r->dir)) + 1;
-  if(auxEsq != NULL)
+  if (auxEsq != NULL)
     auxEsq->altura = maior(alturaNo(auxEsq->esq), alturaNo(auxEsq->dir)) + 1;
 
   return auxEsq; // retorna a nova raiz
@@ -96,16 +96,16 @@ No *balancear(No *raiz) {
   int fatorEsq = calcularFator(raiz->esq);
   int fatorDir = calcularFator(raiz->dir);
 
-  // rotaÃ§Ã£o Ã  esquerda
+  // rotação Ã  esquerda
   if (fator < -1 && fatorDir <= 0)
     raiz = rotacaoEsquerda(raiz);
-  // rotaÃ§Ã£o Ã  direita
+  // rotação Ã  direita
   else if (fator > 1 && fatorEsq >= 0)
     raiz = rotacaoDireita(raiz);
-  // rotaÃ§Ã£o dupla esquerda-direita
+  // rotação dupla esquerda-direita
   else if (fator > 1 && fatorEsq < 0)
     raiz = rotacaoDuplaDireita(raiz);
-  // rotaÃ§Ã£o dupla direita-esquerda
+  // rotação dupla direita-esquerda
   else if (fator < -1 && fatorDir > 0)
     raiz = rotacaoDuplaEsquerda(raiz);
 
@@ -155,15 +155,15 @@ No *remover(No *raiz, int x) {
         aux = raiz;
         raiz = NULL;
 
-      // se há uma única
+        // se há uma única
       } else
         raiz = aux;
 
       free(aux);
 
-    // se há duas subárvores
-    } else{
-      //subtituímos pelo menor valor à direita
+      // se há duas subárvores
+    } else {
+      // subtituímos pelo menor valor à direita
       No *aux = menorNo(raiz->dir);
       raiz->valor = aux->valor;
       raiz->dir = remover(raiz->dir, aux->valor);
@@ -177,15 +177,14 @@ No *remover(No *raiz, int x) {
   return balancear(raiz); // rebalanceaia a árvore e retorna
 }
 
-No* menorNo(No *raiz){
+No *menorNo(No *raiz) {
   No *aux = raiz;
-	
-  while(aux->esq != NULL)
+
+  while (aux->esq != NULL)
     aux = aux->esq;
 
   return aux;
 }
-
 
 // Impressões --------------------------------------------
 

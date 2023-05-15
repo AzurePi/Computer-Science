@@ -1,11 +1,12 @@
+////Pedro Benedicto de Melo Cardana
+
 // TAD: Árvore binária de busca balanceada (AVL)
 
 // Estruturas e tipos empregados -------------------------
-typedef struct no
-{
-	int valor;
-	int altura; // fator de balanceamento do nó
-	struct no *esq, *dir;
+typedef struct no {
+  int valor;
+  int altura; // fator de balanceamento do nó
+  struct no *esq, *dir;
 } No;
 // -------------------------------------------------------
 

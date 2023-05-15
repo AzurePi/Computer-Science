@@ -1,8 +1,9 @@
-#include <stdio.h>
-#include "avl.h"
+////Pedro Benedicto de Melo Cardana
 
-int main()
-{
+#include "avl.h"
+#include <stdio.h>
+
+int main() {
   No *raiz = NULL;
   int i;
 
@@ -20,18 +21,10 @@ int main()
   imprimirPosOrdem(raiz);
   printf("\n");
 
-  printf("\n");
-  raiz = remover(raiz, 5);
-  imprimirPosOrdem(raiz);
-
-  printf("\n");
-
-  for (i = 0; i < 15; i += 2)
-  {
-    raiz = inserir(raiz, i);
-    imprimirPreOrdem(raiz);
-    printf("\n");
-  }
+  /*
+  Qualquer inserção que desbalanceia a árvore e qualquer remoção causam
+  "segmentation fault"
+  */
 
   return 0;
 }
