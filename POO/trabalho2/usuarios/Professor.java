@@ -3,15 +3,18 @@ package trabalho2.usuarios;
 import trabalho2.Emprestimo;
 import trabalho2.items.Item;
 
-import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Professor extends Usuario {
     private String departamento, titulacao;
 
-    public Professor(String nome, int matricula, ArrayList<Emprestimo<? extends Item>> emprestados, String departamento, String titulacao) {
-        super(nome, matricula, emprestados);
-        this.departamento = departamento;
-        this.titulacao = titulacao;
+    public Professor() {
+        super();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Departamento: ");
+        departamento = sc.nextLine();
+        System.out.println("Titulação: ");
+        titulacao = sc.nextLine();
     }
 
     public String getDepartamento() {

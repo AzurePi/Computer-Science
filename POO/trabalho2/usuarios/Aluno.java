@@ -3,15 +3,18 @@ package trabalho2.usuarios;
 import trabalho2.Emprestimo;
 import trabalho2.items.Item;
 
-import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Aluno extends Usuario {
     private String curso, periodo;
 
-    public Aluno(String nome, int matricula, ArrayList<Emprestimo<? extends Item>> emprestados, String curso, String periodo) {
-        super(nome, matricula, emprestados);
-        this.curso = curso;
-        this.periodo = periodo;
+    public Aluno() {
+        super();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Curso: ");
+        curso = sc.nextLine();
+        System.out.print("Período: ");
+        periodo = sc.nextLine();
     }
 
     public String getCurso() {

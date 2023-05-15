@@ -5,12 +5,6 @@ import java.util.Scanner;
 public class Revista extends Item {
     private int volume, numero;
 
-    public Revista(String titulo, String autor, int anoPublicacao, int disponivel, int emprestada, int volume, int numero) {
-        super(titulo, autor, anoPublicacao, disponivel, emprestada);
-        this.volume = volume;
-        this.numero = numero;
-    }
-
     public Revista() {
         super();
         Scanner sc = new Scanner(System.in);

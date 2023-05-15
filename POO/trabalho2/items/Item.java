@@ -9,14 +9,6 @@ public abstract class Item implements Emprestavel {
     private String titulo, autor;
     private int anoPublicacao, disponivel, emprestada;
 
-    public Item(String titulo, String autor, int anoPublicacao, int disponivel, int emprestada) {
-        this.titulo = titulo;
-        this.autor = autor;
-        this.anoPublicacao = anoPublicacao;
-        this.disponivel = disponivel;
-        this.emprestada = emprestada;
-    }
-
     public Item() {
         Scanner sc = new Scanner(System.in);
 

@@ -4,16 +4,20 @@ import trabalho2.Emprestimo;
 import trabalho2.items.Item;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public abstract class Usuario {
     private String nome;
     private int matricula;
     private ArrayList<Emprestimo<? extends Item>> emprestados = new ArrayList<>();
 
-    public Usuario(String nome, int matricula, ArrayList<Emprestimo<? extends Item>> emprestados) {
-        this.nome = nome;
-        this.matricula = matricula;
-        this.emprestados = emprestados;
+    public Usuario() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Nome: ");
+        nome = sc.nextLine();
+        System.out.print("Matrícula: ");
+        matricula = sc.nextInt();
     }
 
     public String getNome() {

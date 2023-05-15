@@ -5,6 +5,9 @@ import trabalho2.items.CD;
 import trabalho2.items.Item;
 import trabalho2.items.Livro;
 import trabalho2.items.Revista;
+import trabalho2.usuarios.Aluno;
+import trabalho2.usuarios.AssessorTecnico;
+import trabalho2.usuarios.Professor;
 import trabalho2.usuarios.Usuario;
 
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ public class Biblioteca {
         Scanner sc = new Scanner(System.in);
         short op;
 
-        System.out.println("Cadastro de item -----------------------");
+        System.out.println("Cadastro de Item -----------------------");
         System.out.println("1 - CD\t2 - Livro\t3 - Revista");
 
         try {
@@ -44,7 +47,7 @@ public class Biblioteca {
     public void consultaItem() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Consulta de item -----------------------");
+        System.out.println("Consulta de Item -----------------------");
         System.out.print("Nome do item: ");
         String nome = sc.nextLine();
         System.out.println(); //pula uma linha
@@ -78,7 +81,7 @@ public class Biblioteca {
     public void emprestarItem() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Empréstimo de item ---------------------");
+        System.out.println("Empréstimo de Item ---------------------");
         System.out.print("Nome do item: ");
         String nome = sc.nextLine();
         System.out.print("Matrícula de a quem se empresta: ");
@@ -106,7 +109,7 @@ public class Biblioteca {
     public void devolverItem() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Devolução de item ----------------------");
+        System.out.println("Devolução de Item ----------------------");
         System.out.print("Nome do item: ");
         String nome = sc.nextLine();
         System.out.print("Matrícula de quem emprestou: ");
@@ -143,6 +146,33 @@ public class Biblioteca {
         }
     }
 
+    public void cadastroUsuario() {
+        Scanner sc = new Scanner(System.in);
+        short op;
+
+        System.out.println("Cadastro de Usuário --------------------");
+        System.out.println("1 - Aluno\t2 - Assessor Técnico\t3 - Professor");
+
+        try {
+            op = sc.nextShort();
+            switch (op) {
+                case 1:
+                    usuarios.add(new Aluno());
+                    break;
+                case 2:
+                    usuarios.add(new AssessorTecnico());
+                    break;
+                case 3:
+                    usuarios.add(new Professor());
+                    break;
+                default:
+                    throw new InvalidUserException("Tipo de usuário não reconhecido");
+            }
+        } catch (InvalidUserException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+    }
+
     public Item busca(String nome) throws ItemNotFoundException {
         Item aux = null;
         for (Item i : inventario) {
@@ -167,5 +197,15 @@ public class Biblioteca {
         if (aux == null)
             throw new UserNotFoundException("Usuário não encontrado");
         return aux;
+    }
+
+    public void listarItems() {
+        for (Item i : inventario)
+            System.out.println(i.getTitulo());
+    }
+
+    public void listarUsuarios() {
+        for (Usuario u : usuarios)
+            System.out.println(u.getNome() + " " + u.getMatricula());
     }
 }

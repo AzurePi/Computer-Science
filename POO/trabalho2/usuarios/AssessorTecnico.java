@@ -1,16 +1,17 @@
 package trabalho2.usuarios;
 
 import trabalho2.Emprestimo;
-import trabalho2.items.Item;
 
-import java.util.ArrayList;
+import java.util.Scanner;
 
 public class AssessorTecnico extends Usuario {
     private String secao;
 
-    public AssessorTecnico(String nome, int matricula, ArrayList<Emprestimo<? extends Item>> emprestados, String secao) {
-        super(nome, matricula, emprestados);
-        this.secao = secao;
+    public AssessorTecnico() {
+        super();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Seção: ");
+        secao = sc.nextLine();
     }
 
     public String getSecao() {
