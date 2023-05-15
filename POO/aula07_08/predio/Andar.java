@@ -1,4 +1,4 @@
-package aula7_8.predio;
+package aula07_08.predio;
 
 /**
  *

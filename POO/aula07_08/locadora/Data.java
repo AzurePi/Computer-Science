@@ -1,4 +1,4 @@
-package aula7_8.locadora;
+package aula07_08.locadora;
 
 public class Data {
     private int dia;

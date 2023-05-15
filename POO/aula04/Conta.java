@@ -1,4 +1,4 @@
-package aula4;
+package aula04;
 
 public class Conta {
   private String nome;

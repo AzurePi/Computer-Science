@@ -1,4 +1,4 @@
-package aula7_8.locadora;
+package aula07_08.locadora;
 
 import java.util.ArrayList;
 import java.util.List;

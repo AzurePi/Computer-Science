@@ -1,6 +1,6 @@
-package aula5;
+package aula05;
 
-import aula4.Conta;
+import aula04.Conta;
 import java.util.ArrayList;
 
 public class Agencia {
