@@ -35,12 +35,8 @@ public class Emprestimo<T extends Item> {
         return dataDevolucao;
     }
 
-    public void setDataDevolucao(LocalDate dataDevolucao) {
-        this.dataDevolucao = dataDevolucao;
-    }
-
     public void devolver() throws UncheckedItemException {
-        emprestado.devolucao(); //pode resultar em UncheckeditemException
+        emprestado.devolucao(); //pode resultar em UncheckedItemException
         dataDevolucao = LocalDate.now();
     }
 

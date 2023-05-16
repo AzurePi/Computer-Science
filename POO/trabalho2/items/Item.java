@@ -22,6 +22,7 @@ public abstract class Item implements Emprestavel {
         disponivel = sc.nextInt();
         System.out.print("Quantidade emprestada: ");
         disponivel = sc.nextInt();
+        sc.close();
     }
 
     public String getTitulo() {

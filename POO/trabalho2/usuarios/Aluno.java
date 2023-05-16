@@ -15,6 +15,7 @@ public class Aluno extends Usuario {
         curso = sc.nextLine();
         System.out.print("Período: ");
         periodo = sc.nextLine();
+        sc.close();
     }
 
     public String getCurso() {

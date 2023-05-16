@@ -15,6 +15,7 @@ public class Professor extends Usuario {
         departamento = sc.nextLine();
         System.out.println("Titulação: ");
         titulacao = sc.nextLine();
+        sc.close();
     }
 
     public String getDepartamento() {

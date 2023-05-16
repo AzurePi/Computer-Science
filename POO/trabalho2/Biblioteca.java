@@ -1,14 +1,8 @@
 package trabalho2;
 
 import trabalho2.exceptions.*;
-import trabalho2.items.CD;
-import trabalho2.items.Item;
-import trabalho2.items.Livro;
-import trabalho2.items.Revista;
-import trabalho2.usuarios.Aluno;
-import trabalho2.usuarios.AssessorTecnico;
-import trabalho2.usuarios.Professor;
-import trabalho2.usuarios.Usuario;
+import trabalho2.items.*;
+import trabalho2.usuarios.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -23,24 +17,18 @@ public class Biblioteca {
 
         System.out.println("Cadastro de Item -----------------------");
         System.out.println("1 - CD\t2 - Livro\t3 - Revista");
-
+        op = sc.nextShort();
         try {
-            op = sc.nextShort();
             switch (op) {
-                case 1:
-                    inventario.add(new CD());
-                    break;
-                case 2:
-                    inventario.add(new Livro());
-                    break;
-                case 3:
-                    inventario.add(new Revista());
-                    break;
-                default:
-                    throw new InvalidItemException("Tipo de item não reconhecido");
+                case 1 -> inventario.add(new CD());
+                case 2 -> inventario.add(new Livro());
+                case 3 -> inventario.add(new Revista());
+                default -> throw new InvalidItemException("Tipo de item não reconhecido");
             }
         } catch (InvalidItemException e) {
             System.out.println("ERRO: " + e.getMessage());
+        } finally {
+            sc.close();
         }
     }
 
@@ -75,6 +63,8 @@ public class Biblioteca {
             }
         } catch (ItemNotFoundException e) {
             System.out.println("ERRO: " + e.getMessage());
+        } finally {
+            sc.close();
         }
     }
 
@@ -87,6 +77,7 @@ public class Biblioteca {
         System.out.print("Matrícula de a quem se empresta: ");
         int matricula = sc.nextInt();
         System.out.println(); //pula uma linha
+        sc.close();
 
         try {
             Item auxI = busca(nome); //pode gerar ItemNotFountException
@@ -115,6 +106,7 @@ public class Biblioteca {
         System.out.print("Matrícula de quem emprestou: ");
         int matricula = sc.nextInt();
         System.out.println(); //pula uma linha
+        sc.close();
 
         try {
             Item auxI = busca(nome); //pode gerar ItemNotFountException
@@ -152,21 +144,15 @@ public class Biblioteca {
 
         System.out.println("Cadastro de Usuário --------------------");
         System.out.println("1 - Aluno\t2 - Assessor Técnico\t3 - Professor");
+        op = sc.nextShort();
+        sc.close();
 
         try {
-            op = sc.nextShort();
             switch (op) {
-                case 1:
-                    usuarios.add(new Aluno());
-                    break;
-                case 2:
-                    usuarios.add(new AssessorTecnico());
-                    break;
-                case 3:
-                    usuarios.add(new Professor());
-                    break;
-                default:
-                    throw new InvalidUserException("Tipo de usuário não reconhecido");
+                case 1 -> usuarios.add(new Aluno());
+                case 2 -> usuarios.add(new AssessorTecnico());
+                case 3 -> usuarios.add(new Professor());
+                default -> throw new InvalidUserException("Tipo de usuário não reconhecido");
             }
         } catch (InvalidUserException e) {
             System.out.println("ERRO: " + e.getMessage());

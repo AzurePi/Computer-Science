@@ -3,17 +3,12 @@ package trabalho2;
 import java.util.Scanner;
 
 public class Main {
-    private static final Biblioteca bib = new Biblioteca();
-
     public static void main(String[] args) {
-        menu();
-    }
-
-
-    public static void menu() {
+        Biblioteca bib = new Biblioteca();
         Scanner sc = new Scanner(System.in);
         short op;
 
+        //menu
         do {
             System.out.println("1 - Consultar item\t\t6 - Listar itens");
             System.out.println("2 - Cadastrar item\t\t7 - Listar usuários");
@@ -51,5 +46,6 @@ public class Main {
                     break;
             }
         } while (op != 0);
+        sc.close();
     }
 }

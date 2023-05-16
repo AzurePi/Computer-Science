@@ -18,6 +18,7 @@ public abstract class Usuario {
         nome = sc.nextLine();
         System.out.print("Matrícula: ");
         matricula = sc.nextInt();
+        sc.close();
     }
 
     public String getNome() {

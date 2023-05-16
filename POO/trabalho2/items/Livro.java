@@ -12,6 +12,7 @@ public class Livro extends Item {
         editora = sc.nextLine();
         System.out.print("ISBN: ");
         ISBN = sc.nextLine();
+        sc.close();
     }
 
     public String getEditora() {

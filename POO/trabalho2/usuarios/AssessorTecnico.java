@@ -12,6 +12,7 @@ public class AssessorTecnico extends Usuario {
         Scanner sc = new Scanner(System.in);
         System.out.println("Seção: ");
         secao = sc.nextLine();
+        sc.close();
     }
 
     public String getSecao() {
