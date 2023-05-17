@@ -104,6 +104,7 @@ public class Biblioteca {
             else if (auxI instanceof Revista)
                 auxU.getEmprestados().add(new Emprestimo<>((Revista) auxI));
 
+            System.out.println(nome + " emprestado com sucesso");
         } catch (ItemNotFoundException | UserNotFoundException | UnavailableItemException e) {
             System.out.println("\tERRO: " + e.getMessage());
         } finally {
@@ -122,18 +123,17 @@ public class Biblioteca {
         System.out.println(); //pula uma linha
 
         try {
-            Item auxI = busca(nome); //pode gerar ItemNotFountException
+            busca(nome); //pode gerar ItemNotFountException
             Usuario auxU = login(matricula); //pode gerar UserNotFoundException
 
             //procuramos pelo item na lista de empréstimos do usuário
             ArrayList<Emprestimo<? extends Item>> emps = auxU.getEmprestados();
-            String busca = auxI.getTitulo();
             double multa = 0;
             short flag = 0;
             for (Emprestimo<? extends Item> emp : emps) {
                 String titulo = emp.getEmprestado().getTitulo();
-                if (titulo.equals(busca)) {
-                    emp.devolver(); //pode gerar UncheckedItemException
+                if (titulo.equals(nome)) {
+                    emp.devolver(auxU); //pode gerar UncheckedItemException
                     multa = emp.calcularMulta(auxU);
                     flag = 1;
                     break;
@@ -142,10 +142,9 @@ public class Biblioteca {
             if (flag == 0)
                 throw new UncheckedItemException("Esse item não foi emprestado por esse usuário");
 
-            System.out.println(busca + " devolvido com sucesso");
+            System.out.println(nome + " devolvido com sucesso");
             if (multa != 0)
                 System.out.printf("Multa de R$%.2f%n\n", multa);
-
         } catch (ItemNotFoundException | UserNotFoundException | UncheckedItemException e) {
             System.out.println("\tERRO: " + e.getMessage());
         } finally {
@@ -221,7 +220,7 @@ public class Biblioteca {
     }
 
     public void listarUsuarios() {
-        if(!usuarios.isEmpty()){
+        if (!usuarios.isEmpty()) {
             for (Usuario u : usuarios) {
                 u.imprimir();
                 System.out.println();
