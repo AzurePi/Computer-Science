@@ -12,7 +12,6 @@ public class Revista extends Item {
         volume = sc.nextInt();
         System.out.print("Número: ");
         numero = sc.nextInt();
-        sc.close();
     }
 
     public int getVolume() {
@@ -29,5 +28,12 @@ public class Revista extends Item {
 
     public void setNumero(int numero) {
         this.numero = numero;
+    }
+
+    @Override
+    public void imprimir(){
+        super.imprimir();
+        System.out.println("Volume: " + getVolume());
+        System.out.println("Número: " + getNumero());
     }
 }

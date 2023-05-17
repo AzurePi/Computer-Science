@@ -1,8 +1,14 @@
 package trabalho2;
 
 import trabalho2.exceptions.*;
-import trabalho2.items.*;
-import trabalho2.usuarios.*;
+import trabalho2.items.CD;
+import trabalho2.items.Item;
+import trabalho2.items.Livro;
+import trabalho2.items.Revista;
+import trabalho2.usuarios.Aluno;
+import trabalho2.usuarios.AssessorTecnico;
+import trabalho2.usuarios.Professor;
+import trabalho2.usuarios.Usuario;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -15,27 +21,34 @@ public class Biblioteca {
         Scanner sc = new Scanner(System.in);
         short op;
 
-        System.out.println("Cadastro de Item -----------------------");
+        System.out.println("Cadastro de Item ------------------------------");
         System.out.println("1 - CD\t2 - Livro\t3 - Revista");
         op = sc.nextShort();
         try {
             switch (op) {
-                case 1 -> inventario.add(new CD());
-                case 2 -> inventario.add(new Livro());
-                case 3 -> inventario.add(new Revista());
-                default -> throw new InvalidItemException("Tipo de item não reconhecido");
+                case 1:
+                    inventario.add(new CD());
+                    break;
+                case 2:
+                    inventario.add(new Livro());
+                    break;
+                case 3:
+                    inventario.add(new Revista());
+                    break;
+                default:
+                    throw new InvalidItemException("Tipo de item não reconhecido");
             }
         } catch (InvalidItemException e) {
-            System.out.println("ERRO: " + e.getMessage());
+            System.out.println("\tERRO: " + e.getMessage());
         } finally {
-            sc.close();
+            System.out.println();//pula uma linha
         }
     }
 
     public void consultaItem() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Consulta de Item -----------------------");
+        System.out.println("Consulta de Item ------------------------------");
         System.out.print("Nome do item: ");
         String nome = sc.nextLine();
         System.out.println(); //pula uma linha
@@ -62,22 +75,21 @@ public class Biblioteca {
                 System.out.println("Número: " + ((Revista) aux).getNumero());
             }
         } catch (ItemNotFoundException e) {
-            System.out.println("ERRO: " + e.getMessage());
+            System.out.println("\tERRO: " + e.getMessage());
         } finally {
-            sc.close();
+            System.out.println();//pula uma linha
         }
     }
 
     public void emprestarItem() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Empréstimo de Item ---------------------");
+        System.out.println("Empréstimo de Item ----------------------------");
         System.out.print("Nome do item: ");
         String nome = sc.nextLine();
         System.out.print("Matrícula de a quem se empresta: ");
         int matricula = sc.nextInt();
         System.out.println(); //pula uma linha
-        sc.close();
 
         try {
             Item auxI = busca(nome); //pode gerar ItemNotFountException
@@ -93,20 +105,21 @@ public class Biblioteca {
                 auxU.getEmprestados().add(new Emprestimo<>((Revista) auxI));
 
         } catch (ItemNotFoundException | UserNotFoundException | UnavailableItemException e) {
-            System.out.println("ERRO: " + e.getMessage());
+            System.out.println("\tERRO: " + e.getMessage());
+        } finally {
+            System.out.println();//pula uma linha
         }
     }
 
     public void devolverItem() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Devolução de Item ----------------------");
+        System.out.println("Devolução de Item -----------------------------");
         System.out.print("Nome do item: ");
         String nome = sc.nextLine();
         System.out.print("Matrícula de quem emprestou: ");
         int matricula = sc.nextInt();
         System.out.println(); //pula uma linha
-        sc.close();
 
         try {
             Item auxI = busca(nome); //pode gerar ItemNotFountException
@@ -133,8 +146,10 @@ public class Biblioteca {
             if (multa != 0)
                 System.out.printf("Multa de R$%.2f%n\n", multa);
 
-        } catch (UserNotFoundException | ItemNotFoundException | UncheckedItemException e) {
-            System.out.println("ERRO: " + e.getMessage());
+        } catch (ItemNotFoundException | UserNotFoundException | UncheckedItemException e) {
+            System.out.println("\tERRO: " + e.getMessage());
+        } finally {
+            System.out.println();//pula uma linha
         }
     }
 
@@ -142,20 +157,28 @@ public class Biblioteca {
         Scanner sc = new Scanner(System.in);
         short op;
 
-        System.out.println("Cadastro de Usuário --------------------");
+        System.out.println("Cadastro de Usuário ---------------------------");
         System.out.println("1 - Aluno\t2 - Assessor Técnico\t3 - Professor");
         op = sc.nextShort();
-        sc.close();
 
         try {
             switch (op) {
-                case 1 -> usuarios.add(new Aluno());
-                case 2 -> usuarios.add(new AssessorTecnico());
-                case 3 -> usuarios.add(new Professor());
-                default -> throw new InvalidUserException("Tipo de usuário não reconhecido");
+                case 1:
+                    usuarios.add(new Aluno());
+                    break;
+                case 2:
+                    usuarios.add(new AssessorTecnico());
+                    break;
+                case 3:
+                    usuarios.add(new Professor());
+                    break;
+                default:
+                    throw new InvalidUserException("Tipo de usuário não reconhecido");
             }
         } catch (InvalidUserException e) {
-            System.out.println("ERRO: " + e.getMessage());
+            System.out.println("\tERRO: " + e.getMessage());
+        } finally {
+            System.out.println();//pula uma linha
         }
     }
 
@@ -186,12 +209,51 @@ public class Biblioteca {
     }
 
     public void listarItems() {
-        for (Item i : inventario)
-            System.out.println(i.getTitulo());
+        if (!inventario.isEmpty()) {
+            for (Item i : inventario) {
+                i.imprimir();
+                System.out.println();//pula uma linha
+            }
+        } else
+            System.out.println("Não há itens cadastrados");
+
+        System.out.println();//pula uma linha
     }
 
     public void listarUsuarios() {
-        for (Usuario u : usuarios)
-            System.out.println(u.getNome() + " " + u.getMatricula());
+        if(!usuarios.isEmpty()){
+            for (Usuario u : usuarios) {
+                u.imprimir();
+                System.out.println();
+            }
+        } else
+            System.out.println("Não há usuários cadastrados");
+
+        System.out.println();//pula uma linha
+    }
+
+    public void emprestimosUsuario() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Matrícula: ");
+        int mat = sc.nextInt();
+
+        try {
+            Usuario u = login(mat);
+            ArrayList<Emprestimo<? extends Item>> emps = u.getEmprestados();
+
+            if (!emps.isEmpty()) {
+                System.out.println("Empréstimos -----------------------------------");
+                for (Emprestimo<? extends Item> e : emps) {
+                    e.getEmprestado().imprimir();
+                    System.out.println();//pula uma linha
+                }
+            } else
+                System.out.println("Esse usuário não tem items emprestados");
+        } catch (UserNotFoundException e) {
+            System.out.println("\tERRO: " + e.getMessage());
+        } finally {
+            System.out.println();//pula uma linha
+        }
     }
 }

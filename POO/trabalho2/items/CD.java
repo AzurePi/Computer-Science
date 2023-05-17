@@ -13,7 +13,6 @@ public class CD extends Item {
         volume = sc.nextInt();
         System.out.print("Gravadora: ");
         gravadora = sc.nextLine();
-        sc.close();
     }
 
     public int getVolume() {
@@ -30,5 +29,12 @@ public class CD extends Item {
 
     public void setGravadora(String gravadora) {
         this.gravadora = gravadora;
+    }
+
+    @Override
+    public void imprimir(){
+        super.imprimir();
+        System.out.println("Volume: " + getVolume());
+        System.out.println("Número: " + getGravadora());
     }
 }

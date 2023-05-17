@@ -15,7 +15,6 @@ public class Aluno extends Usuario {
         curso = sc.nextLine();
         System.out.print("Período: ");
         periodo = sc.nextLine();
-        sc.close();
     }
 
     public String getCurso() {
@@ -43,4 +42,12 @@ public class Aluno extends Usuario {
         }
         return 0;
     }
+
+    @Override
+    public void imprimir(){
+        super.imprimir();
+        System.out.println("Curso: " + getCurso());
+        System.out.println("Período: " + getPeriodo());
+    }
+
 }

@@ -12,7 +12,7 @@ public class Main {
         do {
             System.out.println("1 - Consultar item\t\t6 - Listar itens");
             System.out.println("2 - Cadastrar item\t\t7 - Listar usuários");
-            System.out.println("3 - Emprestar item");
+            System.out.println("3 - Emprestar item\t\t8 - Empréstimos do usuário");
             System.out.println("4 - Devolver item");
             System.out.println("5 - Cadastrar usuário\t\t0 - Encerrar");
 
@@ -35,13 +35,15 @@ public class Main {
                     bib.cadastroUsuario();
                     break;
                 case 6:
-                    System.out.println("Itens ----------------------------------");
+                    System.out.println("Itens ----------------------------------------");
                     bib.listarItems();
                     break;
                 case 7:
-                    System.out.println("Usuários -------------------------------");
+                    System.out.println("Usuários ---------------------------------------");
                     bib.listarUsuarios();
                     break;
+                case 8:
+                    bib.emprestimosUsuario();
                 case 0:
                     break;
             }

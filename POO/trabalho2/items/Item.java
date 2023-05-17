@@ -21,8 +21,7 @@ public abstract class Item implements Emprestavel {
         System.out.print("Quantidade disponível: ");
         disponivel = sc.nextInt();
         System.out.print("Quantidade emprestada: ");
-        disponivel = sc.nextInt();
-        sc.close();
+        emprestada = sc.nextInt();
     }
 
     public String getTitulo() {
@@ -81,5 +80,11 @@ public abstract class Item implements Emprestavel {
 
         setDisponivel(getDisponivel() + 1);
         setEmprestada(getEmprestada() - 1);
+    }
+
+    public void imprimir(){
+        System.out.println("Título: " + getTitulo() + " (" + this.getClass().getSimpleName() + ")");
+        System.out.println("Autor: " + getAutor());
+        System.out.println("Ano de publicação: " + getAnoPublicacao());
     }
 }

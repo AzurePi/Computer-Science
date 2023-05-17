@@ -1,5 +1,6 @@
 package trabalho2;
 
+import org.jetbrains.annotations.NotNull;
 import trabalho2.exceptions.UnavailableItemException;
 import trabalho2.exceptions.UncheckedItemException;
 import trabalho2.items.Item;
@@ -12,7 +13,7 @@ public class Emprestimo<T extends Item> {
     private final LocalDate dataEmprestimo, devolucaoPrevista;
     private LocalDate dataDevolucao = null;
 
-    public Emprestimo(T emprestado) throws UnavailableItemException {
+    public Emprestimo(@NotNull T emprestado) throws UnavailableItemException {
         emprestado.emprestimo(); //pode resultar em UnavailableItemException
         this.emprestado = emprestado;
         dataEmprestimo = LocalDate.now();
@@ -40,7 +41,7 @@ public class Emprestimo<T extends Item> {
         dataDevolucao = LocalDate.now();
     }
 
-    public double calcularMulta(Usuario user) {
+    public double calcularMulta(@NotNull Usuario user) {
         return user.multa(this);
     }
 }

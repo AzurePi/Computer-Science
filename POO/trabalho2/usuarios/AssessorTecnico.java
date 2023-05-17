@@ -12,7 +12,6 @@ public class AssessorTecnico extends Usuario {
         Scanner sc = new Scanner(System.in);
         System.out.println("Seção: ");
         secao = sc.nextLine();
-        sc.close();
     }
 
     public String getSecao() {
@@ -31,5 +30,11 @@ public class AssessorTecnico extends Usuario {
             return (atrasoDias * 5) * 1.15; //15% a mais que um aluno
         }
         return 0;
+    }
+
+    @Override
+    public void imprimir(){
+        super.imprimir();
+        System.out.println("Seção: " + getSecao());
     }
 }

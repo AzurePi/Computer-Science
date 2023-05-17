@@ -18,7 +18,6 @@ public abstract class Usuario {
         nome = sc.nextLine();
         System.out.print("Matrícula: ");
         matricula = sc.nextInt();
-        sc.close();
     }
 
     public String getNome() {
@@ -46,4 +45,9 @@ public abstract class Usuario {
     }
 
     public abstract double multa(Emprestimo<? extends Item> emp);
+
+    public void imprimir() {
+        System.out.println("Nome: " + getNome() + " (" + this.getClass().getSimpleName() + ")");
+        System.out.println("Matrícula: " + getMatricula());
+    }
 }

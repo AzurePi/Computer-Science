@@ -12,7 +12,6 @@ public class Livro extends Item {
         editora = sc.nextLine();
         System.out.print("ISBN: ");
         ISBN = sc.nextLine();
-        sc.close();
     }
 
     public String getEditora() {
@@ -29,5 +28,12 @@ public class Livro extends Item {
 
     public void setISBN(String ISBN) {
         this.ISBN = ISBN;
+    }
+
+    @Override
+    public void imprimir(){
+        super.imprimir();
+        System.out.println("Editora: " + getEditora());
+        System.out.println("ISBN: " + getISBN());
     }
 }

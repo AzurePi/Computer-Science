@@ -15,7 +15,6 @@ public class Professor extends Usuario {
         departamento = sc.nextLine();
         System.out.println("Titulação: ");
         titulacao = sc.nextLine();
-        sc.close();
     }
 
     public String getDepartamento() {
@@ -42,5 +41,12 @@ public class Professor extends Usuario {
             return (atrasoDias * 5) * 1.25; //25% a mais que um aluno
         }
         return 0;
+    }
+
+    @Override
+    public void imprimir(){
+        super.imprimir();
+        System.out.println("Departamento: " + getDepartamento());
+        System.out.println("Titulação: " + getTitulacao());
     }
 }
