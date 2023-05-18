@@ -1,6 +1,7 @@
 package trabalho2.usuarios;
 
 import trabalho2.Emprestimo;
+import trabalho2.items.Item;
 
 import java.util.Scanner;
 
@@ -22,8 +23,7 @@ public class AssessorTecnico extends Usuario {
         this.secao = secao;
     }
 
-    @Override
-    public double multa(Emprestimo emp) {
+    public double multa(Emprestimo<? extends Item> emp) {
         //se a devolução foi feita com atraso
         if (emp.getDataDevolucao().isAfter(emp.getDevolucaoPrevista())) {
             float atrasoDias = emp.getDataDevolucao().compareTo(emp.getDevolucaoPrevista());

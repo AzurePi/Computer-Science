@@ -1,0 +1,100 @@
+@startuml
+package trabalho2 #DDDDDD{
+    class Main {
+        + {static} void main(String[])
+    }
+    class Biblioteca {
+        ~ ArrayList<Item> inventario
+        ~ ArrayList<Usuario> usuarios
+        + void cadastroItem()
+        + void consultaItem()
+        + void emprestarItem()
+        + void devolverItem()
+        + void cadastroUsuario()
+        + Item busca(String)
+        + Usuario login(int)
+        + void listarItems()
+        + void listarUsuarios()
+        + void emprestimosUsuario()
+    }
+    class Emprestimo <T extends Item> {
+        - T emprestado
+        - LocalDate dataEmprestimo
+        - LocalDate dataDevolucao
+        + void devolver(Usuario)
+        + double calcularMulta(Usuario)
+    }
+    package usuarios #BBBBBB{
+        abstract class Usuario {
+            - String nome
+            - int matricula
+            - ArrayList<Emprestimo<? extends Item>> emprestados
+            + void setEmprestados(ArrayList<Emprestimo<? extends Item>>)
+            + {abstract}double multa(Emprestimo<? extends Item>)
+            + void imprimir()
+        }
+        class Aluno {
+            - String curso
+            + double multa(Emprestimo<? extends Item>)
+            + void imprimir()
+        }
+        class AssessorTecnico {
+            - String secao
+            + double multa(Emprestimo<? extends Item>))
+            + void imprimir()
+        }
+        class Professor {
+            - String departamento
+            + double multa(Emprestimo<? extends Item>)
+            + void imprimir()
+        }
+        Usuario <|-- Professor
+        Usuario <|-- AssessorTecnico
+        Usuario <|-- Aluno
+    }
+    package items #BBBBBB{
+        interface Emprestavel {
+            ~ void emprestimo()
+            ~ void devolucao()
+        }
+        abstract class Item {
+            - String titulo
+            - int anoPublicacao
+            + void emprestimo()
+            + void devolucao()
+            + void imprimir()
+        }
+        class CD {
+            - int volume
+            - String gravadora
+            + void imprimir()
+        }
+        class Livro {
+            - String editora
+            + void imprimir()
+        }
+        class Revista {
+            - int volume
+            + void imprimir()
+        }
+        Emprestavel <|.. Item
+        Item <|-- CD
+        Item <|-- Livro
+        Item <|-- Revista
+    }
+    package exceptions #BBBBBB{
+        class InvalidItemException {}
+        class InvalidUserException {}
+        class ItemNotFoundException {}
+        class UnavailableItemException {}
+        class UncheckedItemException {}
+        class UserNotFoundException {}
+        Exception <|-- InvalidItemException
+        Exception <|-- InvalidUserException
+        Exception <|-- ItemNotFoundException
+        Exception <|-- UnavailableItemException
+        Exception <|-- UncheckedItemException
+        Exception <|-- UserNotFoundException
+    }
+}
+@enduml
