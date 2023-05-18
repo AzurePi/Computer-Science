@@ -2,10 +2,16 @@ package trabalho2.itens;
 
 import java.util.Scanner;
 
+/**
+ * Extensão de <code>Item</code>.
+ */
 public class CD extends Item {
     private int volume;
     private String gravadora;
 
+    /**
+     * Cria, a partir de input no console, um novo <code>CD</code>.
+     */
     public CD() {
         super();
         Scanner sc = new Scanner(System.in);
@@ -31,6 +37,9 @@ public class CD extends Item {
         this.gravadora = gravadora;
     }
 
+    /**
+     * Imprime no console as informações do <code>CD</code>.
+     */
     @Override
     public void imprimir(){
         super.imprimir();

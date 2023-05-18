@@ -5,10 +5,17 @@ import trabalho2.exceptions.UncheckedItemException;
 
 import java.util.Scanner;
 
+/**
+ * Implementação de <code>Emprestavel</code>. Agregado de informações, identificadas por um título,
+ * com quantidade disponível e quantidade já emprestada.
+ */
 public abstract class Item implements Emprestavel {
     private String titulo, autor;
     private int anoPublicacao, disponivel, emprestada;
 
+    /**
+     * Cria, a partir de input no console, um novo <code>Item</code>.
+     */
     public Item() {
         Scanner sc = new Scanner(System.in);
 
@@ -64,6 +71,11 @@ public abstract class Item implements Emprestavel {
         this.emprestada = emprestada;
     }
 
+    /**
+     * Se há disponibilidade do item, atualiza a quantidade disponível e a quantidade emprestada de acordo com um empréstimo.
+     *
+     * @throws UnavailableItemException caso o <code>Item</code> não esteja disponível
+     */
     @Override
     public void emprestimo() throws UnavailableItemException {
         if (getDisponivel() == 0)
@@ -73,6 +85,11 @@ public abstract class Item implements Emprestavel {
         setEmprestada(getEmprestada() + 1);
     }
 
+    /**
+     * Se há alguma quantidade emprestada, atualiza a quantidade disponível e a quantidade emprestada de acordo com uma devolução.
+     *
+     * @throws UncheckedItemException caso o item não tenha sido emprestado.
+     */
     @Override
     public void devolucao() throws UncheckedItemException {
         if (getEmprestada() == 0)
@@ -82,7 +99,10 @@ public abstract class Item implements Emprestavel {
         setEmprestada(getEmprestada() - 1);
     }
 
-    public void imprimir(){
+    /**
+     * Imprime no console as informações do <code>Item</code>.
+     */
+    public void imprimir() {
         System.out.println("Título: " + getTitulo() + " (" + this.getClass().getSimpleName() + ")");
         System.out.println("Autor: " + getAutor());
         System.out.println("Ano de publicação: " + getAnoPublicacao());

@@ -2,9 +2,15 @@ package trabalho2.itens;
 
 import java.util.Scanner;
 
+/**
+ * Extensão de <code>Item</code>.
+ */
 public class Livro extends Item {
     private String editora, ISBN;
 
+    /**
+     * Cria, a partir de input no console, um novo <code>Livro</code>.
+     */
     public Livro() {
         super();
         Scanner sc = new Scanner(System.in);
@@ -30,8 +36,11 @@ public class Livro extends Item {
         this.ISBN = ISBN;
     }
 
+    /**
+     * Imprime no console as informações do <code>Livro</code>.
+     */
     @Override
-    public void imprimir(){
+    public void imprimir() {
         super.imprimir();
         System.out.println("Editora: " + getEditora());
         System.out.println("ISBN: " + getISBN());

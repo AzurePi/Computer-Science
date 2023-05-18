@@ -5,9 +5,15 @@ import trabalho2.itens.Item;
 
 import java.util.Scanner;
 
+/**
+ * Extensão de <code>Usuario</code>.
+ */
 public class Professor extends Usuario {
     private String departamento, titulacao;
 
+    /**
+     * Cria, a partir de input no console, um novo <code>Professor</code>.
+     */
     public Professor() {
         super();
         Scanner sc = new Scanner(System.in);
@@ -33,6 +39,13 @@ public class Professor extends Usuario {
         this.titulacao = titulacao;
     }
 
+    /**
+     * Calcula a multa a ser paga por um atraso na devolução de um <code>Emprestimo</code>.
+     * Considera a taxa de um professor, 5 reais por dia + 25%.
+     *
+     * @param emp o <code>Emprestimo</code> para o qual a multa está sendo calculada
+     * @return o valor da multa a ser paga
+     */
     @Override
     public double multa(Emprestimo<? extends Item> emp) {
         //se a devolução foi feita com atraso
@@ -43,8 +56,11 @@ public class Professor extends Usuario {
         return 0;
     }
 
+    /**
+     * Imprime no console as informações do <code>Professor</code>
+     */
     @Override
-    public void imprimir(){
+    public void imprimir() {
         super.imprimir();
         System.out.println("Departamento: " + getDepartamento());
         System.out.println("Titulação: " + getTitulacao());

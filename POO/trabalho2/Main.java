@@ -2,6 +2,9 @@ package trabalho2;
 
 import java.util.Scanner;
 
+/**
+ * Cria um menu para gestão de uma <code>Biblioteca</code>.
+ */
 public class Main {
     public static void main(String[] args) {
         Biblioteca bib = new Biblioteca();

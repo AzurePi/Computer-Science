@@ -18,8 +18,8 @@ public class Emprestimo<T extends Item> {
     private LocalDate dataDevolucao = null;
 
     /**
-     * @param emprestado O item sendo emprestado (de uma subclasse de Item)
-     * @throws UnavailableItemException Caso o item não esteja disponível para empréstimo
+     * @param emprestado item sendo emprestado (de uma subclasse de <code>Item</code>)
+     * @throws UnavailableItemException caso o item não esteja disponível para empréstimo
      */
     public Emprestimo(T emprestado) throws UnavailableItemException {
         emprestado.emprestimo(); //pode resultar em UnavailableItemException
@@ -44,12 +44,22 @@ public class Emprestimo<T extends Item> {
         return dataDevolucao;
     }
 
+    /**
+     * @param user usuário dono do <code>Emprestimo</code>
+     * @throws UncheckedItemException caso o item não tenha sido emprestado
+     */
     public void devolver(Usuario user) throws UncheckedItemException {
         emprestado.devolucao(); //pode resultar em UncheckedItemException
         dataDevolucao = LocalDate.now();
         user.getEmprestados().remove(emprestado);
     }
 
+    /**
+     * Calcula, com base na taxa correspondente à subclasse de <code>Usuario</code>, a multa a ser paga
+     *
+     * @param user usuário dono do <code>Emprestimo</code>
+     * @return o valor da multa a ser paga
+     */
     public double calcularMulta(Usuario user) {
         return user.multa(this);
     }
