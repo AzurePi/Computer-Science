@@ -1,10 +1,10 @@
 package trabalho2;
 
 import trabalho2.exceptions.*;
-import trabalho2.items.CD;
-import trabalho2.items.Item;
-import trabalho2.items.Livro;
-import trabalho2.items.Revista;
+import trabalho2.itens.CD;
+import trabalho2.itens.Item;
+import trabalho2.itens.Livro;
+import trabalho2.itens.Revista;
 import trabalho2.usuarios.Aluno;
 import trabalho2.usuarios.AssessorTecnico;
 import trabalho2.usuarios.Professor;

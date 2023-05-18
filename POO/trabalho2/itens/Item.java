@@ -1,4 +1,4 @@
-package trabalho2.items;
+package trabalho2.itens;
 
 import trabalho2.exceptions.UnavailableItemException;
 import trabalho2.exceptions.UncheckedItemException;

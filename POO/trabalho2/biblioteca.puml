@@ -24,7 +24,11 @@ package trabalho2 #DDDDDD{
         + void devolver(Usuario)
         + double calcularMulta(Usuario)
     }
-    package usuarios #BBBBBB{
+    Main ..> Biblioteca
+    Biblioteca o-- usuarios
+    Biblioteca o-- itens
+    Biblioteca o-- exceptions
+    package usuarios <<Frame>> #BBBBBB {
         abstract class Usuario {
             - String nome
             - int matricula
@@ -52,7 +56,7 @@ package trabalho2 #DDDDDD{
         Usuario <|-- AssessorTecnico
         Usuario <|-- Aluno
     }
-    package items #BBBBBB{
+    package itens <<Frame>> #BBBBBB{
         interface Emprestavel {
             ~ void emprestimo()
             ~ void devolucao()
@@ -82,19 +86,21 @@ package trabalho2 #DDDDDD{
         Item <|-- Livro
         Item <|-- Revista
     }
-    package exceptions #BBBBBB{
+    package exceptions <<Frame>> #BBBBBB{
         class InvalidItemException {}
         class InvalidUserException {}
         class ItemNotFoundException {}
         class UnavailableItemException {}
         class UncheckedItemException {}
         class UserNotFoundException {}
-        Exception <|-- InvalidItemException
-        Exception <|-- InvalidUserException
+        Exception <|-up- UncheckedItemException
+        Exception <|-left- InvalidItemException
+        Exception <|-right- InvalidUserException
         Exception <|-- ItemNotFoundException
         Exception <|-- UnavailableItemException
-        Exception <|-- UncheckedItemException
         Exception <|-- UserNotFoundException
     }
+    usuarios *- Emprestimo
+    Emprestimo o-- itens
 }
 @enduml

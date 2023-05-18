@@ -2,7 +2,7 @@ package trabalho2;
 
 import trabalho2.exceptions.UnavailableItemException;
 import trabalho2.exceptions.UncheckedItemException;
-import trabalho2.items.Item;
+import trabalho2.itens.Item;
 import trabalho2.usuarios.Usuario;
 
 import java.time.LocalDate;

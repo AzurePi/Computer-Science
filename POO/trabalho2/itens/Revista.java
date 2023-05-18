@@ -1,18 +1,17 @@
-package trabalho2.items;
+package trabalho2.itens;
 
 import java.util.Scanner;
 
-public class CD extends Item {
-    private int volume;
-    private String gravadora;
+public class Revista extends Item {
+    private int volume, numero;
 
-    public CD() {
+    public Revista() {
         super();
         Scanner sc = new Scanner(System.in);
         System.out.print("Volume: ");
         volume = sc.nextInt();
-        System.out.print("Gravadora: ");
-        gravadora = sc.nextLine();
+        System.out.print("Número: ");
+        numero = sc.nextInt();
     }
 
     public int getVolume() {
@@ -23,18 +22,18 @@ public class CD extends Item {
         this.volume = volume;
     }
 
-    public String getGravadora() {
-        return gravadora;
+    public int getNumero() {
+        return numero;
     }
 
-    public void setGravadora(String gravadora) {
-        this.gravadora = gravadora;
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 
     @Override
     public void imprimir(){
         super.imprimir();
         System.out.println("Volume: " + getVolume());
-        System.out.println("Número: " + getGravadora());
+        System.out.println("Número: " + getNumero());
     }
 }

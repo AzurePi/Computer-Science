@@ -1,4 +1,4 @@
-package trabalho2.items;
+package trabalho2.itens;
 
 import java.util.Scanner;
 

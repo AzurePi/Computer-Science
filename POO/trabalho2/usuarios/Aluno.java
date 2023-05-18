@@ -1,7 +1,7 @@
 package trabalho2.usuarios;
 
 import trabalho2.Emprestimo;
-import trabalho2.items.Item;
+import trabalho2.itens.Item;
 
 import java.util.Scanner;
 
