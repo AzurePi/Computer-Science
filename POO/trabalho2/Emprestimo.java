@@ -7,11 +7,20 @@ import trabalho2.usuarios.Usuario;
 
 import java.time.LocalDate;
 
+/**
+ * Classe Emprestimo utilizada para armazenar as informações (item emprestado, datas de emprésticmo, devolução prevista, devolução) de um empréstimo de um usuário
+ *
+ * @param <T> Uma subclasse de Item
+ */
 public class Emprestimo<T extends Item> {
     private final T emprestado;
     private final LocalDate dataEmprestimo, devolucaoPrevista;
     private LocalDate dataDevolucao = null;
 
+    /**
+     * @param emprestado O item sendo emprestado (de uma subclasse de Item)
+     * @throws UnavailableItemException Caso o item não esteja disponível para empréstimo
+     */
     public Emprestimo(T emprestado) throws UnavailableItemException {
         emprestado.emprestimo(); //pode resultar em UnavailableItemException
         this.emprestado = emprestado;
