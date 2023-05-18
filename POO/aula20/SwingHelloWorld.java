@@ -32,7 +32,9 @@ public class SwingHelloWorld {
         tField2 = new JTextField("Enter text here");
         tField3 = new JTextField("Uneditable text field", 21);
         tField3.setEditable(false);
-        f.add(tField1); f.add(tField2); f.add(tField3);
+        f.add(tField1);
+        f.add(tField2);
+        f.add(tField3);
 
         JPasswordField passField = new JPasswordField("Hidden text");
         f.add(passField);
@@ -55,7 +57,27 @@ public class SwingHelloWorld {
         b3.setMnemonic(KeyEvent.VK_E);
         b3.setEnabled(false);
 
-        f.add(b1); f.add(b2); f.add(b3);
+        f.add(b1);
+        f.add(b2);
+        f.add(b3);
 
+        JRadioButton birdButton = new JRadioButton("Bird");
+        birdButton.setMnemonic(KeyEvent.VK_B);
+
+        JRadioButton catButton = new JRadioButton("Cat");
+        catButton.setMnemonic(KeyEvent.VK_C);
+        catButton.setSelected(true);
+
+        JRadioButton rabbitButton = new JRadioButton("Pig");
+        rabbitButton.setMnemonic(KeyEvent.VK_R);
+
+        f.add(birdButton);
+        f.add(catButton);
+        f.add(rabbitButton);
+
+        ButtonGroup radioGroup = new ButtonGroup();
+        radioGroup.add(birdButton);
+        radioGroup.add(catButton);
+        radioGroup.add(rabbitButton);
     }
 }
