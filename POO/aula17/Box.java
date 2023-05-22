@@ -1,20 +1,19 @@
 package aula17;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Box<T extends Number> {
-    List<T> conteudo;
+    ArrayList<T> conteudo;
     int size;
     int maxSize;
 
-    public Box(List<T> numero) {
+    public Box(ArrayList<T> numero) {
         conteudo = numero;
         size = conteudo.size();
         maxSize = size;
     }
 
-    public Box(List<T> numero, int maxSize) {
+    public Box(ArrayList<T> numero, int maxSize) {
         conteudo = numero;
         size = conteudo.size();
         this.maxSize = maxSize;
@@ -24,7 +23,7 @@ public class Box<T extends Number> {
         return size;
     }
 
-    public List<T> getConteudo() {
+    public ArrayList<T> getConteudo() {
         return conteudo;
     }
 
