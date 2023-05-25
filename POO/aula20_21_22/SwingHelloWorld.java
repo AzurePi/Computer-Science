@@ -1,9 +1,11 @@
-package aula20_21;
+package aula20_21_22;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class SwingHelloWorld {
     public static void main(String[] args) {
@@ -18,7 +20,7 @@ public class SwingHelloWorld {
     private static void createAndShowGUI() {
         JFrame f = new JFrame("Swing Hello World!");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setSize(300, 300);
+        f.setSize(580, 600);
         f.setVisible(true);
 
         JLabel label;
@@ -26,7 +28,9 @@ public class SwingHelloWorld {
         label.setHorizontalTextPosition(SwingConstants.CENTER);
         f.add(label);
 
-        f.setLayout(new FlowLayout());
+        FlowLayout flowLayout = new FlowLayout();
+        flowLayout.setAlignment(FlowLayout.CENTER);
+        f.setLayout(flowLayout);
 
         JTextField tField1, tField2, tField3;
         tField1 = new JTextField(10);
@@ -207,5 +211,19 @@ public class SwingHelloWorld {
         menuBar.add(menu2);
 
         f.setJMenuBar(menuBar);
+
+        //Aula 21 ---------------------------------------------------------------
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
+        chooser.setFileFilter(filter);
+
+        int returVal = chooser.showSaveDialog(f);
+        if (returVal == JFileChooser.APPROVE_OPTION){
+            File selectedFile = chooser.getSelectedFile();
+            System.out.println("You chose: " + selectedFile.getName());
+        }
+
+        JOptionPane.showMessageDialog(f, "Eggs are not suposed to be green.", "Inane error", JOptionPane.ERROR_MESSAGE);
+        int opt = JOptionPane.showConfirmDialog(f, "Do you understand?", "Please, answer!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
 }
