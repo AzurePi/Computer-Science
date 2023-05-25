@@ -32,6 +32,45 @@ public class SwingHelloWorld {
         flowLayout.setAlignment(FlowLayout.CENTER);
         f.setLayout(flowLayout);
 
+        /*  Cross-platform look & feel
+        try{
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        }catch (UnsupportedLookAndFeelException | ClassNotFoundException | IllegalAccessException |
+                InstantiationException e){
+            throw new RuntimeException(e);
+        }
+        */
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                 IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        /*
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                 IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        */
+
+        /*
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                 IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        */
+
         JTextField tField1, tField2, tField3;
         tField1 = new JTextField(10);
         tField2 = new JTextField("Enter text here");
@@ -218,7 +257,7 @@ public class SwingHelloWorld {
         chooser.setFileFilter(filter);
 
         int returVal = chooser.showSaveDialog(f);
-        if (returVal == JFileChooser.APPROVE_OPTION){
+        if (returVal == JFileChooser.APPROVE_OPTION) {
             File selectedFile = chooser.getSelectedFile();
             System.out.println("You chose: " + selectedFile.getName());
         }
