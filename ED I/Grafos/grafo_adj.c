@@ -19,7 +19,7 @@ struct grafo {
 typedef struct grafo *Grafo;
 //----------------------------------
 
-//Implementação das funões/operações
+//Implementação das funções/operações
 //----------------------------------
 //Cria um nó do grafo
 No criaNo (int id, int val) {
@@ -91,7 +91,7 @@ void readGraph(Grafo G, const char *filename){
 	return;
 }
 
-//Imprime o grafo a partir das listas de adjacencia
+//Imprime o grafo a partir das listas de adjacência
 void printGraph(Grafo G) {
 	int i;
 	printf("\nGrafo - Lista de Adjacencia\n\n");
