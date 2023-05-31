@@ -121,13 +121,27 @@ public class DisplayBanco {
                 op = sc.nextInt();
 
                 switch (op) {
-                    case 1 -> operacaoDeposito();
-                    case 2 -> operacaoSaque();
-                    case 3 -> operacaoPix();
-                    case 4 -> operacaoTransferencia();
-                    case 5 -> operacaoSaldo();
-                    case 6 -> operacaoExtrato();
-                    case 7 -> alterarSenha();
+                    case 1:
+                        operacaoDeposito();
+                        break;
+                    case 2:
+                        operacaoSaque();
+                        break;
+                    case 3:
+                        operacaoPix();
+                        break;
+                    case 4:
+                        operacaoTransferencia();
+                        break;
+                    case 5:
+                        operacaoSaldo();
+                        break;
+                    case 6:
+                        operacaoExtrato();
+                        break;
+                    case 7:
+                        alterarSenha();
+                        break;
                 }
             } while (op != 0);
             operacaoSair();
