@@ -1,4 +1,4 @@
-package aula23;
+package aula23_24;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,10 +27,10 @@ public class MyPanelFocus extends JPanel {
     }
 
     class FocusListener extends FocusAdapter {
-        public void focusGained(FocusEvent e){
+        public void focusGained(FocusEvent e) {
             Object source = e.getComponent();
 
-            if(source == yellowButton)
+            if (source == yellowButton)
                 setBackground(Color.YELLOW);
             else if (source == blueButton)
                 setBackground(Color.BLUE);
@@ -40,16 +40,17 @@ public class MyPanelFocus extends JPanel {
     }
 
     class KeyboardListener extends KeyAdapter {
+
         public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode() == KeyEvent.VK_Y)
+            if (e.getKeyCode() == KeyEvent.VK_Y)
                 setBackground(Color.YELLOW);
             else if (e.getKeyCode() == KeyEvent.VK_R)
                 setBackground(Color.RED);
-            else if(e.getKeyCode() == KeyEvent.VK_B)
+            else if (e.getKeyCode() == KeyEvent.VK_B)
                 setBackground(Color.BLUE);
             else if (e.getKeyCode() == KeyEvent.VK_P)
                 setBackground(Color.MAGENTA);
         }
-    }
 
+    }
 }
