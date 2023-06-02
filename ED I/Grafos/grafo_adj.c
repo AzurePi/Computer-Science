@@ -30,7 +30,7 @@ No criaNo (int id, int val) {
 	return n;
 }
 
-//Adiciona um nó no grafo
+//Adiciona uma conexão a um No n de um nó id com peso val
 void addNo (No n, int id, int val) {
 	No novo = criaNo(id, val);
 	if(n == NULL)

@@ -5,16 +5,16 @@
 #define tam_fila 100  //tamanho max. fila
 #define N 5       //Tamanho da matriz de conexões e vetor de distâncias
 
-//ED para fila ---------------------------------------------
+//ED para fila -------------------------------------------------
 
 //Tipo fila
 typedef struct{
 	int A[tam_fila];    //Simplificação p/ aplicação
 	int inicio, fim;
 } fila;
-//----------------------------------------------------------
+//--------------------------------------------------------------
 
-//Operações da fila ----------------------------------------
+//Operações da fila --------------------------------------------
 
 //Cria uma fila vazia
 void Definir(fila *q) {
@@ -56,14 +56,13 @@ bool Remover(fila *q, int *elem) {
 	*elem = q->A[q->inicio];
 	return true;
 }
-//----------------------------------------------------------
+//--------------------------------------------------------------
 
-//ED para um grafo representado por matriz de adjacência ---
+//ED para um grafo representado por matriz de adjacência -------
 struct no {
 	int id;
 	int val;
-	struct no *prox; //o endereço do próximo nó na coluna da matriz
-	struct no *adj; //uma array que guarda as relações de adjacência desse nó (uma linha da matriz)
+	struct no *prox;
 };
 
 typedef struct no *No;
@@ -71,32 +70,33 @@ typedef struct no *No;
 struct grafo {
 	int nNo;     //número de nós
 	No vertices; //array de vértices
+	int **adjacencias;
 };
 
 typedef struct grafo *Grafo;
 
-//Implementação das funções/operações de grafo -------------
-
+//Implementação das funções/operações de grafo -----------------
 //Cria um nó do grafo
 No criaNo (int id, int val) {
 	No n = (No) malloc(sizeof(struct no));
 	n->id = id;
-	n->adj = NULL;
+	n->prox = NULL;
 	n->val = val;
 	return n;
 }
 
-//Adiciona um nó no grafo
-void addNo (Grafo G, int id, int val) {
+//Adiciona uma conexão a um No n de um nó id com peso val
+void addNo (Grafo g, No n, int id, int val) {
 	No novo = criaNo(id, val);
-	if(G == NULL)
+	if(n == NULL)
 		return;
 
-	//Encontra a útima posição na lista de nós
-	while(G->vertices- != NULL)
+	//Encontra a útima posição na lista de adjacências do nó n
+	while(n->prox != NULL)
 		n = n->prox;
-
+	
 	n->prox = novo;
+	g->adjacencias[n->id][id] = val;
 }
 
 //Imprime a lista de todos os nós adjacentes ao nó corrente n
@@ -112,11 +112,75 @@ Grafo criaGrafo(){
 	Grafo G = (Grafo) malloc(sizeof(struct grafo));
 	G->vertices = NULL;
 	G->nNo = 0;
+	G->adjacencias = NULL;
 	return G;
 }
 
+//Efetuar a leitura do grafo via arquivo
+void readGraph(Grafo G, const char *filename){
+	FILE *fp;
+	int bsize = 20;
+	int i, o, d, val_peso;
+	char buffer[bsize];
 
-//----------------------------------------------------------
+	fp = fopen(filename, "r");
+
+	//primeira linha do arquivo indica número de nós
+	fgets(buffer, bsize, fp);
+	sscanf(buffer, "%d", &G->nNo);
+	G->vertices = (No) malloc(G->nNo * sizeof(struct no));
+	
+	//alocando e zerando a matriz de adjacências
+	G->adjacencias = malloc(G->nNo * sizeof(int*));
+	for(i=0; i<G->nNo; i++)
+		G->adjacencias[i] = malloc(G->nNo * sizeof(int));
+	
+	//inicializando os nós
+	for(i=0; i < G->nNo; i++){
+		(G->vertices + i)->id = i;
+		(G->vertices + i)->val = -1;
+		(G->vertices + i)->prox = NULL;
+	}
+
+	//percorre o arquivo
+	while(!feof(fp)){
+		fgets(buffer, bsize, fp);
+		sscanf(buffer, "%d %d %d", &o, &d, &val_peso);
+		printf("%d %d %d\n", o, d, val_peso);
+		addNo(G, (G->vertices + o), d, val_peso);
+	}
+
+	fclose(fp);
+	return;
+}
+
+//Imprime o grafo a partir das listas de adjacência
+void printGraph(Grafo G) {
+	int i;
+	printf("\nGrafo - Lista de Adjacencia\n\n");
+	for(i = 0; i < G->nNo; i++){
+		printf("(%d)", (G->vertices + i)->id);
+		imprimeNo((G->vertices + i));
+		printf("\n");	
+	}
+}
+
+//busca um No com id no Grafo g
+int noGrafo(Grafo g, int id){
+	No aux = g->vertices; //começamos pelo primeiro No no Grafo
+	
+	//procuramos pelo Np que queremos
+	while(aux->id != id && aux->prox != NULL)
+		aux = aux->prox;
+	
+	if(aux->id == id) //se encontramos id no Grafo
+		return 1;
+	//se não encontramos id no grafo
+	return 0;
+}
+
+
+//--------------------------------------------------------------
 //Main: implementação do algoritmo de Dijkstra
 //vetor 'dist': dist[i] é a distância da cidade fixada 'c' até cada cidade 'i'
 int main() {
@@ -126,7 +190,7 @@ int main() {
 	fila F;
 	
 	//lê o grafo a partir de um arquivo
-	
+	readGraph(G, "digrafo.txt");
 	
 	//inicia todas as distâncias como máximas, "infinitas"
 	for (j=0; j<N; j++)  
@@ -148,8 +212,8 @@ int main() {
 		Remover(&F, &i);  //Remove da fila (i é o elemento corrente a partir daqui)
 		for (j=0; j<N; j++)
 			//Se i tem conexão com j E j ainda não foi checado
-			if (A[i][j] > 0 && dist[j] == INT_MAX){
-				dist[j] = dist[i] + A[i][j];
+			if (G->adjacencias[i][j] > 0 && dist[j] == INT_MAX){
+				dist[j] = dist[i] + G->adjacencias[i][j];
 				Inserir(&F, j);
 			}
 	}
@@ -171,13 +235,13 @@ void lerGrafo(Grafo G, const char *filename){
 
 	//primeira linha do arquivo indica número de nós
 	fgets(buffer, bsize, fp);
-	sscanf(buffer, "%d", &G->n);
-	G->vertices = malloc(G->n * sizeof(int));
+	sscanf(buffer, "%d", &G->nNo);
+	G->vertices = malloc(G->nNo * sizeof(struct no));
 	
-	for(i=0; i < G->n; i++)
-		G->vertices[i] = malloc(G->n * sizeof(int));
+	G->adjacencias = malloc(G->nNo * sizeof(int*));
+	for(i=0; i < G->nNo; i++)
+		G->adjacencias[i] = malloc(G->nNo * sizeof(int));
 	
-
 	for(i=0; i < G->nNo; i++){
 		(G->vertices + i)->id = i;
 		(G->vertices + i)->val = -1;
@@ -189,7 +253,7 @@ void lerGrafo(Grafo G, const char *filename){
 		fgets(buffer, bsize, fp);
 		sscanf(buffer, "%d %d %d", &o, &d, &val_peso);
 		printf("%d %d %d\n", o, d, val_peso);
-		addNo((G->vertices + o), d, val_peso);
+		addNo(G, (G->vertices + o), d, val_peso);
 	}
 
 	fclose(fp);
