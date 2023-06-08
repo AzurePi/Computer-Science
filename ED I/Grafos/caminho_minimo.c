@@ -117,8 +117,6 @@ void readGraph(Grafo G, const char *filename){
 	while(!feof(fp)){
 		fgets(buffer, bsize, fp);
 		sscanf(buffer, "%d %d %d", &o, &d, &val_peso);
-		//printf("%d %d %d\n", o, d, val_peso);		(implementação de lista de adjacência)
-		//addNo(G, (G->vertices + o), d, val_peso);	(implementação de lista de adjacência)
 		G->adjacencias[o][d] = val_peso;
 	}
 
@@ -131,9 +129,8 @@ void printGraph(Grafo G) {
 	int i, j;
 	printf("\nGrafo - Matriz de Adjacência\n\n");
 	for(i = 0; i < G->nNo; i++){
-		for(j = 0; i < G->nNo; j++){
-			printf("%d ", G->adjacencias[i][j]);	
-		}
+		for(j = 0; i < G->nNo; j++)
+			printf("%d ", G->adjacencias[i][j]);
 		printf("\n");
 	}
 }
