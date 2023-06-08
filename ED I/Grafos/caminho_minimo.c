@@ -84,11 +84,12 @@ Grafo criaGrafo(){
 }
 
 //Desaloca aquilo que foi alocado dinamicamente no grafo
-void desalocaGrafo(Grafo g){
+void desalocaGrafo(Grafo G){
 	int i;
-	for(i = 0; i < g->nNo; i++)
-		free(g->adjacencias[i]);
-	free(g->adjacencias);
+	for(i = 0; i < G->nNo; i++)
+		free(G->adjacencias[i]);
+	free(G->adjacencias);
+	free(G);
 }
 
 //Efetuar a leitura do grafo via arquivo
@@ -111,14 +112,6 @@ void readGraph(Grafo G, const char *filename){
 	G->adjacencias = (int**)calloc(num, sizeof(int*));
 	for(i=0; i<num; i++)
 		G->adjacencias[i] = (int*)calloc(num, sizeof(int));
-	
-	/*	implementação de lista de adjacências
-	//inicializando os nós
-	for(i=0; i < num; i++){
-		(G->vertices + i)->id = i;
-		(G->vertices + i)->prox = NULL;
-	}
-	*/
 
 	//percorre o arquivo lendo informações dos vértices
 	while(!feof(fp)){
@@ -148,22 +141,16 @@ void printGraph(Grafo G) {
 
 //----------------------------------------------------------------------------
 //Main: implementação do algoritmo de Dijkstra
-//vetor 'dist': dist[i] é a distância da cidade fixada 'c' até cada cidade 'i'
 int main() {
 	Grafo G = criaGrafo();
-	int *dist; //array declarada dinamicamente para armazenar as distâncias
 	int i, j; //contadores
 	int c; //nó a partir do qual as distâncias são calculadas
-	fila F;
+	int *dist; //dist[i] é a distância do nó fixado 'c' até o nó 'i'
+	fila F; //a fila controla quais nós já foram verificados no decorrer da análise
 	
 	setlocale(LC_ALL, "PORTUGUESE");
 	
 	readGraph(G, "digrafo.txt");
-	
-	//inicia todas as distâncias como máximas, "infinitas"
-	dist = malloc(G->nNo * sizeof(int));
-	for (i=0; i<G->nNo; i++)  
-		dist[i] = INT_MAX;
 	
 	//recebe do usuário a partir de qual nó calcular as distâncias
 	do{
@@ -173,19 +160,23 @@ int main() {
 		if(c > G->nNo || c < 0) //se o nó informado não está dentro da quantidade de nós no grafo
 			printf("Nó não encontrado. Tente novamente\n\n");
 	}while(c > G->nNo || c < 0);
-
+	
+	//inicia todas as distâncias como máximas, "infinitas"
+	dist = malloc(G->nNo * sizeof(int));
+	for (i=0; i<G->nNo; i++)  
+		dist[i] = INT_MAX;
     
-	dist[c] = 0; //distância de c até si mesmo
-	Definir(&F); 	//Cria fila
-	Inserir(&F, c);  //Insere como primeiro elemento a cidade fixada c
+	dist[c] = 0; //distância de c até si mesmo é 0
+	Definir(&F);
+	Inserir(&F, c); //Insere como primeiro elemento o nó fixado c
 
-	//Roda até que todos os nós tenham sido checados pelo critério abaixo: 
-	//tira da fila uma cidade i, e coloca na fila as cidades vizinhas j com distâncias computadas
+	//Roda até que todos os nós tenham sido checados pelo critério abaixo (até que a fila esteja vazia): 
+	//tira da fila um nó i, e coloca na fila os nós vizinhos j com suas distâncias computadas
 	while (!Vazia(&F)) {
 		Remover(&F, &i);  //Remove da fila (i é o elemento corrente a partir daqui)
 		for (j=0; j<G->nNo; j++){
-			//Se i tem conexão com j e j ainda não foi checado
-			if (G->adjacencias[i][j] != 0 && dist[j] == INT_MAX){
+			//Se i tem conexão com j, e j ainda não foi checado, e a distância de i a j é menor que a distância já registrada
+			if (G->adjacencias[i][j] != 0 && dist[j] == INT_MAX && dist[i] + G->adjacencias[i][j] < dist[j]){
 				dist[j] = dist[i] + G->adjacencias[i][j];
 				Inserir(&F, j);
 			}
@@ -193,8 +184,13 @@ int main() {
 	}
 	
 	//Imprime vetor de distâncias de 'c' para as demais cidades 'i'
-	for (i=0; i<G->nNo; i++)
-		printf("dist[%d]: %d\n", i, dist[i]);	
+	for (i=0; i<G->nNo; i++){
+		printf("dist[%d]: ", i);
+		if (dist[i] == INT_MAX) //se a distância ainda é infinita
+			printf("n/a\n"); //imprimime "not available"
+		else
+			printf("%d\n", dist[i]);
+	}
 	
 	desalocaGrafo(G);
 	
