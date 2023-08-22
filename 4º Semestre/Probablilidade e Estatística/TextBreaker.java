@@ -20,9 +20,10 @@ public class TextBreaker {
         int continuar; //controla se mais arquivos serão processados
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Quebra um arquivo txt em trechos de 4000 caracteres (sem quebrar palavras ao meio), e salva esse textos em arquivos txt no endereço especificado\n");
+        System.out.println("Quebra um arquivo txt em trechos de 4000 caracteres (sem quebrar palavras ao meio), e salva esse textos em arquivos txt no endereço especificado");
 
         do {
+            System.out.println(); //pula uma linha
             try {
                 texto = lerTexto(sc);
 
@@ -37,30 +38,42 @@ public class TextBreaker {
 
             trecho = new StringBuilder(); //inicializamos o trecho de 4000 caracteres
             a = i = 0; //zera o contador de arquivos e o contador de palavras
-            do {
+            while (i < tamanhoTexto) {
                 projecao = trecho.length() + palavras.get(i).length();
 
-                //falta alguma coisa na condição desse if pra fazer salvar também quando projeção ainda não chegou em 4000, mas já acabou o texto
-                if (projecao > 4000 || i == tamanhoTexto) { //já chegamos ao tamanho máximo do trecho, então salvamos
+                //se ainda não chegamos ao tamanho máximo
+                if (projecao <= 4000) {
+                    trecho.append(palavras.get(i)).append(" ");
+                    i++; //passamos para a próxima palavra
+                } else { //já chegamos ao tamanho máximo do trecho
                     try {
                         fileName = a + ".txt";
                         fileDestino = Paths.get(diretorioDestino.toString(), fileName);
-                        salvar(trecho, fileDestino);
+                        salvar(trecho, fileDestino); //salvamos o trecho em um arquivo
                         a++; //passamos para o próximo arquivo
                         trecho = new StringBuilder(); //começamos a montar um novo trecho
                     } catch (IOException e) {
                         System.out.println("ERRO: falha no salvamento do arquivo");
                         throw new RuntimeException(e);
                     }
-                } else {
-                    trecho.append(palavras.get(i)).append(" ");
-                    i++; //passamos para a próxima palavra
                 }
-            } while (i < tamanhoTexto);
+            }
 
-            System.out.println("Digite 1 para continuar com outro arquivo");
-            continuar = sc.nextInt();
-        } while (continuar == 1);
+            //se ainda há informações a salvar no trecho
+            if (trecho.length() > 0){
+                try {
+                    fileName = a + ".txt";
+                    fileDestino = Paths.get(diretorioDestino.toString(), fileName);
+                    salvar(trecho, fileDestino);
+                } catch (IOException e) {
+                    System.out.println("ERRO: falha no salvamento do arquivo");
+                    throw new RuntimeException(e);
+                }
+            }
+
+            System.out.print("Digite 1 para continuar com outro arquivo ");
+            //continuar = sc.nextInt();
+        } while (sc.nextInt() == 1);
         sc.close();
     }
 
@@ -73,7 +86,7 @@ public class TextBreaker {
 
     public static Path lerDestino(Scanner sc) {
         System.out.print("Diretório de destino: ");
-        return Paths.get(validar(sc.nextLine())); //remove as aspas coladas no caminho
+        return Paths.get(validar(sc.nextLine()));
     }
 
     public static void salvar(StringBuilder trecho, Path destino) throws IOException {
