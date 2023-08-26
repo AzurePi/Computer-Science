@@ -3,14 +3,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class TextBreaker {
     public static void main(String[] args) {
-        String texto;
         ArrayList<String> palavras;
-        StringTokenizer tokenizer;
         StringBuilder trecho;
+        StringTokenizer tokenizer;
         Path diretorioDestino;
         int i, tamanhoTexto, projecao; //controla que linha do arquivo de origem está sendo lida e seu tamanho total
         int a, totalArquivos; //controla o nome do arquivo txt de cada trecho, e a quantidade total de arquivos
@@ -21,16 +23,26 @@ public class TextBreaker {
         do {
             System.out.println(); //pula uma linha
             try {
-                texto = lerTexto(sc);
+                String texto = lerTexto(sc);
 
                 //transformamos a String texto em uma array de strings, em que cada String é uma única palavra
                 palavras = new ArrayList<>();
-                tokenizer = new StringTokenizer(texto, " \t\r\f"); //usa um tokenizador que não considera \n como delimitador
-                while (tokenizer.hasMoreTokens())
-                    palavras.add(tokenizer.nextToken());
-
-                tamanhoTexto = palavras.size(); //calcula o número de palavras no texto
-                totalArquivos = (palavras.stream().mapToInt(String::length).sum() + 3999) / 4000; //calcula o total de arquivos que serão gerados
+                tokenizer = new StringTokenizer(texto);
+                int nChars = 0;
+                String aux;
+                totalArquivos = 0;
+                while (tokenizer.hasMoreTokens()) {
+                    aux = tokenizer.nextToken();
+                    /*
+                    nChars += aux.length();
+                    if (nChars >= 4000) {
+                        totalArquivos++;
+                        nChars %= 4000;
+                    }
+                    */
+                    palavras.add(aux);
+                }
+                tamanhoTexto = palavras.size(); //calcula o número total de palavras no texto
             } catch (IOException e) {
                 System.out.println("ERRO: falha ao ler o arquivo de origem");
                 throw new RuntimeException(e);
@@ -38,7 +50,8 @@ public class TextBreaker {
             diretorioDestino = lerDestino(sc);
 
             a = i = 0; //zera o contador de arquivos e o contador de palavras
-            trecho = new StringBuilder("[" + a + "/" + totalArquivos + "]\n"); //inicializamos o trecho de 4000 caracteres
+            //trecho = new StringBuilder("[" + a + "/" + totalArquivos + "]\n"); //inicializamos o trecho de 4000 caracteres
+            trecho = new StringBuilder();
             while (i < tamanhoTexto) {
                 projecao = trecho.length() + palavras.get(i).length();
 
@@ -49,7 +62,8 @@ public class TextBreaker {
                 } else { //já chegamos ao tamanho máximo do trecho
                     salvarTrecho(diretorioDestino, trecho.toString(), a);
                     a++; //passamos para o próximo arquivo
-                    trecho = new StringBuilder("[" + a + "/" + totalArquivos + "]\n"); //começamos a montar um novo trecho
+                    //trecho = new StringBuilder("[" + a + "/" + totalArquivos + "]\n"); //começamos a montar um novo trecho
+                    trecho = new StringBuilder();
                 }
             }
             //se ainda há informações a salvar no trecho
