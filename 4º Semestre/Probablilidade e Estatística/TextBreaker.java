@@ -11,41 +11,29 @@ import java.util.StringTokenizer;
 
 public class TextBreaker {
     public static void main(String[] args) {
-        int init, fin;
+        File parent;
+        int d; //controla o número do arquivo
         ArrayList<String> palavras;
         StringBuilder trecho;
-        StringTokenizer tokenizer;
         File newDir;
-        int i, tamanhoTexto, projecao; //controla que linha do arquivo de origem está sendo lida e seu tamanho total
+        int p, tamanhoTexto, projecao; //controla que linha do arquivo de origem está sendo lida e seu tamanho total
         int a; //controla o nome do arquivo txt de cada trecho, e a quantidade total de arquivos
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Quebra um arquivo txt em trechos de 4000 caracteres (sem quebrar palavras ao meio), e salva esse textos em arquivos txt em um novo diretório");
+        System.out.println("Recebe o endereço de um diretório, dentro do qual há apenas arquivos .txt, e os quebra em trechos com  4000 caracteres (sem quebrar palavras ao meio), e salva esse textos em arquivos txt em um novo sub-diretório");
 
         System.out.println("Diretório pai: ");
-        File parent = new File(sc.nextLine());
-
+        parent = new File(sc.nextLine());
 
         System.out.print("Número inicial: ");
-        init = Integer.parseInt(sc.nextLine());
-        System.out.print("Número final: ");
-        fin = Integer.parseInt(sc.nextLine());
+        d = Integer.parseInt(sc.nextLine());
 
+        File[] artigos = parent.listFiles();
 
-        for (int d = init; d <= fin; d++) {
-            File[] artigos = parent.listFiles();
-
+        if (artigos != null) {
             for (File artigo : artigos) {
                 try {
-                    List<String> lines = Files.readAllLines(artigo.toPath());
-                    String texto = String.join(System.lineSeparator(), lines);
-
-                    //transformamos a String texto em uma array de strings, em que cada String é uma única palavra
-                    palavras = new ArrayList<>();
-                    tokenizer = new StringTokenizer(texto);
-
-                    while (tokenizer.hasMoreTokens())
-                        palavras.add(tokenizer.nextToken());
+                    palavras = lerTexto(artigo);
                     tamanhoTexto = palavras.size(); //calcula o número total de palavras no texto
 
                     newDir = new File("result" + d);
@@ -55,15 +43,15 @@ public class TextBreaker {
                     throw new RuntimeException(e);
                 }
 
-                a = i = 0; //zera o contador de arquivos e o contador de palavras
+                a = p = 0; //zera o contador de arquivos e o contador de palavras
                 trecho = new StringBuilder();
-                while (i < tamanhoTexto) {
-                    projecao = trecho.length() + palavras.get(i).length();
+                while (p < tamanhoTexto) {
+                    projecao = trecho.length() + palavras.get(p).length();
 
                     //se ainda não chegamos ao tamanho máximo
                     if (projecao <= 4000) {
-                        trecho.append(palavras.get(i)).append(" ");
-                        i++; //passamos para a próxima palavra
+                        trecho.append(palavras.get(p)).append(" ");
+                        p++; //passamos para a próxima palavra
                     } else { //já chegamos ao tamanho máximo do trecho
                         salvarTrecho(newDir.toString(), trecho.toString(), a);
                         a++; //passamos para o próximo arquivo
@@ -73,10 +61,24 @@ public class TextBreaker {
                 //se ainda há informações a salvar no trecho
                 if (!trecho.toString().isEmpty())
                     salvarTrecho(newDir.toString(), trecho.toString(), a);
+
+                d++;
             }
         }
-
         sc.close();
+    }
+
+    public static ArrayList<String> lerTexto(File artigo) throws IOException {
+        List<String> lines = Files.readAllLines(artigo.toPath());
+        String texto = String.join(System.lineSeparator(), lines);
+
+        //transformamos a String texto em uma array de strings, em que cada String é uma única palavra
+        ArrayList <String> palavras = new ArrayList<>();
+        StringTokenizer tokenizer = new StringTokenizer(texto);
+
+        while (tokenizer.hasMoreTokens())
+            palavras.add(tokenizer.nextToken());
+        return palavras;
     }
 
     public static void salvarTrecho(String destino, String trecho, int a) {
