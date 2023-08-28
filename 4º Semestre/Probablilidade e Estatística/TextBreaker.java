@@ -22,53 +22,58 @@ public class TextBreaker {
 
         System.out.println("Quebra um arquivo txt em trechos de 4000 caracteres (sem quebrar palavras ao meio), e salva esse textos em arquivos txt em um novo diretório");
 
+        System.out.println("Diretório pai: ");
+        File parent = new File(sc.nextLine());
+
+
         System.out.print("Número inicial: ");
         init = Integer.parseInt(sc.nextLine());
         System.out.print("Número final: ");
         fin = Integer.parseInt(sc.nextLine());
 
+
         for (int d = init; d <= fin; d++) {
-            System.out.println(); //pula uma linha
+            File[] artigos = parent.listFiles();
 
-            try {
-                System.out.print("Endereço do arquivo de origem: ");
-                File origem = new File(validar(sc.nextLine()));
-                List<String> lines = Files.readAllLines(origem.toPath()); //lê todas as linhas do arquivo
-                String texto = String.join(System.lineSeparator(), lines);
+            for (File artigo : artigos) {
+                try {
+                    List<String> lines = Files.readAllLines(artigo.toPath());
+                    String texto = String.join(System.lineSeparator(), lines);
 
-                //transformamos a String texto em uma array de strings, em que cada String é uma única palavra
-                palavras = new ArrayList<>();
-                tokenizer = new StringTokenizer(texto);
+                    //transformamos a String texto em uma array de strings, em que cada String é uma única palavra
+                    palavras = new ArrayList<>();
+                    tokenizer = new StringTokenizer(texto);
 
-                while (tokenizer.hasMoreTokens())
-                    palavras.add(tokenizer.nextToken());
-                tamanhoTexto = palavras.size(); //calcula o número total de palavras no texto
+                    while (tokenizer.hasMoreTokens())
+                        palavras.add(tokenizer.nextToken());
+                    tamanhoTexto = palavras.size(); //calcula o número total de palavras no texto
 
-                newDir = new File("result" + d);
-                newDir.mkdir();
-            } catch (IOException e) {
-                System.out.println("ERRO: falha ao ler o arquivo de origem");
-                throw new RuntimeException(e);
-            }
-
-            a = i = 0; //zera o contador de arquivos e o contador de palavras
-            trecho = new StringBuilder();
-            while (i < tamanhoTexto) {
-                projecao = trecho.length() + palavras.get(i).length();
-
-                //se ainda não chegamos ao tamanho máximo
-                if (projecao <= 4000) {
-                    trecho.append(palavras.get(i)).append(" ");
-                    i++; //passamos para a próxima palavra
-                } else { //já chegamos ao tamanho máximo do trecho
-                    salvarTrecho(newDir.toString(), trecho.toString(), a);
-                    a++; //passamos para o próximo arquivo
-                    trecho = new StringBuilder();
+                    newDir = new File("result" + d);
+                    newDir.mkdir();
+                } catch (IOException e) {
+                    System.out.println("ERRO: falha ao ler o arquivo de origem");
+                    throw new RuntimeException(e);
                 }
+
+                a = i = 0; //zera o contador de arquivos e o contador de palavras
+                trecho = new StringBuilder();
+                while (i < tamanhoTexto) {
+                    projecao = trecho.length() + palavras.get(i).length();
+
+                    //se ainda não chegamos ao tamanho máximo
+                    if (projecao <= 4000) {
+                        trecho.append(palavras.get(i)).append(" ");
+                        i++; //passamos para a próxima palavra
+                    } else { //já chegamos ao tamanho máximo do trecho
+                        salvarTrecho(newDir.toString(), trecho.toString(), a);
+                        a++; //passamos para o próximo arquivo
+                        trecho = new StringBuilder();
+                    }
+                }
+                //se ainda há informações a salvar no trecho
+                if (!trecho.toString().isEmpty())
+                    salvarTrecho(newDir.toString(), trecho.toString(), a);
             }
-            //se ainda há informações a salvar no trecho
-            if (!trecho.isEmpty())
-                salvarTrecho(newDir.toString(), trecho.toString(), a);
         }
 
         sc.close();
