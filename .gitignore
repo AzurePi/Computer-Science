@@ -2,3 +2,4 @@
 /.idea/
 /Computer-Science.iml
 *.exe
+/cmake-build-debug/
