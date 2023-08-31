@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class TextBreaker {
     public static void main(String[] args) {
@@ -22,8 +19,8 @@ public class TextBreaker {
 
         System.out.println("Recebe o endereço de um diretório, dentro do qual há apenas arquivos .txt, e os quebra em trechos com  4000 caracteres (sem quebrar palavras ao meio), e salva esse textos em arquivos txt em um novo sub-diretório");
 
-        System.out.println("Diretório pai: ");
-        parent = new File(sc.nextLine());
+        System.out.print("Diretório pai: ");
+        parent = new File(validar(sc.nextLine()));
 
         System.out.print("Número inicial: ");
         d = Integer.parseInt(sc.nextLine());
@@ -31,12 +28,13 @@ public class TextBreaker {
         File[] artigos = parent.listFiles();
 
         if (artigos != null) {
+            Arrays.sort(artigos); //garante que estará em ordem alfabética
             for (File artigo : artigos) {
                 try {
                     palavras = lerTexto(artigo);
                     tamanhoTexto = palavras.size(); //calcula o número total de palavras no texto
 
-                    newDir = new File("result" + d);
+                    newDir = new File(parent,"result" + d);
                     newDir.mkdir();
                 } catch (IOException e) {
                     System.out.println("ERRO: falha ao ler o arquivo de origem");
