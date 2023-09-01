@@ -1,6 +1,8 @@
 #ifndef OPERACOESUSUARIO
 #define OPERACOESUSUARIO
 
+#include "filmes.h"
+
 void inserirFilme();
 void removerFilme();
 void modificarNota();

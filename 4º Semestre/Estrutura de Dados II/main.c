@@ -1,29 +1,62 @@
 #include <stdio.h>
+#include <string.h>
 #include "filmes.h"
 #include "indices.h"
 #include "operacoesUsuario.h"
 
 
 int main() {
-    FILE *movies;    //arquivo de dados
+    FILE *movies;   //arquivo de dados
     FILE *iprimary; //arquivo de índice primário
     FILE *ititle;   //arquivo de índice secundário (título em português)
+    IPrimario *primarioMem;
+    ISecundario *secundarioMem;
 
     int op; //operação sendo executada pelo usuário no menu
 
-    //processo de inicialização do programa
-    //verifica se existe um arquivo de dados
-    //se existe, abre para escrita e leitura
-    //se não existe, cria o arquivo para escrita e leitura
-    //verifica se existem arquivos de índice
-    //se existirem, verifica se estão consistentes com o arquivo de dados (flag no cabeçalho)
-    //se estão consistentes, carregar na memória
-    //senão, refazer os índices na memória
-    //senão, criar os índices na RAM
-    fopen("movies.dat", "r+");
+    //processo de inicialização do programa ----------------------------------------------------------------------------
+
+    /*
+    *  verifica se existe um arquivo de dados
+    *      se existe, abre para escrita e leitura
+    *      se não existe, cria o arquivo para escrita e leitura
+    */
+    movies = fopen("movies.dat", "r+");
+    if (!movies) //se é NULL
+        movies = fopen("movies.dat", "w+");
+
+    /*
+     *  verifica se existem arquivos de índice
+     *      se existirem, verifica se estão consistentes com o arquivo de dados (flag no cabeçalho)
+     *          se estão consistentes, carregar na memória
+     *          senão, refazer os índices na memória
+     *      senão, criar os índices na RAM
+     */
+    iprimary = fopen("iprimary.idx", "r+");
+    if (iprimary) {
+        int flag = fgetc(iprimary); //reads the very first character, the flag
+        if (!flag)
+            primarioMem = readPrimario(iprimary); //carrega na memória
+        else {
+            primarioMem = newPrimario();
+            //refaz o índice na memória a partir do arquivo de filmes
+        }
+    } else {
+        iprimary = fopen("iprimary.idx", "w+");
+
+        primarioMem = newPrimario();
+        //refaz o índice na memória a partir do arquivo de filmes
+    }
 
 
-    //fazer um menu com as 5 operações possíveis
+    ititle = fopen("ititle.idx", "r+");
+    if (!ititle)
+        printf("");//verificar consistência
+    else {
+        ititle = fopen("ititle.idx", "w+");
+    }
+
+    //menu do usuário --------------------------------------------------------------------------------------------------
     do {
         printf("1. Inserir filme\n");
         printf("2. Remover filme\n");
@@ -50,16 +83,21 @@ int main() {
                 listarFilmes();
                 break;
             case 0:
+                printf("Encerrando programa");
                 break;
             default:
                 printf("Opção não reconhecida");
                 break;
         }
+        printf("\n");
     } while (op != 0);
 
-    //finalização do programa
+    //finalização do programa ------------------------------------------------------------------------------------------
     //atualizar arquivos de índices no disco
     //fechar os arquivos
+    fclose(movies);
+    fclose(iprimary);
+    fclose(ititle);
     //liberar a memória alocada
 
     return 0;
