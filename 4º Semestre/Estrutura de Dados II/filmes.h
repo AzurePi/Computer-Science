@@ -1,7 +1,7 @@
 #ifndef FILMES
 #define FILMES
 
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct {

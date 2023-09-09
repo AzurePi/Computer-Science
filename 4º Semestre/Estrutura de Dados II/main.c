@@ -9,8 +9,8 @@ int main() {
     FILE *movies;   //arquivo de dados
     FILE *iprimary; //arquivo de índice primário
     FILE *ititle;   //arquivo de índice secundário (título em português)
-    IPrimario *primarioMem;
-    ISecundario *secundarioMem;
+    IndiceP *primarioMem;    //índice primário na memória
+    IndiceS *secundarioMem;  //índice secundário na memória
 
     int op; //operação sendo executada pelo usuário no menu
 
@@ -36,24 +36,33 @@ int main() {
     if (iprimary) {
         int flag = fgetc(iprimary); //reads the very first character, the flag
         if (!flag)
-            primarioMem = readPrimario(iprimary); //carrega na memória
+            primarioMem = readIndiceP(iprimary); //carrega na memória
         else {
-            primarioMem = newPrimario();
+            primarioMem = newIndiceP();
             //refaz o índice na memória a partir do arquivo de filmes
         }
     } else {
         iprimary = fopen("iprimary.idx", "w+");
 
-        primarioMem = newPrimario();
+        primarioMem = newIndiceP();
         //refaz o índice na memória a partir do arquivo de filmes
     }
 
 
     ititle = fopen("ititle.idx", "r+");
-    if (!ititle)
-        printf("");//verificar consistência
-    else {
+    if (ititle) {
+        int flag = fgetc(ititle); //reads the very first character, the flag
+        if (!flag)
+            secundarioMem = readIndiceS(ititle); //carrega na memória
+        else {
+            secundarioMem = newIndiceS();
+            //refaz o índice na memória a partir do arquivo de filmes
+        }
+    } else {
         ititle = fopen("ititle.idx", "w+");
+
+        secundarioMem = newIndiceS();
+        //refaz o índice na memória a partir do arquivo de filmes
     }
 
     //menu do usuário --------------------------------------------------------------------------------------------------
@@ -62,7 +71,7 @@ int main() {
         printf("2. Remover filme\n");
         printf("3. Modificar nota\n");
         printf("4. Buscar filme\n");
-        printf("5. Listar movies\n");
+        printf("5. Listar filmes\n");
         printf("0. Encerrar programa\n");
         scanf("%d", &op);
 
@@ -94,6 +103,7 @@ int main() {
 
     //finalização do programa ------------------------------------------------------------------------------------------
     //atualizar arquivos de índices no disco
+
     //fechar os arquivos
     fclose(movies);
     fclose(iprimary);
