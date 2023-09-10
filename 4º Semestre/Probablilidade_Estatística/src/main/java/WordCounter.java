@@ -1,3 +1,5 @@
+package src.main.java;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -63,5 +65,4 @@ public class WordCounter {
             return original.substring(original.indexOf('"'), original.lastIndexOf('"'));
         return original;
     }
-
 }
