@@ -34,7 +34,7 @@ public class TextBreaker {
                     palavras = lerTexto(artigo);
                     tamanhoTexto = palavras.size(); //calcula o número total de palavras no texto
 
-                    newDir = new File(parent,"result" + d);
+                    newDir = new File(parent, "result" + d);
                     newDir.mkdir();
                 } catch (IOException e) {
                     System.out.println("ERRO: falha ao ler o arquivo de origem");
@@ -71,12 +71,18 @@ public class TextBreaker {
         String texto = String.join(System.lineSeparator(), lines);
 
         //transformamos a String texto em uma array de strings, em que cada String é uma única palavra
-        ArrayList <String> palavras = new ArrayList<>();
+        ArrayList<String> palavras = new ArrayList<>();
         StringTokenizer tokenizer = new StringTokenizer(texto);
 
         while (tokenizer.hasMoreTokens())
             palavras.add(tokenizer.nextToken());
         return palavras;
+    }
+
+    public static String validar(String original) {
+        if (original.charAt(0) == '"') //se há aspas, retira as aspas
+            return original.substring(original.indexOf('"'), original.lastIndexOf('"'));
+        return original;
     }
 
     public static void salvarTrecho(String destino, String trecho, int a) {
@@ -95,11 +101,5 @@ public class TextBreaker {
         BufferedWriter writer = Files.newBufferedWriter(destino);
         writer.write(trecho);
         writer.close();
-    }
-
-    public static String validar(String original) {
-        if (original.charAt(0) == '"') //se há aspas, retira as aspas
-            return original.substring(original.indexOf('"'), original.lastIndexOf('"'));
-        return original;
     }
 }
