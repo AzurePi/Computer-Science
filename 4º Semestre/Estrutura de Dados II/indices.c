@@ -1,5 +1,4 @@
-#include <stdlib.h>
-#include <string.h>
+
 #include "indices.h"
 
 NoP *newNoP(string chave, int conteudo) {
@@ -239,7 +238,7 @@ IndiceS *refazerS(FILE *source) {
 
     //enquanto há entradas para ler, lê a entrada
     while (fgets(entrada, TAM_ENTRADA, source) != 0) {
-        if (entrada[0] != '|') {
+        if (entrada[0] != '*' && entrada[1] != '|') {
             strtok(entrada, "@"); //primeiro campo
             titulo = strtok(NULL, "@"); //segundo campo
 
@@ -318,4 +317,35 @@ void freeIndiceS(IndiceS *index) {
         index->head = auxS;
     }
     free(index);
+}
+
+int rnnFromCodigo(IndiceP *index, char *codigo) {
+    NoP *left = index->head;
+    NoP *right = NULL;
+    NoP *middle = NULL;
+
+    int count; //número de nós no índice
+
+    while (left != right) {
+        middle = left;
+        count = 0;
+
+        while (middle != right) {
+            middle = middle->prox;
+            count++;
+        }
+
+        middle = index->head;
+        for (int i = 0; i < count / 2; i++)
+            middle = middle->prox;
+
+        if (strcmp(middle->chave, codigo) == 0)
+            return middle->i;
+        else if (strcmp(middle->chave, codigo) < 0)
+            left = middle->prox;
+        else
+            right = middle;
+    }
+
+    return -1;
 }

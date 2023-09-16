@@ -1,7 +1,5 @@
 #include <stdio.h>
-#include <string.h>
 #include "indices.h"
-#include "filmes.h"
 #include "operacoesUsuario.h"
 
 int main() {
@@ -20,9 +18,9 @@ int main() {
     *      se existe, abre para escrita e leitura
     *      se não existe, cria o arquivo para escrita e leitura
     */
-    movies = fopen("movies.dat", "r+");
+    movies = fopen("data/movies.dat", "r+");
     if (!movies) //se é NULL
-        movies = fopen("movies.dat", "w+");
+        movies = fopen("data/movies.dat", "w+");
 
     /*
      *  verifica se existem arquivos de índice
@@ -31,7 +29,7 @@ int main() {
      *          senão, refazer os índices na memória
      *      senão, criar os índices na RAM
      */
-    iprimary = fopen("iprimary.idx", "r+");
+    iprimary = fopen("data/iprimary.idx", "r+");
     if (iprimary) {
         int flag = fgetc(iprimary); //reads the very first character, the flag
         if (!flag)
@@ -39,12 +37,12 @@ int main() {
         else
             primarioMem = refazerP(movies); //refaz o índice na memória a partir do arquivo de filmes
     } else {
-        iprimary = fopen("iprimary.idx", "w+");
+        iprimary = fopen("data/iprimary.idx", "w+");
 
         primarioMem = refazerP(movies); //faz o índice na memória a partir do arquivo de filmes
     }
 
-    ititle = fopen("ititle.idx", "r+");
+    ititle = fopen("data/ititle.idx", "r+");
     if (ititle) {
         int flag = fgetc(ititle); //reads the very first character, the flag
         if (!flag)
@@ -53,31 +51,31 @@ int main() {
             secundarioMem = refazerS(movies); //refaz o índice na memória a partir do arquivo de filmes
         }
     } else {
-        ititle = fopen("ititle.idx", "w+");
+        ititle = fopen("data/ititle.idx", "w+");
         secundarioMem = refazerS(movies); //refaz o índice na memória a partir do arquivo de filmes
     }
 
     //menu do usuário --------------------------------------------------------------------------------------------------
     do {
-        puts("\n---------GERENCIADOR DE FILMES--------\n");
-        puts("1. Inserir filme\n");
-        puts("2. Remover filme\n");
-        puts("3. Modificar nota\n");
-        puts("4. Buscar filme\n");
-        puts("5. Listar filmes\n");
-        puts("0. Encerrar programa\n");
+        puts("\n---------GERENCIADOR DE FILMES--------");
+        puts("1. Inserir filme");
+        puts("2. Remover filme");
+        puts("3. Modificar nota");
+        puts("4. Buscar filme");
+        puts("5. Listar filmes");
+        puts("0. Encerrar programa");
         scanf("%hd", &op);
+        clearBuffer();
 
-        printf("\n");
         switch (op) {
             case 1:
-                inserirFilme(movies);
+                inserirFilme(movies, iprimary, ititle);
                 break;
             case 2:
-                removerFilme(movies, primarioMem);
+                removerFilme(movies, primarioMem, iprimary, ititle);
                 break;
             case 3:
-                modificarNota(movies, primarioMem);
+                modificarNota(movies, primarioMem, iprimary, ititle);
                 break;
             case 4:
                 buscarFilme(movies, primarioMem, secundarioMem);
@@ -86,13 +84,12 @@ int main() {
                 listarFilmes(movies);
                 break;
             case 0:
-                puts("Encerrando programa");
+                puts("Encerrando programa...");
                 break;
             default:
-                puts("ERRO: Opção não reconhecida");
+                puts("\tERRO: Opcao nao reconhecida");
                 break;
         }
-        puts("\n");
     } while (op != 0);
 
     //finalização do programa ------------------------------------------------------------------------------------------

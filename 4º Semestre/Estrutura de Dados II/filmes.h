@@ -1,37 +1,26 @@
 #ifndef FILMES
 #define FILMES
 
-#include <stdlib.h>
-#include <string.h>
+#define STRINGIFY_HELPER(x) #x
+#define STRINGIFY(x) STRINGIFY_HELPER(x)
 
 #define TAM_ENTRADA 192
+#define PADDING '#'
 
-#ifndef string
-#define string char*
-#endif
+#define TAM_COD 5
+#define TAM_TIT_PT 57
+#define TAM_TIT_OG 57
+#define TAM_DIR 40
+#define TAM_PAIS 20
 
 typedef struct filme {
-    char codigo[6];     //composto pelas trê primeiras letras do sobrenome do diretor e dois últimos dígitos do ano de lançamento
-    string tituloPT;    //título em português
-    string tituloOG;    //título original; "Idem" se for o mesmo
-    string diretor;     //sobrenome e nome do diretor, separados por vírgula
+    char codigo[6];     //composto pelas três primeiras letras do sobrenome do diretor e dois últimos dígitos do ano de lançamento
+    char tituloPT[58];  //título em português
+    char tituloOG[58];  //título original; "Idem" se for o mesmo
+    char diretor[41];   //sobrenome e nome do diretor, separados por vírgula
     char ano[5];        //ano de lançamento
-    string pais;        //país em que o filme foi produzido
+    char pais[21];      //país em que o filme foi produzido
     char nota;          //inteiro entre 0 e 9 com a nota dada pelo colecionador
 } Filme;
-
-Filme *newFilme(string codigo, string tituloPT, string tituloOG, string diretor, string ano, string pais, char nota) {
-    Filme *novo = (Filme *) malloc(sizeof(Filme));
-
-    strcpy(novo->codigo, codigo);
-    strcpy(novo->tituloPT, tituloPT);
-    strcpy(novo->tituloOG, tituloOG);
-    strcpy(novo->diretor, diretor);
-    strcpy(novo->ano, ano);
-    strcpy(novo->pais, pais);
-    novo->nota = nota;
-
-    return novo;
-}
 
 #endif

@@ -1,6 +1,8 @@
 #ifndef INDICES
 #define INDICES
 
+#include <malloc.h>
+#include <string.h>
 #include <stdio.h>
 #include "filmes.h"
 
@@ -106,5 +108,7 @@ void saveIndiceS(IndiceS *index, FILE *file);
 
 //Libera o espaço alocado para um IndiceS na memória
 void freeIndiceS(IndiceS *index);
+
+int rnnFromCodigo(IndiceP *index, string codigo);
 
 #endif
