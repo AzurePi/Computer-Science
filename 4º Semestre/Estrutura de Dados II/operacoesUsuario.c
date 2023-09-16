@@ -3,11 +3,11 @@
 void inserirFilme(FILE *movies, FILE *iprimary, FILE *ititle) {
     string filme = malloc(TAM_ENTRADA + 1);
 
-    char codigo[TAM_COD + 1];                       //5 caracteres, mais finalizador
+    string codigo = malloc(TAM_COD + 1);       //5 caracteres, mais finalizador
     string tituloPT = malloc(TAM_TIT_PT + 1);  //57 caracteres, mais finalizador
     string tituloOG = malloc(TAM_TIT_OG + 1);  //57 caracteres, mais finalizador
     string diretor = malloc(TAM_DIR + 1);      //40 caracteres, mais finalizador
-    char ano[5];                                    //4 caracteres, mais finalizador
+    string ano = malloc(5);                    //4 caracteres, mais finalizador
     string pais = malloc(TAM_PAIS + 1);        //20 caracteres, mais finalizador
     char nota = 0;                                  //1 caractere, e no arquivo um finalizador
 
@@ -57,8 +57,10 @@ void inserirFilme(FILE *movies, FILE *iprimary, FILE *ititle) {
     if (!isdigit(nota)) {
         puts("\tERRO: nota invalida");
 
+        free(codigo);
         free(tituloPT);
         free(tituloOG);
+        free(ano);
         free(diretor);
         free(pais);
         free(filme);
@@ -73,8 +75,10 @@ void inserirFilme(FILE *movies, FILE *iprimary, FILE *ititle) {
         if (!isdigit(ano[i])) {
             puts("\tERRO: ano invalido");
 
+            free(codigo);
             free(tituloPT);
             free(tituloOG);
+            free(ano);
             free(diretor);
             free(pais);
             free(filme);
@@ -121,8 +125,10 @@ void inserirFilme(FILE *movies, FILE *iprimary, FILE *ititle) {
     fputc('1', ititle);
 
     //libera a memória alocada
+    free(codigo);
     free(tituloPT);
     free(tituloOG);
+    free(ano);
     free(diretor);
     free(pais);
     free(filme);
@@ -134,7 +140,7 @@ void inserirFilme(FILE *movies, FILE *iprimary, FILE *ititle) {
 }
 
 void removerFilme(FILE *movies, IndiceP *indexP, FILE *iprimary, FILE *ititle) {
-    char codigo[TAM_COD + 1];
+    string codigo = malloc(TAM_COD + 1);
     int rnn;
 
     puts("\n----------REMOÇÃO DE FILME----------");
@@ -144,6 +150,7 @@ void removerFilme(FILE *movies, IndiceP *indexP, FILE *iprimary, FILE *ititle) {
     clearBuffer();
 
     rnn = rnnFromCodigo(indexP, codigo);
+    free(codigo);
     if (rnn == -1) {
         puts("Filme nao encontrado");
         return;
@@ -162,7 +169,7 @@ void removerFilme(FILE *movies, IndiceP *indexP, FILE *iprimary, FILE *ititle) {
 }
 
 void modificarNota(FILE *movies, IndiceP *indexP, FILE *iprimary, FILE *ititle) {
-    char codigo[TAM_COD + 1];
+    string codigo = malloc(TAM_COD + 1);
     int rnn;
     string filme;
     string token;
@@ -175,6 +182,7 @@ void modificarNota(FILE *movies, IndiceP *indexP, FILE *iprimary, FILE *ititle) 
     clearBuffer();
 
     rnn = rnnFromCodigo(indexP, codigo);
+    free(codigo);
     if (rnn == -1) {
         puts("Filme nao encontrado");
         return;
@@ -197,10 +205,11 @@ void modificarNota(FILE *movies, IndiceP *indexP, FILE *iprimary, FILE *ititle) 
     scanf("%c", &nova);
     clearBuffer();
 
+    free(filme);
+
     if (!isdigit(nova)) {
         puts("\tERRO: nota invalida");
 
-        free(filme);
         rewind(movies);
         return;
     }
@@ -239,7 +248,7 @@ void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
                 buscarChave(movies, indexP);
                 break;
             case 2:
-                buscarTitulo(movies, indexS);
+                buscarTitulo(movies, NULL, indexS);
                 break;
             default:
                 puts("\tERRO: Opcao invalida");
@@ -249,7 +258,7 @@ void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
 }
 
 void buscarChave(FILE *movies, IndiceP *indexP) {
-    char codigo[TAM_COD + 1];
+    string codigo = malloc(TAM_COD + 1);
     int rnn;
 
     puts("\n------BUSCA POR CHAVE-----");
@@ -259,6 +268,7 @@ void buscarChave(FILE *movies, IndiceP *indexP) {
     clearBuffer();
 
     rnn = rnnFromCodigo(indexP, codigo);
+    free(codigo);
     if (rnn == -1) {
         puts("Filme nao encontrado");
         return;
@@ -267,7 +277,39 @@ void buscarChave(FILE *movies, IndiceP *indexP) {
     imprimirFilme(movies, rnn);
 }
 
-void buscarTitulo(FILE *movies, IndiceS *indexS) {
+void buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
+    string titulo = malloc(TAM_TIT_PT + 1);
+    NoS *noS;
+    NoCodigo *head;
+    string codigo;
+    int rnn;
+
+    puts("\n------BUSCA POR TITULO----");
+
+    printf("Titulo: ");
+    scanf("%"STRINGIFY(TAM_TIT_PT)"s", titulo);
+    clearBuffer();
+
+    noS = localizaTitulo(titulo, indexS);
+    head = noS->head;
+
+    while (head) {
+        codigo = malloc(TAM_COD + 1);
+
+        strcpy(codigo, head->codigo);
+
+        rnn = rnnFromCodigo(indexP, codigo);
+
+        if (rnn == -1) {
+            printf("ERRO: codigo %s presente no indice não encontrado\n", codigo);
+            return;
+        }
+        imprimirFilme(movies, rnn);
+        printf("\n");
+        free(codigo);
+
+        head = head->prox;
+    }
 
 }
 

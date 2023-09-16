@@ -25,7 +25,7 @@ void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 void buscarChave(FILE *movies, IndiceP *indexP);
 
 //Submenu para busca de filme pela chave secundária
-void buscarTitulo(FILE *movies, IndiceS *indexS);
+void buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 
 //Listagem de todos os filmes
 void listarFilmes(FILE *movies);

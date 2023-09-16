@@ -1,4 +1,3 @@
-
 #include "indices.h"
 
 NoP *newNoP(string chave, int conteudo) {
@@ -155,7 +154,7 @@ IndiceP *lerP(FILE *index) {
     IndiceP *novo = newIndiceP(); //aloca na memória e inicializa
     NoP *current; //nó da entrada sendo lida
 
-    string chave = NULL;
+    string chave = malloc(TAM_COD + 1);
     int i;
 
     //enquanto há linhas para ler, armazena as informações, cria um novo nó, e o insere no índice
@@ -171,8 +170,8 @@ IndiceS *lerS(FILE *index) {
     IndiceS *novo = newIndiceS(); //aloca na memória e inicializa
     NoS *current; //nó da entrada sendo lida
 
-    string chave = NULL;
-    string conteudo = NULL;
+    string chave = malloc(TAM_TIT_PT + 1);
+    string conteudo = malloc((TAM_COD + 1) * 100);
     string token;
 
     NoCodigo *head; //começo da lista de códigos
@@ -206,7 +205,7 @@ IndiceP *refazerP(FILE *source) {
 
     int pos = 0; //RNN da entrada sendo lida
 
-    string entrada = NULL;
+    string entrada = malloc(TAM_ENTRADA + 1);
     string token;
 
     NoP *current;
@@ -231,7 +230,7 @@ IndiceS *refazerS(FILE *source) {
 
     int pos = 0; //RNN da entrada sendo lida
 
-    string entrada = NULL;
+    string entrada = malloc(TAM_ENTRADA + 1);
     string titulo;
 
     NoS *current;
@@ -243,10 +242,10 @@ IndiceS *refazerS(FILE *source) {
             titulo = strtok(NULL, "@"); //segundo campo
 
             current = localizaTitulo(titulo, novo); //verifica se o título já tem um NoS correspondente em IndiceS
-            if (current) {
-                //insere um novo NoCodigo, para esse titulo, na lista do NoS current
-                insereCodigo(current->head, newNoCodigo(titulo));
-            } else { //se não há um NoS para esse título
+            if (current)
+                insereCodigo(current->head,
+                             newNoCodigo(titulo)); //insere um novo NoCodigo, para esse titulo, na lista do NoS current
+            else { //se não há um NoS para esse título
                 current = newNoS(titulo); //cria um novo NoS para esse título
                 insereNoS(current, novo); //insere ele no IndiceS
             }
