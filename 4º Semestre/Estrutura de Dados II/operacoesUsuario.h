@@ -1,51 +1,36 @@
 #ifndef OPERACOESUSUARIO
 #define OPERACOESUSUARIO
 
+#include <stdio.h>
 #include "filmes.h"
+#include "indices.h"
 
-void inserirFilme();
+#ifndef string
+#define string char*
+#endif
 
-void removerFilme();
+//Menu para inserção de um novo filme
+void inserirFilme(FILE *movies);
 
-void modificarNota();
+//Menu para remoção de um filme
+void removerFilme(FILE *movies, IndiceP *indexP);
 
-void buscarFilme();
+//Menu para modificação de nota
+void modificarNota(FILE *movies, IndiceP *indexP);
 
-void buscarChave();
+//Menu para busca de filme (com dois submenus)
+void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 
-void buscarTitulo();
+//Submenu para busca de filme pela chave primária
+void buscarChave(FILE *movies, IndiceP *indexP);
 
-void listarFilmes();
+//Submenu para busca de filme pela chave secundária
+void buscarTitulo(FILE *movies, IndiceS *indexS);
 
+//Listagem de todos os filmes
+void listarFilmes(FILE *movies);
 
-void inserirFilme() {
-
-}
-
-void removerFilme() {
-
-}
-
-void modificarNota() {
-
-}
-
-void buscarFilme() {
-    //outro menu
-
-}
-
-void buscarChave() {
-
-}
-
-void buscarTitulo() {
-
-}
-
-void listarFilmes() {
-
-}
-
+//Impressão de um filme na tela
+void imprimirFilme(FILE *movies, int rnn);
 
 #endif

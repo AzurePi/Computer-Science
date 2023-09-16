@@ -4,17 +4,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct {
-    char codigo[5]; //composto pelas trê primeiras letras do sobrenome do diretor e dois últimos dígitos do ano de lançamento
-    char *tituloPT; //título em português
-    char *tituloOG; //título original; "Idem" se for o mesmo
-    char *diretor;  //sobrenome e nome do diretor, separados por vírgula
-    char ano[4];    //ano de lançamento
-    char *pais;     //país em que o filme foi produzido
-    char nota;      //inteiro entre 0 e 9 com a nota dada pelo colecionador
+#define TAM_ENTRADA 192
+
+#ifndef string
+#define string char*
+#endif
+
+typedef struct filme {
+    char codigo[6];     //composto pelas trê primeiras letras do sobrenome do diretor e dois últimos dígitos do ano de lançamento
+    string tituloPT;    //título em português
+    string tituloOG;    //título original; "Idem" se for o mesmo
+    string diretor;     //sobrenome e nome do diretor, separados por vírgula
+    char ano[5];        //ano de lançamento
+    string pais;        //país em que o filme foi produzido
+    char nota;          //inteiro entre 0 e 9 com a nota dada pelo colecionador
 } Filme;
 
-Filme *newFilme(char *codigo, char *tituloPT, char *tituloOG, char *diretor, char *ano, char *pais, char nota) {
+Filme *newFilme(string codigo, string tituloPT, string tituloOG, string diretor, string ano, string pais, char nota) {
     Filme *novo = (Filme *) malloc(sizeof(Filme));
 
     strcpy(novo->codigo, codigo);
@@ -27,6 +33,5 @@ Filme *newFilme(char *codigo, char *tituloPT, char *tituloOG, char *diretor, cha
 
     return novo;
 }
-
 
 #endif

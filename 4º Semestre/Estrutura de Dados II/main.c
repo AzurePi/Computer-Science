@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <string.h>
-#include "filmes.h"
 #include "indices.h"
+#include "filmes.h"
 #include "operacoesUsuario.h"
-
 
 int main() {
     FILE *movies;   //arquivo de dados
@@ -12,7 +11,7 @@ int main() {
     IndiceP *primarioMem;    //índice primário na memória
     IndiceS *secundarioMem;  //índice secundário na memória
 
-    int op; //operação sendo executada pelo usuário no menu
+    short int op; //operação sendo executada pelo usuário no menu
 
     //processo de inicialização do programa ----------------------------------------------------------------------------
 
@@ -36,81 +35,79 @@ int main() {
     if (iprimary) {
         int flag = fgetc(iprimary); //reads the very first character, the flag
         if (!flag)
-            primarioMem = readIndiceP(iprimary); //carrega na memória
-        else {
-            primarioMem = newIndiceP();
-            //refaz o índice na memória a partir do arquivo de filmes
-        }
+            primarioMem = lerP(iprimary); //carrega na memória a partir do arquivo iprimary.idx
+        else
+            primarioMem = refazerP(movies); //refaz o índice na memória a partir do arquivo de filmes
     } else {
         iprimary = fopen("iprimary.idx", "w+");
 
-        primarioMem = newIndiceP();
-        //refaz o índice na memória a partir do arquivo de filmes
+        primarioMem = refazerP(movies); //faz o índice na memória a partir do arquivo de filmes
     }
-
 
     ititle = fopen("ititle.idx", "r+");
     if (ititle) {
         int flag = fgetc(ititle); //reads the very first character, the flag
         if (!flag)
-            secundarioMem = readIndiceS(ititle); //carrega na memória
+            secundarioMem = lerS(ititle); //carrega na memória a partir do arquivo iprimary.idx
         else {
-            secundarioMem = newIndiceS();
-            //refaz o índice na memória a partir do arquivo de filmes
+            secundarioMem = refazerS(movies); //refaz o índice na memória a partir do arquivo de filmes
         }
     } else {
         ititle = fopen("ititle.idx", "w+");
-
-        secundarioMem = newIndiceS();
-        //refaz o índice na memória a partir do arquivo de filmes
+        secundarioMem = refazerS(movies); //refaz o índice na memória a partir do arquivo de filmes
     }
 
     //menu do usuário --------------------------------------------------------------------------------------------------
     do {
-        printf("1. Inserir filme\n");
-        printf("2. Remover filme\n");
-        printf("3. Modificar nota\n");
-        printf("4. Buscar filme\n");
-        printf("5. Listar filmes\n");
-        printf("0. Encerrar programa\n");
-        scanf("%d", &op);
+        puts("\n---------GERENCIADOR DE FILMES--------\n");
+        puts("1. Inserir filme\n");
+        puts("2. Remover filme\n");
+        puts("3. Modificar nota\n");
+        puts("4. Buscar filme\n");
+        puts("5. Listar filmes\n");
+        puts("0. Encerrar programa\n");
+        scanf("%hd", &op);
 
+        printf("\n");
         switch (op) {
             case 1:
-                inserirFilme();
+                inserirFilme(movies);
                 break;
             case 2:
-                removerFilme();
+                removerFilme(movies, primarioMem);
                 break;
             case 3:
-                modificarNota();
+                modificarNota(movies, primarioMem);
                 break;
             case 4:
-                buscarFilme();
+                buscarFilme(movies, primarioMem, secundarioMem);
                 break;
             case 5:
-                listarFilmes();
+                listarFilmes(movies);
                 break;
             case 0:
-                printf("Encerrando programa");
+                puts("Encerrando programa");
                 break;
             default:
-                printf("Opção não reconhecida");
+                puts("ERRO: Opção não reconhecida");
                 break;
         }
-        printf("\n");
+        puts("\n");
     } while (op != 0);
 
     //finalização do programa ------------------------------------------------------------------------------------------
     //atualizar arquivos de índices no disco
+    saveIndiceP(primarioMem, iprimary);
+    saveIndiceS(secundarioMem, ititle);
 
     //fechar os arquivos
     fclose(movies);
     fclose(iprimary);
     fclose(ititle);
+
     //liberar a memória alocada
+    freeIndiceP(primarioMem);
+    freeIndiceS(secundarioMem);
 
     return 0;
 }
-
-
