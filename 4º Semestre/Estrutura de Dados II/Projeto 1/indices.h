@@ -15,7 +15,7 @@
 //Nó que representa uma entrada no índice primário
 typedef struct noP {
     //Chave primária, o código do filme
-    string chave;
+    string codigo;
     //RNN, a posição da entrada no arquivo de índice
     int i;
     //Ponteiro para o próximo NoP na lista
@@ -33,7 +33,7 @@ typedef struct noChaves {
 //Nó que representa uma entrada no índice secundário
 typedef struct noS {
     //Chave secundária, o título do filme
-    string chave;
+    string titulo;
     //Ponteiro para o início da lista de NoCodigo, representando as chaves do índice primário
     NoCodigo *head;
     //Ponteiro para o próximo NoS na lista
@@ -42,23 +42,19 @@ typedef struct noS {
 
 //Representação na memória do índice primário
 typedef struct {
-    //Flag que indica se o índice precisa ser alterado
-    short int flag;
     //Ponteiro para o começo de uma lista de NoP, representando as entradas do índice primário
     NoP *head;
 } IndiceP;
 
 //Representação na memória do índice secundário
 typedef struct {
-    //Flag que indica se o índice secundário precisa ser alterado
-    short int flag;
     //Ponteiro para o começo de uma lista de NoS, representando as entradas do índice secundário
     NoS *head;
 } IndiceS;
 
 //Declarações de Funções -----------------------------------------------------------------------------------------------
 
-//Cria um novo NoP, que contém uma chave e um conteúdo, e aponta para NULL
+//Cria um novo NoP, que contém uma titulo e um conteúdo, e aponta para NULL
 NoP *newNoP(string chave, int conteudo);
 
 //Cria um novo IndiceP, com flag 0, e uma fila vazia de NoP
@@ -68,13 +64,13 @@ IndiceP *newIndiceP();
 void insereNoP(NoP *no, IndiceP *index);
 
 //Lê um arquivo de índice primário, e monta um IndiceP com as informações
-IndiceP *lerP(FILE *index);
+IndiceP *lerP(FILE *iprimary);
 
 //Cria um IndiceP a partir do arquivo de dados
-IndiceP *refazerP(FILE *source);
+IndiceP *refazerP(FILE *movies);
 
 //Slava as informações de um IndiceP em um arquivo
-void saveIndiceP(IndiceP *index, FILE *file);
+void saveIndiceP(IndiceP *index);
 
 //Libera o espaço alocado para um IndiceP na memória
 void freeIndiceP(IndiceP *index);
@@ -85,30 +81,31 @@ NoCodigo *newNoCodigo(string codigo);
 //Insere ordenadamente um NoCodigo na lista que começa em head
 void insereCodigo(NoCodigo *head, NoCodigo *no);
 
-//Cria um novo NoS, que contém uma chave, tem um ponteiro para uma lista vazia de NoChave, e aponta para NULL
+//Cria um novo NoS, que contém uma titulo, tem um ponteiro para uma lista vazia de NoChave, e aponta para NULL
 NoS *newNoS(string chave);
 
 //Cria um novo IndiceS, com flag 0, e uma fila vazia de NoS
 IndiceS *newIndiceS();
 
 //Insere ordenadamente um NoS na lista do IndiceS
-void insereNoS(NoS *no, IndiceS *lista);
+void insereNoS(IndiceS *lista, NoS *no);
 
-//Retorna o endereço do NoS com a chave secundária "titulo"; NULL se não está presente
-NoS *localizaTitulo(string titulo, IndiceS *lista);
+//Retorna o endereço do NoS com a titulo secundária "titulo"; NULL se não está presente
+NoS *localizaTitulo(IndiceS *lista, char *titulo);
 
 //Lê um arquivo de índice secundário, e monta um IndiceS com as informações
-IndiceS *lerS(FILE *index);
+IndiceS *lerS(FILE *ititle);
 
 //Cria um IndiceS a partir do arquivo de dados
-IndiceS *refazerS(FILE *source);
+IndiceS *refazerS(FILE *movies);
 
 //Salva as informações de IndiceS em um arquivo
-void saveIndiceS(IndiceS *index, FILE *file);
+void saveIndiceS(IndiceS *index);
 
 //Libera o espaço alocado para um IndiceS na memória
 void freeIndiceS(IndiceS *index);
 
+//Retorna o RNN de uma entrada de filme com um dado código
 int rnnFromCodigo(IndiceP *index, string codigo);
 
 #endif

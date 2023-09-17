@@ -4,27 +4,28 @@
 #include <ctype.h>
 #include "filmes.h"
 #include "indices.h"
+#include "style.h"
 
 #ifndef string
 #define string char*
 #endif
 
 //Menu para inserção de um novo filme
-void inserirFilme(FILE *movies, FILE *iprimary, FILE *ititle);
+void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS);
 
 //Menu para remoção de um filme
-void removerFilme(FILE *movies, IndiceP *indexP, FILE *iprimary, FILE *ititle);
+void removerFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS);
 
 //Menu para modificação de nota
-void modificarNota(FILE *movies, IndiceP *indexP, FILE *iprimary, FILE *ititle);
+void modificarNota(FILE *movies, IndiceP *indexP);
 
 //Menu para busca de filme (com dois submenus)
 void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 
-//Submenu para busca de filme pela chave primária
+//Submenu para busca de filme pela titulo primária
 void buscarChave(FILE *movies, IndiceP *indexP);
 
-//Submenu para busca de filme pela chave secundária
+//Submenu para busca de filme pela titulo secundária
 void buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 
 //Listagem de todos os filmes
@@ -32,9 +33,6 @@ void listarFilmes(FILE *movies);
 
 //Impressão de um filme na tela
 int imprimirFilme(FILE *movies, int rnn);
-
-//Ensures the given string has size TAM_ENTRADA by padding it with '#"
-void padString(string str);
 
 //Clears the input buffer;
 void clearBuffer();
