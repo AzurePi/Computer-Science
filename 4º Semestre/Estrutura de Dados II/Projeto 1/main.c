@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <dirent.h>
 #include "indices.c" //troca essa porcaria por .c
 #include "operacoesUsuario.c" //troca essa porcaria por .c
 #include "style.h"
@@ -13,6 +14,9 @@ int main() {
     short int op; //operação sendo executada pelo usuário no menu
 
     //processo de inicialização do programa ----------------------------------------------------------------------------
+    opendir("data");
+    if(ENOENT == errno)
+        mkdir("data");
 
     /*
     *  verifica se existe um arquivo de dados

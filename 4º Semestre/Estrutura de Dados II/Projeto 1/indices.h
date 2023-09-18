@@ -54,14 +54,17 @@ typedef struct {
 
 //Declarações de Funções -----------------------------------------------------------------------------------------------
 
-//Cria um novo NoP, que contém uma titulo e um conteúdo, e aponta para NULL
-NoP *newNoP(string chave, int conteudo);
+//Cria um novo NoP, que contém um titulo e um conteúdo, e aponta para NULL
+NoP *newNoP(string codigo, int rnn);
 
-//Cria um novo IndiceP, com flag 0, e uma fila vazia de NoP
+//Cria um novo IndiceP (uma fila vazia de NoP)
 IndiceP *newIndiceP();
 
 //Insere ordenadamente um NoP na lista do IndiceP
 void insereNoP(NoP *no, IndiceP *index);
+
+//Remove o NoP correspondente ao codigo
+void removerNoP(IndiceP *index, string codigo);
 
 //Lê um arquivo de índice primário, e monta um IndiceP com as informações
 IndiceP *lerP(FILE *iprimary);
@@ -81,17 +84,20 @@ NoCodigo *newNoCodigo(string codigo);
 //Insere ordenadamente um NoCodigo na lista que começa em head
 void insereCodigo(NoCodigo *head, NoCodigo *no);
 
+//Remove o código do índice secundário
+void removerCodigo(NoS *no, char *codigo);
+
 //Cria um novo NoS, que contém uma titulo, tem um ponteiro para uma lista vazia de NoChave, e aponta para NULL
 NoS *newNoS(string chave);
 
-//Cria um novo IndiceS, com flag 0, e uma fila vazia de NoS
+//Cria um novo IndiceS (fila vazia de NoS)
 IndiceS *newIndiceS();
 
 //Insere ordenadamente um NoS na lista do IndiceS
 void insereNoS(IndiceS *lista, NoS *no);
 
 //Retorna o endereço do NoS com a titulo secundária "titulo"; NULL se não está presente
-NoS *localizaTitulo(IndiceS *lista, char *titulo);
+NoS *localizaTitulo(IndiceS *lista, string titulo);
 
 //Lê um arquivo de índice secundário, e monta um IndiceS com as informações
 IndiceS *lerS(FILE *ititle);
@@ -107,5 +113,8 @@ void freeIndiceS(IndiceS *index);
 
 //Retorna o RNN de uma entrada de filme com um dado código
 int rnnFromCodigo(IndiceP *index, string codigo);
+
+//Remove o filme com o código correspondente dos índices
+void removeFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo);
 
 #endif

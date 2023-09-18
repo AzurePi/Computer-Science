@@ -1,7 +1,11 @@
 #include "operacoesUsuario.h"
 
+void removeFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo);
+
+char *tituloFromRNN(FILE *movies, int rnn);
+
 void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
-    char filme[TAM_FILME + 1];
+    string filme;
 
     string codigo = malloc(TAM_COD + 1);       //5 caracteres, mais finalizador
     string tituloPT = malloc(TAM_TIT_PT + 1);  //62 caracteres, mais finalizador
@@ -13,7 +17,6 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
 
     string nome = malloc(16);
     string sobrenome = malloc(16);
-    string last;
 
     puts(SUBTITLE"\n-----------INSERCAO DE FILME----------"CLEAR);
     puts("\t\t\t\t\tOBS: Nao utilize acentos");
@@ -97,6 +100,7 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
         }
     }
 
+    //ajusta o título original
     if (strcmp(tituloPT, tituloOG) == 0)
         strcpy(tituloOG, "Idem");
 
@@ -104,13 +108,15 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     sprintf(diretor, "%s, %s", sobrenome, nome);
 
     //montando o código do filme
-    char aux[4];
+    string aux = malloc(4);
     for (int i = 0; i < 3; i++)
         aux[i] = toupper(sobrenome[i]);
     sprintf(codigo, "%s%c%c", aux, ano[2], ano[3]);
+    free(aux);
     free(nome);
     free(sobrenome);
 
+    //verifica se o código desse filme já está registrado
     if (rnnFromCodigo(*indexP, codigo) != -1) {
         puts(ERROR"\tERRO: filme já cadastrado"CLEAR);
 
@@ -125,6 +131,7 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     }
 
     //imprime no arquivo
+    filme = malloc(TAM_FILME + 1);
     fseek(movies, 0, SEEK_END);
 
     sprintf(filme, "%s@%s@%s@%s@%s@%s@%c@", codigo, tituloPT, tituloOG, diretor, ano, pais, nota);
@@ -137,6 +144,8 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
 
     fputs(filme, movies);
 
+    //TODO: Atualizar os índices
+
     //libera a memória alocada
     free(codigo);
     free(tituloPT);
@@ -144,10 +153,12 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     free(ano);
     free(diretor);
     free(pais);
+    free(filme);
 }
 
 void removerFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     string codigo = malloc(TAM_COD + 1);
+    string titulo;
     int rnn;
 
     puts(SUBTITLE"\n----------REMOCAO DE FILME----------"CLEAR);
@@ -156,15 +167,25 @@ void removerFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     scanf("%"STRINGIFY(TAM_COD)"s", codigo);
     clearBuffer();
 
+    //procura a posição do filme correspondente no arquivo
     rnn = rnnFromCodigo(*indexP, codigo);
-    free(codigo);
     if (rnn == -1) {
         puts("Filme nao encontrado");
         return;
     }
 
+    //salva o título para remoção do índice secundário
+    titulo = tituloFromRNN(movies, rnn);
+
+    //marca o filme como deletado
     fseek(movies, rnn * TAM_FILME, SEEK_SET);
     fputs("*|", movies);
+
+    //remove o filme dos índices
+    removeFilme(*indexP, *indexS, codigo, titulo);
+
+    free(codigo);
+    free(titulo);
 }
 
 void modificarNota(FILE *movies, IndiceP *indexP) {
@@ -347,4 +368,14 @@ int imprimirFilme(FILE *movies, int rnn) {
 void clearBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
+}
+
+string tituloFromRNN(FILE *movies, int rnn) {
+    string codigo = malloc(TAM_COD + 1);
+    string titulo = malloc(TAM_TIT_PT + 1);
+
+    fseek(movies, rnn * TAM_FILME, SEEK_SET);
+    fscanf(movies, "%s@%s", codigo, titulo);
+    free(codigo);
+    return titulo;
 }

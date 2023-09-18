@@ -1,9 +1,13 @@
 #include "indices.h"
 
-NoP *newNoP(string chave, int conteudo) {
+void removerNoP(IndiceP *index, char *codigo);
+
+void removerCodigo(NoS *no, char *codigo);
+
+NoP *newNoP(string codigo, int rnn) {
     NoP *novo = malloc(sizeof(NoP));
-    strcpy(novo->codigo, chave);
-    novo->i = conteudo;
+    strcpy(novo->codigo, codigo);
+    novo->i = rnn;
     novo->prox = NULL;
     return novo;
 }
@@ -375,3 +379,18 @@ int rnnFromCodigo(IndiceP *index, char *codigo) {
 
     return -1;
 }
+
+void removeFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo) {
+    removerNoP(indexP, codigo);
+    NoS *noS = localizaTitulo(indexS, titulo);
+    removerCodigo(noS, codigo);
+}
+
+void removerNoP(IndiceP *index, string codigo) {
+    //TODO
+}
+
+void removerCodigo(NoS *no, char *codigo) {
+    //TODO
+}
+

@@ -31,10 +31,13 @@ void buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 //Listagem de todos os filmes
 void listarFilmes(FILE *movies);
 
+//Retorna o código de um filme com determinado código
+string tituloFromRNN(FILE *movies, int rnn);
+
 //Impressão de um filme na tela
 int imprimirFilme(FILE *movies, int rnn);
 
-//Clears the input buffer;
+//Limpa o buffer de entrada
 void clearBuffer();
 
 #endif
