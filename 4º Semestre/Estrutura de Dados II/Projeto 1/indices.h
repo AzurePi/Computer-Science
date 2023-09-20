@@ -17,17 +17,17 @@ typedef struct noP {
     //Chave primária, o código do filme
     string codigo;
     //RNN, a posição da entrada no arquivo de índice
-    int i;
+    int rnn;
     //Ponteiro para o próximo NoP na lista
     struct noP *prox;
 } NoP;
 
 //Nó que representa um código de filme em uma lista de códigos
-typedef struct noChaves {
+typedef struct noCodigo {
     //Código do filme
     string codigo;
     //Ponteiro para o próximo NoChave na lista
-    struct noChaves *prox;
+    struct noCodigo *prox;
 } NoCodigo;
 
 //Nó que representa uma entrada no índice secundário
@@ -44,12 +44,14 @@ typedef struct noS {
 typedef struct {
     //Ponteiro para o começo de uma lista de NoP, representando as entradas do índice primário
     NoP *head;
+    int tamanho;
 } IndiceP;
 
 //Representação na memória do índice secundário
 typedef struct {
     //Ponteiro para o começo de uma lista de NoS, representando as entradas do índice secundário
     NoS *head;
+    int tamanho;
 } IndiceS;
 
 //Declarações de Funções -----------------------------------------------------------------------------------------------
@@ -61,7 +63,10 @@ NoP *newNoP(string codigo, int rnn);
 IndiceP *newIndiceP();
 
 //Insere ordenadamente um NoP na lista do IndiceP
-void insereNoP(NoP *no, IndiceP *index);
+void insereNoP(IndiceP *index, NoP *no);
+
+//Retorna o endereço do NoP com chave codigo; NULL se não está presente
+NoP *buscaNoP(IndiceP *index, string codigo);
 
 //Remove o NoP correspondente ao codigo
 void removerNoP(IndiceP *index, string codigo);
@@ -82,22 +87,22 @@ void freeIndiceP(IndiceP *index);
 NoCodigo *newNoCodigo(string codigo);
 
 //Insere ordenadamente um NoCodigo na lista que começa em head
-void insereCodigo(NoCodigo *head, NoCodigo *no);
+void insereCodigo(NoS *noS, NoCodigo *noC);
 
 //Remove o código do índice secundário
-void removerCodigo(NoS *no, char *codigo);
+void removerNoCodigo(NoS *no, string codigo);
 
 //Cria um novo NoS, que contém uma titulo, tem um ponteiro para uma lista vazia de NoChave, e aponta para NULL
-NoS *newNoS(string chave);
+NoS *newNoS(string titulo);
 
 //Cria um novo IndiceS (fila vazia de NoS)
 IndiceS *newIndiceS();
 
 //Insere ordenadamente um NoS na lista do IndiceS
-void insereNoS(IndiceS *lista, NoS *no);
+void insereNoS(IndiceS *index, NoS *no);
 
-//Retorna o endereço do NoS com a titulo secundária "titulo"; NULL se não está presente
-NoS *localizaTitulo(IndiceS *lista, string titulo);
+//Retorna o endereço do NoS com a chave titulo; NULL se não está presente
+NoS *buscaNoS(IndiceS *index, string titulo);
 
 //Lê um arquivo de índice secundário, e monta um IndiceS com as informações
 IndiceS *lerS(FILE *ititle);
@@ -114,7 +119,10 @@ void freeIndiceS(IndiceS *index);
 //Retorna o RNN de uma entrada de filme com um dado código
 int rnnFromCodigo(IndiceP *index, string codigo);
 
-//Remove o filme com o código correspondente dos índices
+//Insere o filme com o códgio e titulo correspondentes nos índices
+void insereFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo, int rnn);
+
+//Remove o filme com o código e titulo correspondente dos índices
 void removeFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo);
 
 #endif

@@ -10,6 +10,8 @@
 #define string char*
 #endif
 
+#define FORMATO "%s@%s@%s@%s@%s@%s@%c@"
+
 //Menu para inserção de um novo filme
 void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS);
 
@@ -31,11 +33,15 @@ void buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 //Listagem de todos os filmes
 void listarFilmes(FILE *movies);
 
+//Elimina do arquivo os filmes marcados como deletados
+void compactar(FILE *movies);
+
 //Retorna o código de um filme com determinado código
 string tituloFromRNN(FILE *movies, int rnn);
 
 //Impressão de um filme na tela
 int imprimirFilme(FILE *movies, int rnn);
+
 
 //Limpa o buffer de entrada
 void clearBuffer();
