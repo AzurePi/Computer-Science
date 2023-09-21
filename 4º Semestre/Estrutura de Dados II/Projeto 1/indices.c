@@ -184,7 +184,7 @@ NoS *buscaNoS(IndiceS *index, string titulo) {
     NoS *aux = NULL;
 
     int left = 0;
-    int right = index->tamanho;
+    int right = index->tamanho - 1;
     int middle;
 
     while (left <= right) {
@@ -197,9 +197,9 @@ NoS *buscaNoS(IndiceS *index, string titulo) {
         if (strcmp(aux->titulo, titulo) == 0)
             return aux;
         else if (strcmp(aux->titulo, titulo) < 0)
-            right = middle - 1;
+            left = middle + 1;
         else
-            left = middle - 1;
+            right = middle - 1;
     }
 
     return NULL;
@@ -413,7 +413,23 @@ int rnnFromCodigo(IndiceP *index, string codigo) {
     return -1;
 }
 
-void removerNoP(IndiceP *index, string codigo) {
+void insereFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo, int rnn) {
+    NoP *noP = newNoP(codigo, rnn);
+    NoS *noS = buscaNoS(indexS, titulo);
+    NoCodigo *novoC = newNoCodigo(codigo);
+
+    insereNoP(indexP, noP);
+
+    if (noS == NULL) {
+        noS = newNoS(titulo);
+        insereCodigo(noS, novoC);
+        insereNoS(indexS, noS);
+    } else {
+        insereCodigo(noS, novoC);
+    }
+}
+
+void removeNoP(IndiceP *index, string codigo) {
     NoP *current, *prev;
 
     int left = 0;
@@ -440,7 +456,7 @@ void removerNoP(IndiceP *index, string codigo) {
     }
 }
 
-void removerNoCodigo(NoS *no, char *codigo) {
+void removeNoCodigo(NoS *no, char *codigo) {
     NoCodigo *current = no->head;
     NoCodigo *prev;
 
@@ -453,25 +469,40 @@ void removerNoCodigo(NoS *no, char *codigo) {
     free(current);
 }
 
-void insereFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo, int rnn) {
-    NoP *noP = newNoP(codigo, rnn);
-    NoS *noS = buscaNoS(indexS, titulo);
-    NoCodigo *novoC = newNoCodigo(codigo);
+void removeNoS(IndiceS *index, string titulo) {
+    NoS *current, *prev;
 
-    insereNoP(indexP, noP);
+    int left = 0;
+    int right = index->tamanho - 1;
+    int middle;
 
-    if (noS == NULL) {
-        noS = newNoS(titulo);
-        insereCodigo(noS, novoC);
-        insereNoS(indexS, noS);
-    } else {
-        insereCodigo(noS, novoC);
+    while (left <= right) {
+        middle = left + (right - left) / 2;
+
+        current = index->head;
+        for (int i = 0; i < middle; i++) {
+            prev = current;
+            current = current->prox;
+        }
+
+        if (strcmp(current->titulo, titulo) == 0) {
+            prev->prox = current->prox;
+            free(current);
+            return;
+        } else if (strcmp(current->titulo, titulo) < 0)
+            left = middle + 1;
+        else
+            right = middle - 1;
     }
 }
 
-void removeFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo) {
-    removerNoP(indexP, codigo);
-    NoS *noS = buscaNoS(indexS, titulo);
-    removerNoCodigo(noS, codigo);
+void removeFilmeFromIndice(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo) {
+    removeNoP(indexP, codigo); //remove o código do índice primário
+    NoS *noS = buscaNoS(indexS, titulo); //encontra o título no índice secundário
+    removeNoCodigo(noS, codigo); //remove a associação do código com o título no índice secundário
+
+    //se não há mais filmes com esse título
+    if (noS->head == NULL)
+        removeNoS(indexS, titulo); //remove o título do índice secundário
 }
 

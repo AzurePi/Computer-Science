@@ -69,7 +69,7 @@ void insereNoP(IndiceP *index, NoP *no);
 NoP *buscaNoP(IndiceP *index, string codigo);
 
 //Remove o NoP correspondente ao codigo
-void removerNoP(IndiceP *index, string codigo);
+void removeNoP(IndiceP *index, string codigo);
 
 //Lê um arquivo de índice primário, e monta um IndiceP com as informações
 IndiceP *lerP(FILE *iprimary);
@@ -89,10 +89,10 @@ NoCodigo *newNoCodigo(string codigo);
 //Insere ordenadamente um NoCodigo na lista que começa em head
 void insereCodigo(NoS *noS, NoCodigo *noC);
 
-//Remove o código do índice secundário
-void removerNoCodigo(NoS *no, string codigo);
+//Remove o código associado a um título no índice secundário
+void removeNoCodigo(NoS *no, string codigo);
 
-//Cria um novo NoS, que contém uma titulo, tem um ponteiro para uma lista vazia de NoChave, e aponta para NULL
+//Cria um novo NoS, que contém um titulo, tem um ponteiro para uma lista vazia de NoChave, e aponta para NULL
 NoS *newNoS(string titulo);
 
 //Cria um novo IndiceS (fila vazia de NoS)
@@ -103,6 +103,9 @@ void insereNoS(IndiceS *index, NoS *no);
 
 //Retorna o endereço do NoS com a chave titulo; NULL se não está presente
 NoS *buscaNoS(IndiceS *index, string titulo);
+
+//Remove o título do índice secundário
+void removeNoS(IndiceS *index, string titulo);
 
 //Lê um arquivo de índice secundário, e monta um IndiceS com as informações
 IndiceS *lerS(FILE *ititle);
@@ -126,6 +129,6 @@ int rnnFromCodigo(IndiceP *index, string codigo);
 void insereFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo, int rnn);
 
 //Remove o filme com o código e titulo correspondente dos índices
-void removeFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo);
+void removeFilmeFromIndice(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo);
 
 #endif

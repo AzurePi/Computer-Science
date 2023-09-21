@@ -82,7 +82,7 @@ int main() {
 
     //menu do usuário --------------------------------------------------------------------------------------------------
     do {
-        puts(TITLE"\n---------GERENCIADOR DE FILMES--------"CLEAR);
+        puts(TITLE"\n===========GERENCIADOR DE FILMES=========="CLEAR);
         puts("1. Inserir filme");
         puts("2. Remover filme");
         puts("3. Modificar nota");
