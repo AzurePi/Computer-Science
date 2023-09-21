@@ -113,6 +113,9 @@ IndiceS *refazerS(FILE *movies);
 //Salva as informações de IndiceS em um arquivo
 void saveIndiceS(IndiceS *index);
 
+//Libera a lista de códigos dentro de um NoS
+void freeCodigos(NoCodigo *head);
+
 //Libera o espaço alocado para um IndiceS na memória
 void freeIndiceS(IndiceS *index);
 

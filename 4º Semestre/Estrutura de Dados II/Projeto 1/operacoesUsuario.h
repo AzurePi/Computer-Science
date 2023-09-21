@@ -10,8 +10,6 @@
 #define string char*
 #endif
 
-#define FORMATO "%s@%s@%s@%s@%s@%s@%c@"
-
 //Menu para inserção de um novo filme
 void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS);
 
@@ -40,7 +38,7 @@ void compactar(FILE *movies);
 string tituloFromRNN(FILE *movies, int rnn);
 
 //Impressão de um filme na tela
-int imprimirFilme(FILE *movies, int rnn);
+void imprimirFilme(FILE *movies, int rnn);
 
 
 //Limpa o buffer de entrada
