@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <dirent.h>
-#include "indices.c" //troca essa porcaria por .c
-#include "operacoesUsuario.c" //troca essa porcaria por .c
+#include "indices.h" //troca essa porcaria por .c
+#include "operacoesUsuario.h" //troca essa porcaria por .c
 #include "style.h"
 
 int main() {
@@ -15,7 +15,7 @@ int main() {
 
     //processo de inicialização do programa ----------------------------------------------------------------------------
     opendir("data");
-    if(ENOENT == errno)
+    if (ENOENT == errno)
         mkdir("data");
 
     /*
@@ -83,12 +83,12 @@ int main() {
     //menu do usuário --------------------------------------------------------------------------------------------------
     do {
         puts(TITLE"\n===========GERENCIADOR DE FILMES=========="CLEAR);
-        puts("1. Inserir filme");
-        puts("2. Remover filme");
-        puts("3. Modificar nota");
-        puts("4. Buscar filme");
-        puts("5. Listar filmes\t\t6. Compactar base de dados");
-        puts("0. Encerrar programa"INPUT);
+        puts(MENU"1."CLEAR" Inserir filme");
+        puts(MENU"2."CLEAR" Remover filme");
+        puts(MENU"3."CLEAR" Modificar nota");
+        puts(MENU"4."CLEAR" Buscar filme");
+        puts(MENU"5."CLEAR" Listar filmes\t\t"MENU"6. Compactar base de dados");
+        puts(MENU"0."CLEAR" Encerrar programa"INPUT);
         scanf("%hd", &op);
         clearBuffer();
 
@@ -112,10 +112,10 @@ int main() {
                 compactar(movies);
                 break;
             case 0:
-                puts(CLEAR"Encerrando programa...");
+                puts(SUCESS"Encerrando programa..."CLEAR);
                 break;
             default:
-                puts(ERROR"\tERRO: Opcao nao reconhecida"CLEAR);
+                puts(ERROR"\tERRO: Opcao invalida"CLEAR);
                 break;
         }
     } while (op != 0);

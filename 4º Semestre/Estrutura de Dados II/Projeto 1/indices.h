@@ -65,10 +65,10 @@ IndiceP *newIndiceP();
 //Insere ordenadamente um NoP na lista do IndiceP
 void insereNoP(IndiceP *index, NoP *no);
 
-//Retorna o endereço do NoP com chave codigo; NULL se não está presente
+//Por busca binária, retorna o endereço do NoP com chave codigo; NULL se não está presente
 NoP *buscaNoP(IndiceP *index, string codigo);
 
-//Remove o NoP correspondente ao codigo
+//Por busca binária, remove o NoP correspondente ao codigo
 void removeNoP(IndiceP *index, string codigo);
 
 //Lê um arquivo de índice primário, e monta um IndiceP com as informações
@@ -77,7 +77,7 @@ IndiceP *lerP(FILE *iprimary);
 //Cria um IndiceP a partir do arquivo de dados
 IndiceP *refazerP(FILE *movies);
 
-//Slava as informações de um IndiceP em um arquivo
+//Salva as informações de um IndiceP em um arquivo
 void saveIndiceP(IndiceP *index);
 
 //Libera o espaço alocado para um IndiceP na memória
@@ -89,7 +89,7 @@ NoCodigo *newNoCodigo(string codigo);
 //Insere ordenadamente um NoCodigo na lista que começa em head
 void insereCodigo(NoS *noS, NoCodigo *noC);
 
-//Remove o código associado a um título no índice secundário
+//Por busca sequencial, remove o código associado a um título no índice secundário
 void removeNoCodigo(NoS *no, string codigo);
 
 //Cria um novo NoS, que contém um titulo, tem um ponteiro para uma lista vazia de NoChave, e aponta para NULL
@@ -101,10 +101,10 @@ IndiceS *newIndiceS();
 //Insere ordenadamente um NoS na lista do IndiceS
 void insereNoS(IndiceS *index, NoS *no);
 
-//Retorna o endereço do NoS com a chave titulo; NULL se não está presente
+//Por busca binária, retorna o endereço do NoS com a chave titulo; NULL se não está presente
 NoS *buscaNoS(IndiceS *index, string titulo);
 
-//Remove o título do índice secundário
+//Por busca binária, remove o título do índice secundário
 void removeNoS(IndiceS *index, string titulo);
 
 //Lê um arquivo de índice secundário, e monta um IndiceS com as informações
@@ -122,7 +122,7 @@ void freeCodigos(NoCodigo *head);
 //Libera o espaço alocado para um IndiceS na memória
 void freeIndiceS(IndiceS *index);
 
-//Retorna o RNN de uma entrada de filme com um dado código
+//Por busca binária, retorna o RNN de uma entrada de filme com um dado código; -1 se o código não está presente no IndiceP
 int rnnFromCodigo(IndiceP *index, string codigo);
 
 //Insere o filme com o códgio e titulo correspondentes nos índices

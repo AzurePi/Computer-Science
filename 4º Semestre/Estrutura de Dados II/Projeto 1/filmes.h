@@ -5,13 +5,16 @@
 #define STRINGIFY(x) STRINGIFY_HELPER(x)
 
 #define TAM_FILME 192
-#define PADDING '#'
 
 #define TAM_COD 5
 #define TAM_TIT_PT 62
 #define TAM_TIT_OG 62
 #define TAM_DIR 30
 #define TAM_PAIS 21
+
+#define SEPARATOR "@"
+#define PADDING '#'
+#define DELETION "*|"
 
 typedef struct filme {
     char codigo[TAM_COD + 1];       //composto pelas três primeiras letras do sobrenome do diretor e dois últimos dígitos do ano de lançamento
