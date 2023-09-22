@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <dirent.h>
-#include "indices.h" //troca essa porcaria por .c
-#include "operacoesUsuario.h" //troca essa porcaria por .c
+#include <locale.h>
+#include "indices.c"
+#include "operacoesUsuario.c"
 #include "style.h"
 
 int main() {
@@ -12,6 +13,8 @@ int main() {
     IndiceS *secundarioMem; //índice secundário na memória
 
     short int op; //operação sendo executada pelo usuário no menu
+
+    setlocale(LC_ALL, "PORTUGUESE");
 
     //processo de inicialização do programa ----------------------------------------------------------------------------
     opendir("data");
@@ -87,7 +90,7 @@ int main() {
         puts(MENU"2."CLEAR" Remover filme");
         puts(MENU"3."CLEAR" Modificar nota");
         puts(MENU"4."CLEAR" Buscar filme");
-        puts(MENU"5."CLEAR" Listar filmes\t\t"MENU"6. Compactar base de dados");
+        puts(MENU"5."CLEAR" Listar filmes\t\t"MENU"6. "CLEAR"Compactar base de dados");
         puts(MENU"0."CLEAR" Encerrar programa"INPUT);
         scanf("%hd", &op);
         clearBuffer();
@@ -109,7 +112,7 @@ int main() {
                 listarFilmes(movies);
                 break;
             case 6:
-                compactar(movies);
+                compactar(movies, &primarioMem);
                 break;
             case 0:
                 puts(SUCESS"Encerrando programa..."CLEAR);

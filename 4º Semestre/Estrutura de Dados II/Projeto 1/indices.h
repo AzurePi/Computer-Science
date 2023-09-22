@@ -4,6 +4,7 @@
 #include <malloc.h>
 #include <string.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "filmes.h"
 
 #ifndef string
@@ -87,7 +88,7 @@ void freeIndiceP(IndiceP *index);
 NoCodigo *newNoCodigo(string codigo);
 
 //Insere ordenadamente um NoCodigo na lista que começa em head
-void insereCodigo(NoS *noS, NoCodigo *noC);
+void insereNoCodigo(NoS *noS, NoCodigo *noC);
 
 //Por busca sequencial, remove o código associado a um título no índice secundário
 void removeNoCodigo(NoS *no, string codigo);

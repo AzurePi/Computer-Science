@@ -23,7 +23,7 @@ void modificarNota(FILE *movies, IndiceP *indexP);
 void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 
 //Submenu para busca de filme pela titulo primária
-int buscarChave(FILE *movies, IndiceP *indexP);
+int buscarCodigo(FILE *movies, IndiceP *indexP);
 
 //Submenu para busca de filme pela titulo secundária
 int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS);
@@ -32,14 +32,13 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 void listarFilmes(FILE *movies);
 
 //Elimina do arquivo os filmes marcados como deletados
-void compactar(FILE *movies);
+FILE * compactar(FILE *movies, IndiceP **indexP);
 
 //Retorna o código de um filme com determinado código
 string tituloFromRNN(FILE *movies, int rnn);
 
 //Impressão de um filme na tela
 void imprimirFilme(FILE *movies, int rnn);
-
 
 //Limpa o buffer de entrada
 void clearBuffer();
