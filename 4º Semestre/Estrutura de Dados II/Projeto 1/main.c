@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <dirent.h>
-#include <locale.h>
 #include "indices.c"
 #include "operacoesUsuario.c"
 #include "style.h"
@@ -13,8 +12,6 @@ int main() {
     IndiceS *secundarioMem; //índice secundário na memória
 
     short int op; //operação sendo executada pelo usuário no menu
-
-    setlocale(LC_ALL, "PORTUGUESE");
 
     //processo de inicialização do programa ----------------------------------------------------------------------------
     opendir("data");
@@ -71,12 +68,10 @@ int main() {
         }
     } else {
         ititle = fopen("data/ititle.idx", "w+");
-
         if (ititle == NULL) {
             puts(ERROR"\tERRO: Impossível criar arquivo");
             return 1;
         }
-
         secundarioMem = refazerS(movies); //refaz o índice na memória a partir do arquivo de filmes
     }
     fseek(ititle, 0, SEEK_SET);

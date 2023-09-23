@@ -449,70 +449,74 @@ void insereFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo,
 void removeNoP(IndiceP *index, string codigo) {
     NoP *cur, *prev;
 
-    int l = 0;
-    int r = index->tamanho - 1;
-    int m;
+    cur = index->head;
+    prev = NULL;
 
-    while (l <= r) {
-        m = l + (r - l) / 2;
-
-        cur = index->head;
-        for (int i = 0; i < m; i++) {
-            prev = cur;
-            cur = cur->prox;
-        }
-
+    //enquanto há nós para percorrer
+    while (cur != NULL) {
+        //se encontrou o NoP a ser removido
         if (strcmp(cur->codigo, codigo) == 0) {
-            prev->prox = cur->prox;
+            //se o nó for o primeiro da lista
+            if (prev == NULL)
+                index->head = cur->prox;
+            else //se estamos no meio da lista
+                prev->prox = cur->prox;
+
             free(cur->codigo);
             free(cur);
+            index->tamanho--;
+
             return;
-        } else if (strcmp(cur->codigo, codigo) < 0)
-            l = m + 1;
-        else
-            r = m - 1;
+        }
+
+        //anda com os ponteiros
+        prev = cur;
+        cur = cur->prox;
     }
 }
 
 void removeNoCodigo(NoS *no, char *codigo) {
     NoCodigo *cur = no->head;
-    NoCodigo *prev;
+    NoCodigo *prev = NULL;
 
-    while (strcmp(cur->codigo, codigo) != 0) {
+    while (cur != NULL && strcmp(cur->codigo, codigo) != 0) {
         prev = cur;
         cur = cur->prox;
     }
 
-    prev->prox = cur->prox;
-    free(cur->codigo);
-    free(cur);
+    if (cur != NULL) {
+        //se estamos no começo da lista
+        if (prev == NULL)
+            no->head = cur->prox;
+        else //se estamos no meio ou no final da lista
+            prev->prox = cur->prox;
+
+        free((cur->codigo));
+        free(cur);
+    }
 }
 
 void removeNoS(IndiceS *index, string titulo) {
-    NoS *cur, *prev;
+    NoS *cur = index->head;
+    NoS *prev = NULL;
 
-    int l = 0;
-    int r = index->tamanho - 1;
-    int m;
+    //enquanto há nós para percorrer
+    while (cur != NULL) {
+        if (strcmp(cur->titulo, titulo) == 0) {
+            //se estamos no começo da lista
+            if (prev == NULL)
+                index->head = cur->prox;
+            else //se estamos no meio ou no final da lista
+                prev->prox = cur->prox;
 
-    while (l <= r) {
-        m = l + (r - l) / 2;
-
-        cur = index->head;
-        for (int i = 0; i < m; i++) {
-            prev = cur;
-            cur = cur->prox;
+            freeCodigos(cur->head);
+            free(cur);
+            index->tamanho--;
+            return;
         }
 
-        if (strcmp(cur->titulo, titulo) == 0) {
-            prev->prox = cur->prox;
-            freeCodigos(cur->head); //libera todos os NoCodigo associados
-            free(cur);
-            return;
-        } else if (strcmp(cur->titulo, titulo) < 0)
-            l = m + 1;
-        else
-            r = m - 1;
+        prev = cur;
+        cur = cur->prox;
     }
 }
 

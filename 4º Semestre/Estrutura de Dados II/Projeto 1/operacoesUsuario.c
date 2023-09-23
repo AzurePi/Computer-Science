@@ -208,7 +208,7 @@ void removerFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     int rnn;
 
     puts(SUBTITLE
-         "\n----------REMOCAO DE FILME----------"
+         "\n-----------REMOCAO DE FILME-----------"
          CLEAR);
 
     printf(PROMPT
@@ -250,7 +250,6 @@ void removerFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
 void modificarNota(FILE *movies, IndiceP *indexP) {
     string codigo = malloc(TAM_COD + 1);
     int rnn;
-    //string filme = malloc(TAM_FILME + 1);
     char atual;
     char nova;
 
@@ -300,7 +299,7 @@ void modificarNota(FILE *movies, IndiceP *indexP) {
     }
 
     //anda no arquivo até a posição onde a nota deveria estar
-    fseek(movies, -2, SEEK_CUR);
+    fseek(movies, -2, ftell(movies));
     fputc(nova, movies);
 
     puts(SUCESS
@@ -358,15 +357,13 @@ int buscarCodigo(FILE *movies, IndiceP *indexP) {
     int rnn;
 
     puts(SUBSUBTITLE
-         "\n-----BUSCA POR CODIGO-----"
+         "\n------BUSCA POR CODIGO------"
          CLEAR);
 
     printf(PROMPT
            "Chave: "
            INPUT);
-    scanf("%"
-          STRINGIFY(TAM_COD)
-          "s", codigo);
+    scanf("%"STRINGIFY(TAM_COD)"s", codigo);
     clearBuffer();
 
     rnn = rnnFromCodigo(indexP, codigo);
@@ -389,15 +386,13 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
     int rnn;
 
     puts(SUBSUBTITLE
-         "\n-----BUSCA POR TITULO-----"
+         "\n------BUSCA POR TITULO------"
          CLEAR);
 
     printf(PROMPT
-           "Titulo : "
+           "Titulo: "
            INPUT);
-    scanf("%[^\n]"
-          STRINGIFY(TAM_TIT_PT)
-          "s", titulo);
+    scanf("%"STRINGIFY(TAM_TIT_PT)"[^\n]s", titulo);
     clearBuffer();
 
     //procura o nó do índice secundário associado a esse título
@@ -406,7 +401,7 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
 
     if (noS == NULL) {
         printf(ERROR
-               "\tFilme não encontrado\n");
+               "\tFilme nao encontrado\n");
         return 0;
     }
 
@@ -421,6 +416,7 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
             return 0;
         }
 
+        printf("\n");
         imprimirFilme(movies, rnn);
         noC = noC->prox;
     }
@@ -443,6 +439,7 @@ void listarFilmes(FILE *movies) {
         imprimirFilme(movies, rnn);
         rnn++;
     }
+    printf("\n");
 }
 
 void imprimirFilme(FILE *movies, int rnn) {
@@ -505,7 +502,7 @@ void imprimirFilme(FILE *movies, int rnn) {
         printf(LISTING
                "Nota: "
                CLEAR
-               "%c\n\n", nota);
+               "%c\n", nota);
     }
     free(codigo);
     free(tituloPT);
@@ -524,7 +521,8 @@ FILE * compactar(FILE *movies, IndiceP **indexP) {
     while (fscanf(movies, "%"STRINGIFY(TAM_FILME)"[^\n]s", entrada) != EOF) {
         if (entrada[0] != '*' && entrada[1] != '|')
             fprintf(aux, "%s", entrada);
-    } //todo: free entrada
+    }
+    free(entrada);
 
     //fechamos os arquivos
     fclose(movies);
