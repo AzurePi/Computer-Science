@@ -19,11 +19,11 @@ public class FazerArquivos {
         System.out.print("Nome comum dos arquivos: ");
         nome = sc.nextLine();
 
-        System.out.println("Extensão: ");
+        System.out.println("Extensão (sem ponto): ");
         extensao = sc.nextLine();
 
         for (int i = 1; i <= N; i++) {
-            File novo = new File("./" + nome + i + extensao);
+            File novo = new File("./" + nome + i + "." + extensao);
             try {
                 novo.createNewFile();
             } catch (IOException e) {

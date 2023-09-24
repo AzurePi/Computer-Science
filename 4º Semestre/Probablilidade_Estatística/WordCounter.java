@@ -13,12 +13,10 @@ public class WordCounter {
         File result;
         FileWriter wr;
 
-        System.out.println("Recebe o endereço de um diretório, dentro do qual há apenas arquivos .txt, e cria um artigo txt com a quantidade de palavras de acada um");
+        System.out.println("Recebe o endereço de um diretório, e cria um arquivo txt com a quantidade de palavras de cada txt dentro do diretório");
 
         System.out.print("Diretório pai: ");
         parent = new File(validar(sc.nextLine()));
-
-        System.out.print("Número inicial: ");
 
         File[] artigos = parent.listFiles();
 
@@ -30,13 +28,15 @@ public class WordCounter {
                 wr = new FileWriter(result);
 
                 for (File artigo : artigos) {
-                    try {
-                        ArrayList<String> palavras = lerTexto(artigo);
-                        int tamanhoTexto = palavras.size(); //calcula o número total de palavras no texto
-                        wr.write(tamanhoTexto + "\n");
-                    } catch (IOException e) {
-                        System.out.println("ERRO: falha ao ler o arquivo de origem");
-                        throw new RuntimeException(e);
+                    if (getExtension(artigo).equalsIgnoreCase("txt")) {
+                        try {
+                            ArrayList<String> palavras = lerTexto(artigo);
+                            int tamanhoTexto = palavras.size(); //calcula o número total de palavras no texto
+                            wr.write(tamanhoTexto + "\n");
+                        } catch (IOException e) {
+                            System.out.println("ERRO: falha ao ler o arquivo de origem");
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
                 wr.close();
@@ -64,5 +64,10 @@ public class WordCounter {
         if (original.charAt(0) == '"') //se há aspas, retira as aspas
             return original.substring(original.indexOf('"'), original.lastIndexOf('"'));
         return original;
+    }
+
+    public static String getExtension(File file) {
+        int i = file.getName().lastIndexOf(".");
+        return file.getName().substring(i + 1);
     }
 }

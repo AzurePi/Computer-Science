@@ -32,37 +32,39 @@ public class TextBreaker {
         if (artigos != null) {
             Arrays.sort(artigos); //garante que estará em ordem alfabética
             for (File artigo : artigos) {
-                try {
-                    palavras = lerTexto(artigo);
-                    tamanhoTexto = palavras.size(); //calcula o número total de palavras no texto
+                if (getExtension(artigo).equalsIgnoreCase("txt")) {
+                    try {
+                        palavras = lerTexto(artigo);
+                        tamanhoTexto = palavras.size(); //calcula o número total de palavras no texto
 
-                    newDir = new File(parent, "result" + d);
-                    newDir.mkdir();
-                } catch (IOException e) {
-                    System.out.println("ERRO: falha ao ler o arquivo de origem");
-                    throw new RuntimeException(e);
-                }
-
-                a = p = 0; //zera o contador de arquivos e o contador de palavras
-                trecho = new StringBuilder();
-                while (p < tamanhoTexto) {
-                    projecao = trecho.length() + palavras.get(p).length();
-
-                    //se ainda não chegamos ao tamanho máximo
-                    if (projecao <= 4000) {
-                        trecho.append(palavras.get(p)).append(" ");
-                        p++; //passamos para a próxima palavra
-                    } else { //já chegamos ao tamanho máximo do trecho
-                        salvarTrecho(newDir.toString(), trecho.toString(), a);
-                        a++; //passamos para o próximo arquivo
-                        trecho = new StringBuilder();
+                        newDir = new File(parent, "result" + d);
+                        newDir.mkdir();
+                    } catch (IOException e) {
+                        System.out.println("ERRO: falha ao ler o arquivo de origem");
+                        throw new RuntimeException(e);
                     }
-                }
-                //se ainda há informações a salvar no trecho
-                if (!trecho.toString().isEmpty())
-                    salvarTrecho(newDir.toString(), trecho.toString(), a);
 
-                d++;
+                    a = p = 0; //zera o contador de arquivos e o contador de palavras
+                    trecho = new StringBuilder();
+                    while (p < tamanhoTexto) {
+                        projecao = trecho.length() + palavras.get(p).length();
+
+                        //se ainda não chegamos ao tamanho máximo
+                        if (projecao <= 4000) {
+                            trecho.append(palavras.get(p)).append(" ");
+                            p++; //passamos para a próxima palavra
+                        } else { //já chegamos ao tamanho máximo do trecho
+                            salvarTrecho(newDir.toString(), trecho.toString(), a);
+                            a++; //passamos para o próximo arquivo
+                            trecho = new StringBuilder();
+                        }
+                    }
+                    //se ainda há informações a salvar no trecho
+                    if (!trecho.toString().isEmpty())
+                        salvarTrecho(newDir.toString(), trecho.toString(), a);
+
+                    d++;
+                }
             }
         }
         sc.close();
@@ -85,6 +87,11 @@ public class TextBreaker {
         if (original.charAt(0) == '"') //se há aspas, retira as aspas
             return original.substring(original.indexOf('"'), original.lastIndexOf('"'));
         return original;
+    }
+
+    public static String getExtension(File file) {
+        int i = file.getName().lastIndexOf(".");
+        return file.getName().substring(i + 1);
     }
 
     public static void salvarTrecho(String destino, String trecho, int a) {
