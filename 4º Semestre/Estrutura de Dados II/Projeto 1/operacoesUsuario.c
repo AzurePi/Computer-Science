@@ -74,9 +74,6 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     scanf("%c", &nota);
     clearBuffer();
 
-    printf(CLEAR
-           "\n");
-
     //validação de entradas
     if (!isdigit(nota)) {
         puts(ERROR
@@ -288,9 +285,6 @@ void modificarNota(FILE *movies, IndiceP *indexP) {
            INPUT);
     scanf("%c", &nova);
 
-    printf(CLEAR
-           "\n");
-
     if (!isdigit(nova)) {
         puts(ERROR
              "\tERRO: nota invalida"
@@ -431,15 +425,13 @@ void listarFilmes(FILE *movies) {
 
     puts(SUBTITLE
          "\n----------LISTAGEM DE FILMES----------"
-         CLEAR);
+         CLEAR"\n");
 
-    printf(CLEAR
-           "\n");
     while (rnn < total) {
         imprimirFilme(movies, rnn);
+        printf("\n");
         rnn++;
     }
-    printf("\n");
 }
 
 void imprimirFilme(FILE *movies, int rnn) {
@@ -512,7 +504,7 @@ void imprimirFilme(FILE *movies, int rnn) {
     free(pais);
 }
 
-FILE * compactar(FILE *movies, IndiceP **indexP) {
+FILE *compactar(FILE *movies, IndiceP **indexP) {
     fseek(movies, 0, SEEK_SET);
 
     FILE *aux = fopen("data/aux.dat", "w+");
@@ -535,11 +527,13 @@ FILE * compactar(FILE *movies, IndiceP **indexP) {
     //abrimos o novo arquivo de dados
     movies = fopen("data/movies.dat", "r+a");
 
-    //como os RNN mudaram, apagamos o índice primário da memória, e o refazemos a partir do novo arquivo de daod
+    //como os RNN mudaram, apagamos o índice primário da memória, e o refazemos a partir do novo arquivo de dados
     freeIndiceP(*indexP);
     *indexP = refazerP(movies);
 
-    //retornamos o endereço
+    puts(SUCESS
+         "\tArquivo de dados compactado com sucesso"
+         CLEAR);
     return movies;
 }
 

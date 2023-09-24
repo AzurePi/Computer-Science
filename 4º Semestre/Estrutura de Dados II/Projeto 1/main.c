@@ -79,8 +79,9 @@ int main() {
     fclose(ititle);
 
     //menu do usuário --------------------------------------------------------------------------------------------------
+    printf("\n");
     do {
-        puts(TITLE"\n===========GERENCIADOR DE FILMES=========="CLEAR);
+        puts(TITLE"===========GERENCIADOR DE FILMES=========="CLEAR);
         puts(MENU"1."CLEAR" Inserir filme");
         puts(MENU"2."CLEAR" Remover filme");
         puts(MENU"3."CLEAR" Modificar nota");
@@ -108,6 +109,7 @@ int main() {
                 break;
             case 6:
                 compactar(movies, &primarioMem);
+                printf("\n"); //pula uma linha
                 break;
             case 0:
                 puts(SUCESS"Encerrando programa..."CLEAR);
