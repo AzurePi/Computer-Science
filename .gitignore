@@ -1,6 +1,2 @@
-/out/
 /.idea/
-/Computer-Science.iml
 *.exe
-/cmake-build-debug/
-/target/
