@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <dirent.h>
-#include "indices.c"
-#include "operacoesUsuario.c"
+#include "indices.h"
+#include "operacoesUsuario.h"
 #include "style.h"
 
 int main() {
