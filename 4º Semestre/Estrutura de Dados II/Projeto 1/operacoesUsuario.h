@@ -10,8 +10,6 @@
 #define string char*
 #endif
 
-#define FORMATO "%s@%s@%s@%s@%s@%s@%c@"
-
 //Menu para inserção de um novo filme
 void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS);
 
@@ -25,23 +23,22 @@ void modificarNota(FILE *movies, IndiceP *indexP);
 void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 
 //Submenu para busca de filme pela titulo primária
-void buscarChave(FILE *movies, IndiceP *indexP);
+int buscarCodigo(FILE *movies, IndiceP *indexP);
 
 //Submenu para busca de filme pela titulo secundária
-void buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS);
+int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 
 //Listagem de todos os filmes
 void listarFilmes(FILE *movies);
 
 //Elimina do arquivo os filmes marcados como deletados
-void compactar(FILE *movies);
+FILE * compactar(FILE *movies, IndiceP **indexP);
 
 //Retorna o código de um filme com determinado código
 string tituloFromRNN(FILE *movies, int rnn);
 
 //Impressão de um filme na tela
-int imprimirFilme(FILE *movies, int rnn);
-
+void imprimirFilme(FILE *movies, int rnn);
 
 //Limpa o buffer de entrada
 void clearBuffer();

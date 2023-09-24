@@ -17,31 +17,40 @@ NoCodigo *newNoCodigo(string codigo) {
     return novo;
 }
 
-void insereCodigo(NoS *noS, NoCodigo *noC) {
+void insereNoCodigo(NoS *noS, NoCodigo *noC) {
     //se a lista está vazia
     if (noS->head == NULL) {
         noS->head = noC;
         return;
     }
 
+    //começamos pelo começo da lista
     NoCodigo *aux = noS->head;
     NoCodigo *prev = NULL;
 
-    //procuramos a posição certa
+    //procuramos a posição certa; sai do while se quando noC é menor do que aux, ou se chegamos no final da lista
     while (aux != NULL && strcmp(noC->codigo, aux->codigo) > 0) {
         prev = aux;
         aux = aux->prox;
     }
 
-    //se estamos na posição certa, inserimos
-    if (strcmp(noC->codigo, aux->codigo) < 0) {
+    //se estamos no final da lista
+    if (aux == NULL) {
         prev->prox = noC;
-        noC->prox = aux;
         return;
     }
 
-    //senão, estamos no final, e inserimos
-    prev->prox = noC;
+    //se estamos na posição certa
+    if (strcmp(noC->codigo, aux->codigo) < 0) {
+        //se estamos no começo da lista
+        if (prev == NULL) {
+            noC->prox = noS->head;
+            noS->head = noC;
+        } else { //se estamos no meio da lista
+            prev->prox = noC;
+            noC->prox = aux;
+        }
+    }
 }
 
 NoS *newNoS(string titulo) {
@@ -75,26 +84,35 @@ void insereNoP(IndiceP *index, NoP *no) {
         return;
     }
 
+    //começamos pelo começo da lista
     NoP *aux = index->head;
     NoP *prev = NULL;
 
-    //procuramos a posição certa; sai do while quando é menor ou igual que aux, ou se chegamos ao final da index
+    //procuramos a posição certa; sai do while quando no é menor ou igual que aux, ou se chegamos ao final da index
     while (aux != NULL && strcmp(no->codigo, aux->codigo) > 0) {
         prev = aux;
         aux = aux->prox;
     }
 
-    //se estamos na posição certa, inserimos
-    if (strcmp(no->codigo, aux->codigo) < 0) {
+    //se estamos no final
+    if (aux == NULL) {
         prev->prox = no;
-        no->prox = aux;
         index->tamanho++;
         return;
     }
 
-    //senão, estamos no final, e inserimos
-    prev->prox = no;
-    index->tamanho++;
+    //se estamos na posição certa
+    if (strcmp(no->codigo, aux->codigo) < 0) {
+        //se estamos no início da lista
+        if (prev == NULL) {
+            no->prox = index->head;
+            index->head = no;
+        } else { //se estamos no meio da lista
+            prev->prox = no;
+            no->prox = aux;
+        }
+        index->tamanho++;
+    }
 }
 
 void insereNoS(IndiceS *index, NoS *no) {
@@ -105,7 +123,7 @@ void insereNoS(IndiceS *index, NoS *no) {
         return;
     }
 
-    //não estamos no começo
+    //começamos pelo começo da lista
     NoS *aux = index->head;
     NoS *prev = NULL;
 
@@ -115,113 +133,128 @@ void insereNoS(IndiceS *index, NoS *no) {
         aux = aux->prox;
     }
 
-    //se estamos na posição certa, inserimos
-    if (strcmp(no->titulo, aux->titulo) < 0) {
+    //se estamos no final da lista
+    if (aux == NULL) {
         prev->prox = no;
-        no->prox = aux;
         index->tamanho++;
         return;
     }
 
-    //senão, estamos no final, e inserimos
-    prev->prox = no;
-    index->tamanho++;
+    //se estamos na posição certa
+    if (strcmp(no->titulo, aux->titulo) < 0) {
+        //se estamos no começo da lista
+        if (prev == NULL) {
+            no->prox = index->head;
+            index->head = no;
+        } else { //se estamos no meio da lista
+            prev->prox = no;
+            no->prox = aux;
+        }
+        index->tamanho++;
+    }
 }
 
 NoP *buscaNoP(IndiceP *index, string codigo) {
-    NoP *current;
+    //se a lista está vazia
+    if (index->head == NULL)
+        return NULL;
 
-    int left = 0;
-    int right = index->tamanho - 1;
-    int middle;
+    NoP *aux;
 
-    while (left <= right) {
-        middle = left + (right - left) / 2;
+    int l = 0;
+    int r = index->tamanho - 1;
+    int m;
 
-        current = index->head;
-        for (int i = 0; i < middle; i++)
-            current = current->prox;
+    while (l <= r) {
+        m = l + (r - l) / 2;
 
-        if (strcmp(current->codigo, codigo) == 0)
-            return current;
-        else if (strcmp(current->codigo, codigo) < 0)
-            left = middle + 1;
+        aux = index->head;
+        for (int i = 0; i < m; i++)
+            aux = aux->prox;
+
+        if (strcmp(aux->codigo, codigo) == 0)
+            return aux;
+        else if (strcmp(aux->codigo, codigo) < 0)
+            l = m + 1;
         else
-            right = middle - 1;
+            r = m - 1;
     }
 
     return NULL;
 }
 
 NoS *buscaNoS(IndiceS *index, string titulo) {
+    //se a lista está vazia
     if (index->head == NULL)
         return NULL;
 
-    NoS *aux = NULL;
+    NoS *aux;
 
-    int left = 0;
-    int right = index->tamanho;
-    int middle;
+    int l = 0;
+    int r = index->tamanho - 1;
+    int m;
 
-    while (left <= right) {
-        middle = left + (right - left) / 2;
+    while (l <= r) {
+        m = l + (r - l) / 2;
 
         aux = index->head;
-        for (int i = 0; i < middle; i++)
+        for (int i = 0; i < m; i++)
             aux = aux->prox;
 
         if (strcmp(aux->titulo, titulo) == 0)
             return aux;
         else if (strcmp(aux->titulo, titulo) < 0)
-            right = middle - 1;
+            l = m + 1;
         else
-            left = middle - 1;
+            r = m - 1;
     }
 
     return NULL;
 }
 
 IndiceP *lerP(FILE *iprimary) {
-    IndiceP *novo = newIndiceP(); //aloca na memória e inicializa
-    NoP *current; //nó do filme sendo lido
+    IndiceP *novo = newIndiceP(); //aloca e inicializa um IndiceP
+    NoP *current = NULL; //NoP sendo lido
 
     string codigo = malloc(TAM_COD + 1);
     int rnn;
 
-    //enquanto há linhas para ler, armazena as informações, cria um novo nó, e o insere no índice
+    //enquanto há linhas para ler, armazena as informações
     fseek(iprimary, 1, SEEK_SET);
-    while (fscanf(iprimary, "%s@%d@", codigo, &rnn) != EOF) {
-        current = newNoP(codigo, rnn);
-        insereNoP(novo, current);
+    while (fscanf(iprimary, "%[^@]@%d@", codigo, &rnn) != EOF) {
+        current = newNoP(codigo, rnn);      //cria um NoP
+        insereNoP(novo, current); //insere o NoP no índice
     }
     free(codigo);
     return novo;
 }
 
 IndiceS *lerS(FILE *ititle) {
-    IndiceS *novo = newIndiceS(); //aloca na memória e inicializa
-    NoS *auxS = NULL; //nó do filme sendo lido
-    NoCodigo *auxC = NULL;  //nó de código que será adicionado
+    IndiceS *novo = newIndiceS(); //aloca e inicializa um IndiceS
+    NoS *auxS = NULL; //NoS sendo lido
+    NoCodigo *auxC = NULL;  //NoCodigo que irá iterar pelos códigos a serem adicionado ao NoS
 
     string titulo = malloc(TAM_TIT_PT + 1);
     string codigos = malloc((TAM_COD + 1) * 10);
     string codigo = malloc(TAM_COD + 1);
 
-    //enquanto há linhas para ler, lê a linha e armazena as informações
+    //enquanto há linhas para ler, armazena as informações
     fseek(ititle, 1, SEEK_SET);
-    while (fscanf(ititle, "%[^\n]s@%s@", titulo, codigos) != EOF) {
+    while (fscanf(ititle, "%[^@]@%[^@]@", titulo, codigos) != EOF) {
         auxS = newNoS(titulo); //cria um novo NoS, com o título lido
 
         //nesse NoS, colocaremos uma lista de códigos
         auxC = NULL;
 
-        //enquanto houverem códigos, adicionamos à lista
-        while (sscanf(codigos, "%s,", codigo) == 1) {
-            auxC = newNoCodigo(codigo);
-            insereCodigo(auxS, auxC);
+        //enquanto houverem códigos, lemos as informações
+        int i = 0;
+        while (sscanf_s(codigos + i, "%5s", codigo, sizeof(codigo)) == 1) {
+            auxC = newNoCodigo(codigo);         //criamos um NoCodigo
+            insereNoCodigo(auxS, auxC); //inserimos o NoCodigo no NoS
+            i += 5; // Avança para o próximo conjunto de 5 caracteres
         }
 
-        insereNoS(novo, auxS); //inserimos o nó criado no índice
+        insereNoS(novo, auxS); //inserimos o NoS criado no IndiceS novo
     }
     free(titulo);
     free(codigos);
@@ -231,23 +264,22 @@ IndiceS *lerS(FILE *ititle) {
 
 IndiceP *refazerP(FILE *movies) {
     IndiceP *novo = newIndiceP(); //aloca e inicializa um IndiceP
+    NoP *current = NULL; //NoP da entrada sendo lida
 
-    int rnn = 0; //RNN do filme sendo lido
+    int rnn = 0; //RNN da entrada sendo lida; começamos em 0
 
     string filme = malloc(TAM_FILME + 1);
     string codigo = malloc(TAM_COD + 1);
 
-    NoP *current = NULL;
-
-    //enquanto há filmes para ler, lê o filme
+    //enquanto há entradas para ler, armazena as informações
     fseek(movies, 0, SEEK_SET);
     while (fscanf(movies, "%"STRINGIFY(TAM_FILME)"[^\n]s", filme) != EOF) {
         if (filme[0] != '*' && filme[1] != '|') {
-            sscanf(filme, "%"STRINGIFY(TAM_COD)"s", codigo);
-            current = newNoP(codigo, rnn);
-            insereNoP(novo, current);
+            sscanf(filme, "%[^@]@", codigo); //lê o primeiro campo, o código
+            current = newNoP(codigo, rnn); //cria um NoP
+            insereNoP(novo, current); //insere o NoP no IndiceP novo
         }
-        rnn++; //passamos para o próximo filme
+        rnn++; //passamos para a prósxima entrada
     }
     free(filme);
     free(codigo);
@@ -255,7 +287,7 @@ IndiceP *refazerP(FILE *movies) {
 }
 
 IndiceS *refazerS(FILE *movies) {
-    IndiceS *novo = newIndiceS();
+    IndiceS *novo = newIndiceS(); //aloca e inicializa um IndiceS
 
     string filme = malloc(TAM_FILME + 1);
     string codigo = malloc(TAM_COD + 1);
@@ -264,11 +296,11 @@ IndiceS *refazerS(FILE *movies) {
     NoS *currentS = NULL;
     NoCodigo *currentC = NULL;
 
-    //enquanto há filmes para ler, lê o filme
+    //enquanto há entradas para ler, armazena as informações
     fseek(movies, 0, SEEK_SET);
     while (fscanf(movies, "%"STRINGIFY(TAM_FILME)"[^\n]s", filme) != EOF) {
         if (filme[0] != '*' && filme[1] != '|') {
-            sscanf(filme, "%"STRINGIFY(TAM_COD)"s@%"STRINGIFY(TAM_TIT_PT)"[^@]s", codigo, titulo);
+            sscanf(filme, "%[^@]@%[^@]@", codigo, titulo);
 
             currentC = newNoCodigo(codigo);
 
@@ -276,10 +308,10 @@ IndiceS *refazerS(FILE *movies) {
             currentS = buscaNoS(novo, titulo);
             if (currentS == NULL) { //se não há um NoS para esse título
                 currentS = newNoS(titulo); //cria um novo NoS para esse título
-                insereCodigo(currentS, currentC); //coloca o código nesse NoS
+                insereNoCodigo(currentS, currentC); //coloca o código nesse NoS
                 insereNoS(novo, currentS); //insere o NoS no IndiceS
             } else //insere um novo NoCodigo, para esse titulo, na lista do NoS já existente
-                insereCodigo(currentS, currentC);
+                insereNoCodigo(currentS, currentC);
         }
     }
     free(filme);
@@ -289,79 +321,90 @@ IndiceS *refazerS(FILE *movies) {
 }
 
 void saveIndiceP(IndiceP *index) {
-    FILE *iprimary = fopen("data/iprimary.idx", "w");
+    FILE *iprimary = fopen("data/iprimary.idx", "w"); //abre o arquivo para ser reescrito
 
-    fputc('1', iprimary);
+    fputc('1', iprimary); //marca ele como inconsistente, caso o processo seja interrompido
 
+    //percorre a lista de índice primario, imprimindo as informações no arquivo
     NoP *printHead = index->head;
     while (printHead) {
         fprintf(iprimary, "%s@%d@", printHead->codigo, printHead->rnn);
         printHead = printHead->prox;
     }
 
-    fseek(iprimary, 0, SEEK_SET);
-    fputc('0', iprimary);
-    fclose(iprimary);
+    ftruncate(fileno(iprimary), ftell(iprimary));
+
+    fseek(iprimary, 0, SEEK_SET); //retorna ao começo do arquivo
+    fputc('0', iprimary); //marca o arquivo como consistente
+    fclose(iprimary); //fecha o arquivo
 }
 
 void saveIndiceS(IndiceS *index) {
-    FILE *ititle = fopen("data/ititle.idx", "w");
+    FILE *ititle = fopen("data/ititle.idx", "w"); //abre o arquivo para ser reescrito
 
-    fputc('1', ititle);
+    fputc('1', ititle); //marca ele como inconsistente, caso o processo seja interrompido
 
+    //percorre a lista de índice secundário, imprimindo as informações no arquivo
     NoS *printHeadS = index->head;
-    NoCodigo *printHeadCod;
-
+    NoCodigo *printHeadCod; //para iterar pela lista de códigos de cada NoS
     while (printHeadS) {
-        fprintf(ititle, "%s@", printHeadS->titulo);
+        fprintf(ititle, "%s@", printHeadS->titulo); //imprime o campo do título
 
+        //percorre a lista de códigos, imprimindo as informações no campo correspondente
         printHeadCod = printHeadS->head;
         while (printHeadCod) {
             fprintf(ititle, "%s", printHeadCod->codigo);
             printHeadCod = printHeadCod->prox;
-            if (printHeadCod != NULL)
-                fputc(',', ititle);
         }
-        fputc('@', ititle);
+        fputc('@', ititle); //encerra o campo dos códigos
 
         printHeadS = printHeadS->prox;
     }
 
-    fseek(ititle, 0, SEEK_SET);
-    fputc('0', ititle);
-    fclose(ititle);
+    ftruncate(fileno(ititle), ftell(ititle)); //garante que não há informações residuais após o final do arquivo
+
+    fseek(ititle, 0, SEEK_SET); //retorna ao começo do arquivo
+    fputc('0', ititle); //marca o arquivo como consistente
+    fclose(ititle); //fecha o arquivo
 }
 
 void freeIndiceP(IndiceP *index) {
     NoP *aux;
     while (index->head) {
         aux = index->head->prox;
+        free(index->head->codigo);
         free(index->head);
         index->head = aux;
     }
     free(index);
 }
 
-void freeIndiceS(IndiceS *index) {
-    NoS *auxS;
-    NoCodigo *auxCod;
-
-    while (index->head) {
-        auxS = index->head->prox;
-
-        while (auxS->head) {
-            auxCod = auxS->head->prox;
-            free(auxS->head);
-            auxS->head = auxCod;
-        }
-        free(index->head);
-
-        index->head = auxS;
+void freeCodigos(NoCodigo *head) {
+    while (head != NULL) {
+        NoCodigo *freela = head;
+        head = head->prox;
+        free(freela->codigo); // Libera o código do filme
+        free(freela); // Libera o NoCodigo
     }
-    free(index);
+}
+
+void freeIndiceS(IndiceS *indice) {
+    NoS *current = indice->head;
+    while (current != NULL) {
+        NoS *freela = current;
+        current = current->prox;
+        free(freela->titulo); // Libera o título do filme
+        freeCodigos(freela->head); // Libera a lista de códigos associada a este NoS
+        free(freela); // Libera o NoS
+    }
+    free(indice); // Libera o IndiceS
 }
 
 int rnnFromCodigo(IndiceP *index, string codigo) {
+    //se o IndiceP está vazio
+    if (index->head == NULL)
+        return -1;
+
     NoP *aux = NULL;
 
     int l = 0;
@@ -386,65 +429,104 @@ int rnnFromCodigo(IndiceP *index, string codigo) {
     return -1;
 }
 
-void removerNoP(IndiceP *index, string codigo) {
-    NoP *current, *prev;
+void insereFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo, int rnn) {
+    NoP *noP = newNoP(codigo, rnn); //cria um NoP
+    NoS *noS = NULL; //noS do título
+    NoCodigo *novoC = newNoCodigo(codigo); //cria um NoCodigo
 
-    int left = 0;
-    int right = index->tamanho - 1;
-    int middle;
+    insereNoP(indexP, noP); //insere NoP no IndiceP
 
-    while (left <= right) {
-        middle = left + (right - left) / 2;
+    //verifica se já existe um NoS para o título sendo inserido
+    noS = buscaNoS(indexS, titulo);
+    if (noS == NULL) { //se não existe
+        noS = newNoS(titulo); //cria um NoS
+        insereNoCodigo(noS, novoC); //insere o NoCodigo no NoS
+        insereNoS(indexS, noS); //insere o NoS no IndiceS
+    } else //se existe
+        insereNoCodigo(noS, novoC); //insere o NoC no NoS encontrado
+}
 
-        current = index->head;
-        for (int i = 0; i < middle; i++) {
-            prev = current;
-            current = current->prox;
+void removeNoP(IndiceP *index, string codigo) {
+    NoP *cur, *prev;
+
+    cur = index->head;
+    prev = NULL;
+
+    //enquanto há nós para percorrer
+    while (cur != NULL) {
+        //se encontrou o NoP a ser removido
+        if (strcmp(cur->codigo, codigo) == 0) {
+            //se o nó for o primeiro da lista
+            if (prev == NULL)
+                index->head = cur->prox;
+            else //se estamos no meio da lista
+                prev->prox = cur->prox;
+
+            free(cur->codigo);
+            free(cur);
+            index->tamanho--;
+
+            return;
         }
 
-        if (strcmp(current->codigo, codigo) == 0) {
-            prev->prox = current->prox;
-            free(current);
+        //anda com os ponteiros
+        prev = cur;
+        cur = cur->prox;
+    }
+}
+
+void removeNoCodigo(NoS *no, char *codigo) {
+    NoCodigo *cur = no->head;
+    NoCodigo *prev = NULL;
+
+    while (cur != NULL && strcmp(cur->codigo, codigo) != 0) {
+        prev = cur;
+        cur = cur->prox;
+    }
+
+    if (cur != NULL) {
+        //se estamos no começo da lista
+        if (prev == NULL)
+            no->head = cur->prox;
+        else //se estamos no meio ou no final da lista
+            prev->prox = cur->prox;
+
+        free((cur->codigo));
+        free(cur);
+    }
+}
+
+void removeNoS(IndiceS *index, string titulo) {
+    NoS *cur = index->head;
+    NoS *prev = NULL;
+
+    //enquanto há nós para percorrer
+    while (cur != NULL) {
+        if (strcmp(cur->titulo, titulo) == 0) {
+            //se estamos no começo da lista
+            if (prev == NULL)
+                index->head = cur->prox;
+            else //se estamos no meio ou no final da lista
+                prev->prox = cur->prox;
+
+            freeCodigos(cur->head);
+            free(cur);
+            index->tamanho--;
             return;
-        } else if (strcmp(current->codigo, codigo) < 0)
-            left = middle + 1;
-        else
-            right = middle - 1;
+        }
+
+        prev = cur;
+        cur = cur->prox;
     }
 }
 
-void removerNoCodigo(NoS *no, char *codigo) {
-    NoCodigo *current = no->head;
-    NoCodigo *prev;
+void removeFilmeFromIndice(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo) {
+    removeNoP(indexP, codigo); //remove o código do índice primário
+    NoS *noS = buscaNoS(indexS, titulo); //encontra o título no índice secundário
+    removeNoCodigo(noS, codigo); //remove a associação do código com o título no índice secundário
 
-    while (strcmp(current->codigo, codigo) != 0) {
-        prev = current;
-        current = current->prox;
-    }
-
-    prev->prox = current->prox;
-    free(current);
-}
-
-void insereFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo, int rnn) {
-    NoP *noP = newNoP(codigo, rnn);
-    NoS *noS = buscaNoS(indexS, titulo);
-    NoCodigo *novoC = newNoCodigo(codigo);
-
-    insereNoP(indexP, noP);
-
-    if (noS == NULL) {
-        noS = newNoS(titulo);
-        insereCodigo(noS, novoC);
-        insereNoS(indexS, noS);
-    } else {
-        insereCodigo(noS, novoC);
-    }
-}
-
-void removeFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo) {
-    removerNoP(indexP, codigo);
-    NoS *noS = buscaNoS(indexS, titulo);
-    removerNoCodigo(noS, codigo);
+    //se não há mais filmes com esse título
+    if (noS->head == NULL)
+        removeNoS(indexS, titulo); //remove o título do índice secundário
 }
 
