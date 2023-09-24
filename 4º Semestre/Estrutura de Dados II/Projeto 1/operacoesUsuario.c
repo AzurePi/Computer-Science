@@ -244,11 +244,11 @@ void removerFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
          CLEAR);
 }
 
+//TODO: isso não funciona
 void modificarNota(FILE *movies, IndiceP *indexP) {
     string codigo = malloc(TAM_COD + 1);
     int rnn;
-    char atual;
-    char nova;
+    char atual, nova;
 
     puts(SUBTITLE
          "\n----------MODIFICACAO DE NOTA---------"
@@ -370,6 +370,7 @@ int buscarCodigo(FILE *movies, IndiceP *indexP) {
     }
     printf("\n");
     imprimirFilme(movies, rnn);
+    printf("\n");
     return 1;
 }
 
@@ -412,6 +413,7 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
 
         printf("\n");
         imprimirFilme(movies, rnn);
+        printf("\n");
         noC = noC->prox;
     }
     return 1;

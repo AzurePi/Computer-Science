@@ -49,7 +49,7 @@ int main() {
     } else {
         iprimary = fopen("data/iprimary.idx", "w+");
         if (iprimary == NULL) {
-            puts(ERROR"\tERRO: Impossível criar arquivo");
+            puts(ERROR "\tERRO: Impossível criar arquivo");
             return 1;
         }
         primarioMem = refazerP(movies); //faz o índice na memória a partir do arquivo de filmes
@@ -69,7 +69,7 @@ int main() {
     } else {
         ititle = fopen("data/ititle.idx", "w+");
         if (ititle == NULL) {
-            puts(ERROR"\tERRO: Impossível criar arquivo");
+            puts(ERROR "\tERRO: Impossível criar arquivo");
             return 1;
         }
         secundarioMem = refazerS(movies); //refaz o índice na memória a partir do arquivo de filmes
@@ -81,13 +81,13 @@ int main() {
     //menu do usuário --------------------------------------------------------------------------------------------------
     printf("\n");
     do {
-        puts(TITLE"===========GERENCIADOR DE FILMES=========="CLEAR);
-        puts(MENU"1."CLEAR" Inserir filme");
-        puts(MENU"2."CLEAR" Remover filme");
-        puts(MENU"3."CLEAR" Modificar nota");
-        puts(MENU"4."CLEAR" Buscar filme");
-        puts(MENU"5."CLEAR" Listar filmes\t\t"MENU"6. "CLEAR"Compactar base de dados");
-        puts(MENU"0."CLEAR" Encerrar programa"INPUT);
+        puts(TITLE "===========GERENCIADOR DE FILMES==========" CLEAR);
+        puts(MENU "1." CLEAR " Inserir filme");
+        puts(MENU "2." CLEAR " Remover filme");
+        puts(MENU "3." CLEAR " Modificar nota");
+        puts(MENU "4." CLEAR " Buscar filme");
+        puts(MENU "5." CLEAR " Listar filmes\t\t" MENU "6. " CLEAR "Compactar base de dados");
+        puts(MENU "0." CLEAR " Encerrar programa" INPUT);
         scanf("%hd", &op);
         clearBuffer();
 
@@ -112,10 +112,10 @@ int main() {
                 printf("\n"); //pula uma linha
                 break;
             case 0:
-                puts(SUCESS"Encerrando programa..."CLEAR);
+                puts(SUCESS "Encerrando programa..." CLEAR);
                 break;
             default:
-                puts(ERROR"\tERRO: Opcao invalida"CLEAR);
+                puts(ERROR "\tERRO: Opcao invalida" CLEAR);
                 break;
         }
     } while (op != 0);

@@ -6,8 +6,9 @@
 #include "indices.h"
 #include "style.h"
 
-#ifndef string
-#define string char*
+#ifndef STRING
+#define STRING
+typedef char *string;
 #endif
 
 //Menu para inserção de um novo filme
@@ -32,7 +33,7 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS);
 void listarFilmes(FILE *movies);
 
 //Elimina do arquivo os filmes marcados como deletados
-FILE * compactar(FILE *movies, IndiceP **indexP);
+FILE *compactar(FILE *movies, IndiceP **indexP);
 
 //Retorna o código de um filme com determinado código
 string tituloFromRNN(FILE *movies, int rnn);

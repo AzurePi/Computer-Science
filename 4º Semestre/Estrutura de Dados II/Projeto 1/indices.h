@@ -7,8 +7,9 @@
 #include <unistd.h>
 #include "filmes.h"
 
-#ifndef string
-#define string char*
+#ifndef STRING
+#define STRING
+typedef char *string;
 #endif
 
 //Definições de estruturas ---------------------------------------------------------------------------------------------

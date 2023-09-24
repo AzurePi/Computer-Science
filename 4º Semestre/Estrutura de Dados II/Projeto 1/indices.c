@@ -159,7 +159,7 @@ NoP *buscaNoP(IndiceP *index, string codigo) {
     if (index->head == NULL)
         return NULL;
 
-    NoP *aux;
+    NoP *aux = NULL;
 
     int l = 0;
     int r = index->tamanho - 1;
@@ -188,7 +188,7 @@ NoS *buscaNoS(IndiceS *index, string titulo) {
     if (index->head == NULL)
         return NULL;
 
-    NoS *aux;
+    NoS *aux = NULL;
 
     int l = 0;
     int r = index->tamanho - 1;
@@ -401,32 +401,10 @@ void freeIndiceS(IndiceS *indice) {
 }
 
 int rnnFromCodigo(IndiceP *index, string codigo) {
-    //se o IndiceP está vazio
-    if (index->head == NULL)
+    NoP *aux = buscaNoP(index, codigo);
+    if(aux == NULL)
         return -1;
-
-    NoP *aux = NULL;
-
-    int l = 0;
-    int r = index->tamanho - 1;
-    int m;
-
-    while (l <= r) {
-        m = l + (r - l) / 2;
-
-        aux = index->head;
-        for (int i = 0; i < m; i++)
-            aux = aux->prox;
-
-        if (strcmp(aux->codigo, codigo) == 0)
-            return aux->rnn;
-        else if (strcmp(aux->codigo, codigo) < 0)
-            l = m + 1;
-        else
-            r = m - 1;
-    }
-
-    return -1;
+    return aux->rnn;
 }
 
 void insereFilme(IndiceP *indexP, IndiceS *indexS, string codigo, string titulo, int rnn) {
