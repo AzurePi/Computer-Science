@@ -16,69 +16,40 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
 
     int rnn;
 
-    puts(SUBTITLE
-         "\n-----------INSERCAO DE FILME----------"
-         CLEAR);
-    puts("\t\t\t\t\t"
-         FAINT
-         ITALIC
-         BRIGHT_MAGENTA
-         "OBS: Nao utilize acentos"
-         CLEAR);
+    puts(SUBTITLE "\n-----------INSERCAO DE FILME----------" CLEAR);
+    puts("\t\t\t\t\t" FAINT ITALIC BRIGHT_MAGENTA "OBS: Nao utilize acentos" CLEAR);
 
-    printf(PROMPT
-           "Titulo em Portugues: "
-           INPUT);
-    scanf("%"
-          STRINGIFY(TAM_TIT_PT)
-          "[^\n]s", tituloPT);
+    printf(PROMPT "Titulo em Portugues: " INPUT);
+    scanf("%"STRINGIFY(TAM_TIT_PT)"[^\n]s", tituloPT);
     clearBuffer();
 
-    printf(PROMPT
-           "Titulo Original: "
-           INPUT);
-    scanf("%"
-          STRINGIFY(TAM_TIT_OG)
-          "[^\n]", tituloOG);
+    printf(PROMPT "Titulo Original: " INPUT);
+    scanf("%"STRINGIFY(TAM_TIT_OG)"[^\n]", tituloOG);
     clearBuffer();
 
-    printf(PROMPT
-           "Primeiro Nome do Diretor: "
-           INPUT);
+    printf(PROMPT "Primeiro Nome do Diretor: " INPUT);
     scanf("%15s", nome);
     clearBuffer();
 
-    printf(PROMPT
-           "Ultimo Nome do Diretor: "
-           INPUT);
+    printf(PROMPT "Ultimo Nome do Diretor: " INPUT);
     scanf("%15s", sobrenome);
     clearBuffer();
 
-    printf(PROMPT
-           "Ano: "
-           INPUT);
+    printf(PROMPT "Ano: " INPUT);
     scanf("%4s", ano);
     clearBuffer();
 
-    printf(PROMPT
-           "Pais: "
-           INPUT);
-    scanf("%"
-          STRINGIFY(TAM_PAIS)
-          "[^\n]s", pais);
+    printf(PROMPT "Pais: " INPUT);
+    scanf("%"STRINGIFY(TAM_PAIS)"[^\n]s", pais);
     clearBuffer();
 
-    printf(PROMPT
-           "Nota: "
-           INPUT);
+    printf(PROMPT "Nota: " INPUT);
     scanf("%c", &nota);
     clearBuffer();
 
     //validação de entradas
     if (!isdigit(nota)) {
-        puts(ERROR
-             "\tERRO: nota invalida"
-             CLEAR);
+        puts(ERROR "\tERRO: nota invalida" CLEAR "\n");
 
         free(codigo);
         free(tituloPT);
@@ -94,9 +65,7 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     }
 
     if (strlen(sobrenome) < 3) {
-        puts(ERROR
-             "\tERRO: sobrenome curto"
-             CLEAR);
+        puts(ERROR "\tERRO: sobrenome curto" CLEAR "\n");
 
         free(codigo);
         free(tituloPT);
@@ -113,9 +82,7 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
 
     for (int i = 0; i < 4; i++) {
         if (!isdigit(ano[i])) {
-            puts(ERROR
-                 "\tERRO: ano invalido"
-                 CLEAR);
+            puts(ERROR "\tERRO: ano invalido" CLEAR "\n");
 
             free(codigo);
             free(tituloPT);
@@ -152,9 +119,7 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     //verifica se o código desse filme já está registrado
     rnn = rnnFromCodigo(*indexP, codigo);
     if (rnn != -1) {
-        puts(ERROR
-             "\tERRO: filme ja cadastrado"
-             CLEAR);
+        puts(ERROR "\tERRO: filme ja cadastrado" CLEAR "\n");
 
         free(codigo);
         free(tituloPT);
@@ -194,9 +159,7 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     free(pais);
     free(filme);
 
-    puts(SUCESS
-         "\tFilme inserido com sucesso"
-         CLEAR"\n");
+    puts(SUCESS "\tFilme inserido com sucesso" CLEAR "\n");
 }
 
 void removerFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
@@ -204,24 +167,16 @@ void removerFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     string titulo;
     int rnn;
 
-    puts(SUBTITLE
-         "\n-----------REMOCAO DE FILME-----------"
-         CLEAR);
+    puts(SUBTITLE "\n-----------REMOCAO DE FILME-----------" CLEAR);
 
-    printf(PROMPT
-           "Chave: "
-           INPUT);
-    scanf("%"
-          STRINGIFY(TAM_COD)
-          "s", codigo);
+    printf(PROMPT "Chave: " INPUT);
+    scanf("%"STRINGIFY(TAM_COD)"s", codigo);
     clearBuffer();
 
     //procura a posição do filme correspondente no arquivo
     rnn = rnnFromCodigo(*indexP, codigo);
     if (rnn == -1) {
-        puts(ERROR
-             "\tFilme nao encontrado"
-             CLEAR);
+        puts(ERROR "\tFilme nao encontrado" CLEAR "\n");
         free(codigo);
         return;
     }
@@ -239,9 +194,7 @@ void removerFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     free(codigo);
     free(titulo);
 
-    puts(SUCESS
-         "\tFilme removido com sucesso"
-         CLEAR"\n");
+    puts(SUCESS "\tFilme removido com sucesso" CLEAR "\n");
 }
 
 void modificarNota(FILE *movies, IndiceP *indexP) {
@@ -249,24 +202,16 @@ void modificarNota(FILE *movies, IndiceP *indexP) {
     int rnn;
     char atual, nova;
 
-    puts(SUBTITLE
-         "\n----------MODIFICACAO DE NOTA---------"
-         CLEAR);
+    puts(SUBTITLE "\n----------MODIFICACAO DE NOTA---------" CLEAR);
 
-    printf(PROMPT
-           "Codigo: "
-           INPUT);
-    scanf("%"
-          STRINGIFY(TAM_COD)
-          "s", codigo);
+    printf(PROMPT "Codigo: " INPUT);
+    scanf("%"STRINGIFY(TAM_COD)"s", codigo);
     clearBuffer();
 
     rnn = rnnFromCodigo(indexP, codigo);
     free(codigo);
     if (rnn == -1) {
-        puts(ERROR
-             "Filme nao encontrado"
-             CLEAR);
+        puts(ERROR "Filme nao encontrado" CLEAR "\n");
         return;
     }
 
@@ -275,19 +220,12 @@ void modificarNota(FILE *movies, IndiceP *indexP) {
     //lê a entrada do filme, guardando a nota atual e ignorando os demais campos
     fscanf(movies, "%*[^@]@%*[^@]@%*[^@]@%*[^@]@%*[^@]@%*[^@]@%c@", &atual);
 
-    printf(LISTING
-           "Nota atual: "
-           CLEAR
-           "%c\n", atual);
-    printf(PROMPT
-           "Nova nota: "
-           INPUT);
+    printf(LISTING "Nota atual: " INFO "%c" CLEAR "\n", atual);
+    printf(PROMPT "Nova nota: " INPUT);
     scanf("%c", &nova);
 
     if (!isdigit(nova)) {
-        puts(ERROR
-             "\tERRO: nota invalida"
-             CLEAR);
+        puts(ERROR "\tERRO: nota invalida" CLEAR "\n");
         return;
     }
 
@@ -295,9 +233,7 @@ void modificarNota(FILE *movies, IndiceP *indexP) {
     fseek(movies, -2, SEEK_CUR);
     fputc(nova, movies);
 
-    puts(SUCESS
-         "\tNota modificada com sucesso"
-         CLEAR"\n");
+    puts(SUCESS "\tNota modificada com sucesso" CLEAR "\n");
 }
 
 void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
@@ -305,23 +241,11 @@ void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
     short int sucess = 0;
 
     do {
-        puts(SUBTITLE
-             "\n------------BUSCA DE FILME------------"
-             CLEAR);
+        puts(SUBTITLE "\n------------BUSCA DE FILME------------" CLEAR);
 
-        puts(MENU
-             "1."
-             CLEAR
-             " Buscar por codigo");
-        puts(MENU
-             "2."
-             CLEAR
-             " Buscar por titulo");
-        puts(MENU
-             "0."
-             CLEAR
-             " Retornar"
-             INPUT);
+        puts(MENU "1." CLEAR " Buscar por codigo");
+        puts(MENU "2." CLEAR " Buscar por titulo");
+        puts(MENU "0." CLEAR " Retornar" INPUT);
         scanf("%hd", &op);
         printf(CLEAR);
         clearBuffer();
@@ -337,9 +261,7 @@ void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
                 sucess = 1;
                 break;
             default:
-                puts(ERROR
-                     "\tERRO: Opcao invalida"
-                     CLEAR);
+                puts(ERROR "\tERRO: Opcao invalida" CLEAR "\n");
                 break;
         }
     } while (sucess != 1);
@@ -349,22 +271,16 @@ int buscarCodigo(FILE *movies, IndiceP *indexP) {
     string codigo = malloc(TAM_COD + 1);
     int rnn;
 
-    puts(SUBSUBTITLE
-         "\n------BUSCA POR CODIGO------"
-         CLEAR);
+    puts(SUBSUBTITLE "\n------BUSCA POR CODIGO------" CLEAR);
 
-    printf(PROMPT
-           "Chave: "
-           INPUT);
+    printf(PROMPT "Chave: " INPUT);
     scanf("%"STRINGIFY(TAM_COD)"s", codigo);
     clearBuffer();
 
     rnn = rnnFromCodigo(indexP, codigo);
     free(codigo);
     if (rnn == -1) {
-        puts(ERROR
-             "\tFilme nao encontrado"
-             CLEAR);
+        puts(ERROR "\tFilme nao encontrado" CLEAR "\n");
         return 0;
     }
     printf("\n");
@@ -379,13 +295,9 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
     NoCodigo *noC;
     int rnn;
 
-    puts(SUBSUBTITLE
-         "\n------BUSCA POR TITULO------"
-         CLEAR);
+    puts(SUBSUBTITLE "\n------BUSCA POR TITULO------" CLEAR);
 
-    printf(PROMPT
-           "Titulo: "
-           INPUT);
+    printf(PROMPT "Titulo: " INPUT);
     scanf("%"STRINGIFY(TAM_TIT_PT)"[^\n]s", titulo);
     clearBuffer();
 
@@ -394,8 +306,7 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
     free(titulo);
 
     if (noS == NULL) {
-        printf(ERROR
-               "\tFilme nao encontrado\n");
+        puts(ERROR "\tFilme nao encontrado" CLEAR "\n");
         return 0;
     }
 
@@ -404,9 +315,7 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
     while (noC != NULL) {
         rnn = rnnFromCodigo(indexP, noC->codigo);
         if (rnn == -1) {
-            printf(ERROR
-                   "\tERRO: codigo %s presente no indice não encontrado\n"
-                   CLEAR, noC->codigo);
+            printf(ERROR "\tERRO: codigo %s presente no indice não encontrado" CLEAR "\n", noC->codigo);
             return 0;
         }
 
@@ -424,9 +333,7 @@ void listarFilmes(FILE *movies) {
     fseek(movies, 0, SEEK_END);
     int total = ftell(movies) / TAM_FILME;
 
-    puts(SUBTITLE
-         "\n----------LISTAGEM DE FILMES----------"
-         CLEAR"\n");
+    puts(SUBTITLE "\n----------LISTAGEM DE FILMES----------" CLEAR "\n");
 
     while (rnn < total) {
         imprimirFilme(movies, rnn);
@@ -462,40 +369,13 @@ void imprimirFilme(FILE *movies, int rnn) {
         }
 
         //imprime as informações na tela
-        printf(LISTING
-               "Codigo: "
-               CLEAR
-               "%s\n", codigo);
-
-        printf(LISTING
-               "Titulo em Portugues: "
-               CLEAR
-               "%s\n", tituloPT);
-
-        printf(LISTING
-               "Titulo Original: "
-               CLEAR
-               "%s\n", tituloOG);
-
-        printf(LISTING
-               "Diretor: "
-               CLEAR
-               "%s\n", diretor);
-
-        printf(LISTING
-               "Ano: "
-               CLEAR
-               "%s\n", ano);
-
-        printf(LISTING
-               "Pais: "
-               CLEAR
-               "%s\n", pais);
-
-        printf(LISTING
-               "Nota: "
-               CLEAR
-               "%c\n", nota);
+        printf(LISTING "Codigo: " INFO "%s" CLEAR "\n", codigo);
+        printf(LISTING "Titulo em Portugues: " INFO "%s" CLEAR "\n", tituloPT);
+        printf(LISTING "Titulo Original: " INFO "%s" CLEAR "\n", tituloOG);
+        printf(LISTING "Diretor: " INFO "%s" CLEAR "\n", diretor);
+        printf(LISTING "Ano: " INFO "%s" CLEAR "\n", ano);
+        printf(LISTING "Pais: " INFO "%s" CLEAR "\n", pais);
+        printf(LISTING "Nota: " INFO "%c" CLEAR "\n", nota);
     }
     free(codigo);
     free(tituloPT);
@@ -532,9 +412,7 @@ FILE *compactar(FILE *movies, IndiceP **indexP) {
     freeIndiceP(*indexP);
     *indexP = refazerP(movies);
 
-    puts(SUCESS
-         "\tArquivo de dados compactado com sucesso"
-         CLEAR"\n");
+    puts(SUCESS "\tArquivo de dados compactado com sucesso" CLEAR"\n");
     return movies;
 }
 
