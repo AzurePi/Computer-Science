@@ -109,7 +109,6 @@ int main() {
                 break;
             case 6:
                 compactar(movies, &primarioMem);
-                printf("\n"); //pula uma linha
                 break;
             case 0:
                 puts(SUCESS "Encerrando programa..." CLEAR);
