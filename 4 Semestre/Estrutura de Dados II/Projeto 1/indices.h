@@ -12,6 +12,9 @@
 typedef char *string;
 #endif
 
+#define CONSISTENTE '0'
+#define INCONSISTENTE '1'
+
 //Definições de estruturas ---------------------------------------------------------------------------------------------
 
 //Nó que representa uma entrada no índice primário

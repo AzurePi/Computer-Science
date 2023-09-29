@@ -323,7 +323,7 @@ IndiceS *refazerS(FILE *movies) {
 void saveIndiceP(IndiceP *index) {
     FILE *iprimary = fopen("data/iprimary.idx", "w"); //abre o arquivo para ser reescrito
 
-    fputc('1', iprimary); //marca ele como inconsistente, caso o processo seja interrompido
+    fputc(INCONSISTENTE, iprimary); //marca ele como inconsistente, caso o processo seja interrompido
 
     //percorre a lista de índice primario, imprimindo as informações no arquivo
     NoP *printHead = index->head;
@@ -332,17 +332,17 @@ void saveIndiceP(IndiceP *index) {
         printHead = printHead->prox;
     }
 
-    ftruncate(fileno(iprimary), ftell(iprimary));
+    ftruncate(fileno(iprimary), ftell(iprimary)); //apaga informações
 
     fseek(iprimary, 0, SEEK_SET); //retorna ao começo do arquivo
-    fputc('0', iprimary); //marca o arquivo como consistente
+    fputc(CONSISTENTE, iprimary); //marca o arquivo como consistente
     fclose(iprimary); //fecha o arquivo
 }
 
 void saveIndiceS(IndiceS *index) {
     FILE *ititle = fopen("data/ititle.idx", "w"); //abre o arquivo para ser reescrito
 
-    fputc('1', ititle); //marca ele como inconsistente, caso o processo seja interrompido
+    fputc(INCONSISTENTE, ititle); //marca ele como inconsistente, caso o processo seja interrompido
 
     //percorre a lista de índice secundário, imprimindo as informações no arquivo
     NoS *printHeadS = index->head;
@@ -364,7 +364,7 @@ void saveIndiceS(IndiceS *index) {
     ftruncate(fileno(ititle), ftell(ititle)); //garante que não há informações residuais após o final do arquivo
 
     fseek(ititle, 0, SEEK_SET); //retorna ao começo do arquivo
-    fputc('0', ititle); //marca o arquivo como consistente
+    fputc(CONSISTENTE, ititle); //marca o arquivo como consistente
     fclose(ititle); //fecha o arquivo
 }
 
@@ -492,7 +492,6 @@ void removeNoS(IndiceS *index, string titulo) {
             index->tamanho--;
             return;
         }
-
         prev = cur;
         cur = cur->prox;
     }

@@ -41,11 +41,10 @@ int main() {
     iprimary = fopen("data/iprimary.idx", "r+a");
     if (iprimary != NULL) {
         char flag = fgetc(iprimary); //reads the very first character, the flag
-        if (flag == '0') {
+        if (flag == CONSISTENTE)
             primarioMem = lerP(iprimary); //carrega na memória a partir do arquivo iprimary.idx
-        } else {
+        else
             primarioMem = refazerP(movies); //refaz o índice na memória a partir do arquivo de filmes
-        }
     } else {
         iprimary = fopen("data/iprimary.idx", "w+");
         if (iprimary == NULL) {
@@ -55,17 +54,16 @@ int main() {
         primarioMem = refazerP(movies); //faz o índice na memória a partir do arquivo de filmes
     }
     fseek(iprimary, 0, SEEK_SET);
-    fputc('1', iprimary);
+    fputc(INCONSISTENTE, iprimary); //assume que o arquivo ficará inconsistente durante a execução do programa
     fclose(iprimary);
 
     ititle = fopen("data/ititle.idx", "r+a");
     if (ititle != NULL) {
         char flag = fgetc(ititle); //reads the very first character, the flag
-        if (flag == '0') {
+        if (flag == CONSISTENTE)
             secundarioMem = lerS(ititle); //carrega na memória a partir do arquivo iprimary.idx
-        } else {
+        else
             secundarioMem = refazerS(movies); //refaz o índice na memória a partir do arquivo de filmes
-        }
     } else {
         ititle = fopen("data/ititle.idx", "w+");
         if (ititle == NULL) {
@@ -75,7 +73,7 @@ int main() {
         secundarioMem = refazerS(movies); //refaz o índice na memória a partir do arquivo de filmes
     }
     fseek(ititle, 0, SEEK_SET);
-    fputc('1', ititle);
+    fputc(INCONSISTENTE, ititle); //assume que o arquivo ficará inconsistente durante a execução do programa
     fclose(ititle);
 
     //menu do usuário --------------------------------------------------------------------------------------------------
