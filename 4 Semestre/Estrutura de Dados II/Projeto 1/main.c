@@ -109,7 +109,7 @@ int main() {
                 compactar(movies, &primarioMem);
                 break;
             case 0:
-                puts(SUCESS "Encerrando programa..." CLEAR);
+                puts(SUCCESS "Encerrando programa..." CLEAR);
                 break;
             default:
                 puts(ERROR "\tERRO: Opcao invalida" CLEAR);

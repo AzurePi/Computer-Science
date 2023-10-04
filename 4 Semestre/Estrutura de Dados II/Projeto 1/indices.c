@@ -506,4 +506,3 @@ void removeFilmeFromIndice(IndiceP *indexP, IndiceS *indexS, string codigo, stri
     if (noS->head == NULL)
         removeNoS(indexS, titulo); //remove o título do índice secundário
 }
-
