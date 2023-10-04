@@ -1,15 +1,20 @@
 section .data
+	num dd '5'
+
 	prompt db "Digite um número: ", 0
 	lenprompt equ $ - prompt
-	num db '5'
+
 	mensagem1 db "O menor número é ", 0
 	len1 equ $ - mensagem1
+
 	mensagem2 db "Os dois números são iguais!", 0
 	len2 equ $ - mensagem2
 
+
 section .bss
-	menor_numero resb 1
-	entrada resb 1
+	entrada resb 1		; buffer para a entrada
+	menor_numero resb 1	; variável auxiliar para impressão
+
 
 section .text
 global _start
@@ -22,9 +27,9 @@ _start:
 	mov edx, lenprompt
 	int 0x80
 
-	; lê a entrada do teclado e gravar no buffer
+	; lê a entrada do teclado e grava no buffer
 	mov eax, 3
-	mov abx, 0
+	mov ebx, 0
 	mov ecx, entrada
 	mov edx, 1
 	int 0x80
@@ -33,24 +38,27 @@ _start:
 	mov ebx, [entrada]
 	cmp eax, ebx
 
-	je numeros_iguais ; caso 1 (jump if equal)
-	jg numero1_e_maior ; caso 2 (jump if greater)
-	jb numero2_e_maior ; caso 3 (jump if less)
+	je numeros_iguais	; caso 1 (jump if equal)
+	jg num_eh_maior		; caso 2 (jump if greater)
+	jb entrada_eh_maior	; caso 3 (jump if less)
 
 
-numeros_iguais: ; caso 1
+; caso 1
+numeros_iguais:
 	mov eax, 4
 	mov ebx, 1
 	mov ecx, mensagem2
 	mov edx, len2
 	int 0x80
-	jmp end;
+	jmp end
 
-numero1_e_maior: ; caso 2
+; caso 2
+num_eh_maior:
 	mov [menor_numero], ebx
 	jmp print
 
-numero2_e_maior: ; caso 3
+; caso 3
+entrada_eh_maior:
 	mov [menor_numero], eax
 	jmp print
 
@@ -67,12 +75,10 @@ print:
 	mov ecx, menor_numero
 	mov edx, 1
 	int 0x80
+
 	jmp end
+
 
 end:
 	mov eax, 1
-	xor ebx, ebx ; zera o conteúdo dos registradores
 	int 0x80
-
-
-	
