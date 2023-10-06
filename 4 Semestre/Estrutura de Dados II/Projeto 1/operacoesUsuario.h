@@ -38,8 +38,8 @@ FILE *compactar(FILE *movies, IndiceP **indexP);
 //Retorna o código de um filme com determinado código
 string tituloFromRNN(FILE *movies, int rnn);
 
-//Impressão de um filme na tela
-void imprimirFilme(FILE *movies, int rnn);
+//Impressão de um filme na tela; retorna 0 se o filme nesse RNN foi apagado
+short imprimirFilme(FILE *movies, int rnn);
 
 //Limpa o buffer de entrada
 void clearBuffer();

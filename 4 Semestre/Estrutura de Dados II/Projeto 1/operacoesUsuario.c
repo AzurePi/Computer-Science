@@ -17,7 +17,7 @@ void inserirFilme(FILE *movies, IndiceP **indexP, IndiceS **indexS) {
     int rnn;
 
     puts(SUBTITLE "\n-----------INSERCAO DE FILME----------" CLEAR);
-    puts("\t\t\t\t\t" FAINT ITALIC BRIGHT_MAGENTA "OBS: Nao utilize acentos" CLEAR);
+    puts("\t\t\t\t\t" REMINDER "OBS: Nao utilize acentos" CLEAR);
 
     printf(PROMPT "Titulo em Portugues: " INPUT);
     scanf("%"STRINGIFY(TAM_TIT_PT)"[^\n]s", tituloPT);
@@ -251,8 +251,9 @@ void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
         puts(SUBTITLE "\n------------BUSCA DE FILME------------" CLEAR);
 
         puts(MENU "1." CLEAR " Buscar por codigo");
-        puts(MENU "2." CLEAR " Buscar por titulo");
-        puts(MENU "0." CLEAR " Retornar" INPUT);
+        puts(MENU "2." CLEAR " Buscar por titulo\t" REMINDER "(case sensitive)" CLEAR);
+        puts(MENU "0." CLEAR " Retornar");
+        printf(PROMPT "-> " CLEAR INPUT);
         scanf("%hd", &op);
         printf(CLEAR);
         clearBuffer();
@@ -266,9 +267,10 @@ void buscarFilme(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
                 break;
             case 0:
                 sucess = 1;
+                puts(""); //pula uma linha
                 break;
             default:
-                puts(ERROR "\tERRO: Opcao invalida" CLEAR "\n");
+                puts(ERROR "\tERRO: Opcao invalida" CLEAR);
                 break;
         }
     } while (sucess != 1);
@@ -287,12 +289,14 @@ int buscarCodigo(FILE *movies, IndiceP *indexP) {
     rnn = rnnFromCodigo(indexP, codigo);
     free(codigo);
     if (rnn == -1) {
-        puts(ERROR "\tFilme nao encontrado" CLEAR "\n");
+        puts(ERROR "\tFilme nao encontrado" CLEAR);
         return 0;
     }
     printf("\n");
-    imprimirFilme(movies, rnn);
-    printf("\n");
+
+    short int flag = imprimirFilme(movies, rnn);
+    if (flag)
+        printf("\n");
     return 1;
 }
 
@@ -304,7 +308,7 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
 
     puts(SUBSUBTITLE "\n------BUSCA POR TITULO------" CLEAR);
 
-    printf(PROMPT "Titulo: " INPUT);
+    printf(PROMPT "Titulo (em portugues): " INPUT);
     scanf("%"STRINGIFY(TAM_TIT_PT)"[^\n]s", titulo);
     printf(CLEAR);
     clearBuffer();
@@ -314,7 +318,7 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
     free(titulo);
 
     if (noS == NULL) {
-        puts(ERROR "\tFilme nao encontrado" CLEAR "\n");
+        puts(ERROR "\tFilme nao encontrado" CLEAR);
         return 0;
     }
 
@@ -328,8 +332,9 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
         }
 
         printf("\n");
-        imprimirFilme(movies, rnn);
-        printf("\n");
+        short int flag = imprimirFilme(movies, rnn);
+        if (flag)
+            printf("\n");
         noC = noC->prox;
     }
     return 1;
@@ -337,6 +342,7 @@ int buscarTitulo(FILE *movies, IndiceP *indexP, IndiceS *indexS) {
 
 void listarFilmes(FILE *movies) {
     int rnn = 0;
+    short int flag;
 
     fseek(movies, 0, SEEK_END);
     int total = ftell(movies) / TAM_FILME;
@@ -344,13 +350,14 @@ void listarFilmes(FILE *movies) {
     puts(SUBTITLE "\n----------LISTAGEM DE FILMES----------" CLEAR "\n");
 
     while (rnn < total) {
-        imprimirFilme(movies, rnn);
-        printf("\n");
+        flag = imprimirFilme(movies, rnn);
+        if (flag)
+            printf("\n");
         rnn++;
     }
 }
 
-void imprimirFilme(FILE *movies, int rnn) {
+short imprimirFilme(FILE *movies, int rnn) {
     string codigo = malloc(TAM_COD + 1);
     string tituloPT = malloc(TAM_TIT_PT + 1);
     string tituloOG = malloc(TAM_TIT_OG + 1);
@@ -373,7 +380,7 @@ void imprimirFilme(FILE *movies, int rnn) {
             free(diretor);
             free(ano);
             free(pais);
-            return;
+            return 0;
         }
 
         //imprime as informações na tela
@@ -391,6 +398,7 @@ void imprimirFilme(FILE *movies, int rnn) {
     free(diretor);
     free(ano);
     free(pais);
+    return 1;
 }
 
 FILE *compactar(FILE *movies, IndiceP **indexP) {

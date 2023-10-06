@@ -155,58 +155,24 @@ void insereNoS(IndiceS *index, NoS *no) {
 }
 
 NoP *buscaNoP(IndiceP *index, string codigo) {
-    //se a lista está vazia
-    if (index->head == NULL)
-        return NULL;
+    NoP *aux = index->head;
 
-    NoP *aux = NULL;
-
-    int l = 0;
-    int r = index->tamanho - 1;
-    int m;
-
-    while (l <= r) {
-        m = l + (r - l) / 2;
-
-        aux = index->head;
-        for (int i = 0; i < m; i++)
-            aux = aux->prox;
-
-        if (strcmp(aux->codigo, codigo) == 0)
+    while (aux){
+        if(strcmp(aux->codigo, codigo) == 0)
             return aux;
-        else if (strcmp(aux->codigo, codigo) < 0)
-            l = m + 1;
-        else
-            r = m - 1;
+        aux = aux->prox;
     }
 
     return NULL;
 }
 
 NoS *buscaNoS(IndiceS *index, string titulo) {
-    //se a lista está vazia
-    if (index->head == NULL)
-        return NULL;
+    NoS *aux = index->head;
 
-    NoS *aux = NULL;
-
-    int l = 0;
-    int r = index->tamanho - 1;
-    int m;
-
-    while (l <= r) {
-        m = l + (r - l) / 2;
-
-        aux = index->head;
-        for (int i = 0; i < m; i++)
-            aux = aux->prox;
-
-        if (strcmp(aux->titulo, titulo) == 0)
+    while (aux){
+        if(strcmp(aux->titulo, titulo) == 0)
             return aux;
-        else if (strcmp(aux->titulo, titulo) < 0)
-            l = m + 1;
-        else
-            r = m - 1;
+        aux = aux->prox;
     }
 
     return NULL;
@@ -401,6 +367,10 @@ void freeIndiceS(IndiceS *indice) {
 }
 
 int rnnFromCodigo(IndiceP *index, string codigo) {
+    //garante que a busca é case insensitive
+    for (int i = 0; i < 3; i++)
+        codigo[i] = toupper(codigo[i]);
+
     NoP *aux = buscaNoP(index, codigo);
     if(aux == NULL)
         return -1;
@@ -431,7 +401,7 @@ void removeNoP(IndiceP *index, string codigo) {
     prev = NULL;
 
     //enquanto há nós para percorrer
-    while (cur != NULL) {
+    while (cur) {
         //se encontrou o NoP a ser removido
         if (strcmp(cur->codigo, codigo) == 0) {
             //se o nó for o primeiro da lista

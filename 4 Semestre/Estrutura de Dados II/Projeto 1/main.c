@@ -84,8 +84,9 @@ int main() {
         puts(MENU "2." CLEAR " Remover filme");
         puts(MENU "3." CLEAR " Modificar nota");
         puts(MENU "4." CLEAR " Buscar filme");
-        puts(MENU "5." CLEAR " Listar filmes\t\t" MENU "6. " CLEAR "Compactar base de dados");
-        puts(MENU "0." CLEAR " Encerrar programa" INPUT);
+        puts(MENU "5." CLEAR " Listar filmes\t" MENU "6. " CLEAR "Compactar base de dados");
+        puts(MENU "0." CLEAR " Encerrar programa");
+        printf(PROMPT "-> " CLEAR INPUT);
         scanf("%hd", &op);
         clearBuffer();
 
@@ -112,7 +113,7 @@ int main() {
                 puts(SUCCESS "Encerrando programa..." CLEAR);
                 break;
             default:
-                puts(ERROR "\tERRO: Opcao invalida" CLEAR);
+                puts(ERROR "\tERRO: Opcao invalida" CLEAR "\n");
                 break;
         }
     } while (op != 0);
