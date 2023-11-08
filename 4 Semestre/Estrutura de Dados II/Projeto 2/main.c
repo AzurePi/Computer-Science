@@ -4,11 +4,15 @@
 #include "operacoesUsuario.h"
 #include "style.h"
 
+// sem compactação!
+// verificação de consistência apenas no índice secundário
+
+
 int main() {
     FILE *movies;           //arquivo de dados
     FILE *iprimary;         //arquivo de índice primário
     FILE *ititle;           //arquivo de índice secundário (título em português)
-    IndiceP *primarioMem;   //índice primário na memória
+    NoP *primarioMem;       //índice primário na memória (um único nó da Árvore B+)
     IndiceS *secundarioMem; //índice secundário na memória
 
     short int op; //operação sendo executada pelo usuário no menu
@@ -33,11 +37,12 @@ int main() {
 
     /*
      *  verifica se existem arquivos de índice
-     *      se existirem, verifica se estão consistentes com o arquivo de dados (flag no cabeçalho)
-     *          se estão consistentes, carregar na memória
-     *          senão, refazer os índices na memória
-     *      senão, criar os índices na RAM
+     *      se existirem, lê o primário e verifica se o secundário está consistente com o arquivo de dados (flag no cabeçalho)
+     *          se está consistente, carrega na memória
+     *          senão, refaz o índice na memória
+     *      senão, cria os índices na RAM
      */
+    /*
     iprimary = fopen("data/iprimary.idx", "r+a");
     if (iprimary != NULL) {
         char flag = fgetc(iprimary); //reads the very first character, the flag
@@ -56,6 +61,7 @@ int main() {
     fseek(iprimary, 0, SEEK_SET);
     fputc(INCONSISTENTE, iprimary); //assume que o arquivo ficará inconsistente durante a execução do programa
     fclose(iprimary);
+    */
 
     ititle = fopen("data/ititle.idx", "r+a");
     if (ititle != NULL) {
